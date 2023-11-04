@@ -1,0 +1,26 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.font-label{
+    font-family: 'Poppins', sans-serif;
+}
+.font-lato{
+    font-family: 'Lato', sans-serif;
+}
+
+.color-boton{
+    background: #0080ff;
+}
+.color-texto{
+    color: #0080ff;
+}
+.imagen-oculta {
+    opacity: 0; 
+}
+
+
+.imagen-visible {
+    opacity: 1; 
+    transition: opacity 1.5s ;
+}
