@@ -4,24 +4,38 @@ import Papa from 'papaparse'; // Importa la biblioteca papaparse
 
 function SubirCsv() {
   const [csvData, setCsvData] = useState([]); // Estado para almacenar los datos CSV
+  const [error, setError] = useState(null);
 
   const handleFileUpload = (file) => {
+    const results = [];
+
     if (file) {
       const reader = new FileReader();
 
       reader.onload = (event) => {
         const csvText = event.target.result;
 
-        // Procesar el archivo CSV con papaparse
+        // Procesar 
         Papa.parse(csvText, {
-          header: true, // Indica que la primera fila contiene encabezados
-          skipEmptyLines: true, // Saltar líneas vacías
+          header: true,
+          skipEmptyLines: true,
+          dynamicTyping: true,
           complete: (result) => {
-            // Al finalizar el análisis, actualiza el estado con los datos CSV
-            setCsvData(result.data);
+            const data = result.data;
+            
+            // Verificar si los nombres de columna son correctos
+            const expectedColumns = ['id', 'nota', 'tipoExamen'];
+            const columns = Object.keys(data[0]);
+
+            if (!expectedColumns.every((col) => columns.includes(col))) {
+              setError('El archivo CSV no tiene el formato correcto');
+              return;
+            }
+
+            setCsvData(data);
           },
           error: (error) => {
-            console.error('Error al analizar el archivo CSV:', error);
+            setError('Error al analizar el archivo CSV');
           },
         });
       };
@@ -35,11 +49,18 @@ function SubirCsv() {
       <input
         type="file"
         accept=".csv"
-        onChange={(e) => handleFileUpload(e.target.files[0])}
+        onChange={(e) => {
+          setError(null); // Limpiar el error
+          handleFileUpload(e.target.files[0]);
+        }}
         className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg mb-4"
       />
 
-      {csvData.length > 0 && (
+      {error && (
+        <div className="text-red-500 font-semibold mb-4">{error}</div>
+      )}
+
+{csvData.length > 0 && (
         <table className="min-w-full bg-white border shadow-lg">
           <thead>
             <tr>
@@ -62,5 +83,4 @@ function SubirCsv() {
     </div>
   );
 }
-
 export default SubirCsv;
