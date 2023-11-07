@@ -32,31 +32,24 @@ function Registrar() {
     async function handleSubmit (e) {
         e.preventDefault()
 
+        //validar que no existan campos vacios
         if ([identidad,primerNombre,primerApellido,carreraPrincipal,carreraSecundaria,email,centroRegional].includes('') || [imagen].includes(null)) {
             setAlerta({mensaje: 'Existen campos vacios', error: true})
             return;
         }
 
+        //Validar que el numero de identidad
         if (/^[0-9]{13}$/.test(identidad)) {
             setAlerta({})
-            //Limpiar Formulario
-            setIdentidad('');
-            setPrimerNombre('');
-            setSegundoNombre('');
-            setPrimerApellido('');
-            setSegundoApellido('');
-            setCarreraPrincipal('');
-            setCarreraSecundaria('');
-            setEmail('');
-            setImagen(null);
-            setCentroRegional('');
+            
         } else {
             setAlerta({mensaje: 'Numero de identidad invalido', 
                         error: true})
+                        return;
         }
         
 
-
+        
         // if (identidad.toString().length === 13) {
         //     setAlerta({mensaje: 'Numero de identidad incompleto', 
         //                 error: true})
@@ -76,8 +69,19 @@ function Registrar() {
         } catch (error) {
             
         }
-        
 
+        //Limpiar Formulario
+        setIdentidad('');
+        setPrimerNombre('');
+        setSegundoNombre('');
+        setPrimerApellido('');
+        setSegundoApellido('');
+        setCarreraPrincipal('');
+        setCarreraSecundaria('');
+        setEmail('');
+        //Limpiamos la Imagen
+        document.getElementById('Imagen').value = null;
+        setCentroRegional('');
     }
         const {mensaje}= alerta
 
@@ -224,6 +228,7 @@ function Registrar() {
                     
                     className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='file'
+                    id='Imagen'
                     accept='image/*'
                     onChange={(e) => {
                         const archivo=e.target.files[0];
