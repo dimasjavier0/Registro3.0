@@ -5,6 +5,8 @@ import Docentes from './pages/Docentes'
 import Principal from './layout/Principal';
 import SubirCsv from './pages/SubirCsv'
 import OlvideContraseña from './pages/OlvideContraseña'
+import LayoutAdmin from './layout/LayoutAdmin'
+
 import '@fortawesome/fontawesome-free/css/all.css';
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
         <Route>
         <Route path='/SubirCsv' element={<SubirCsv/>} /> 
         <Route path='/olvideContraseña' element={<OlvideContraseña/>} />
+        <Route path='/administrador' element={<LayoutAdmin/>} />
         </Route>
 
       </Routes>

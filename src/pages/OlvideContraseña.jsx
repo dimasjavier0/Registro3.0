@@ -70,7 +70,7 @@ function OlvideContraseña() {
                         
 
                         <Link className='text-gray-500 hover:underline font-label' to='/'>
-                        <button className='bg-indigo-600 duration-300 transition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-4 rounded-lg hover:bg-indigo-700 font-medium  uppercase mb-9 font-label shadow-lg shadow-indigo-400/100'>
+                        <button className=' bg-rose-600 duration-300 transition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-4 rounded-lg hover:bg-rose-700 font-medium  uppercase font-label shadow-lg shadow-rose-400/80'>
                             Cancelar
                         </button>
                         </Link>

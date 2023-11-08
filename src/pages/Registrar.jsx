@@ -6,7 +6,10 @@ import axios from 'axios';
 
 function Registrar() {
     const [identidad, setIdentidad] = useState('');
-    const [nombreCompleto, setNombreCompleto] = useState('');
+    const [primerNombre, setPrimerNombre] = useState('');
+    const [segundoNombre, setSegundoNombre] = useState('');
+    const [primerApellido, setPrimerApellido] = useState('');
+    const [segundoApellido, setSegundoApellido] = useState('');
     const [carreraPrincipal, setCarreraPrincipal] = useState('');
     const [carreraSecundaria, setCarreraSecundaria] = useState('');
     const [email, setEmail] = useState('');
@@ -29,19 +32,31 @@ function Registrar() {
     async function handleSubmit (e) {
         e.preventDefault()
 
-        if ([identidad,nombreCompleto,carreraPrincipal,carreraSecundaria,email,centroRegional].includes('') || [imagen].includes(null)) {
-            
+        //validar que no existan campos vacios
+        if ([identidad,primerNombre,primerApellido,carreraPrincipal,carreraSecundaria,email,centroRegional].includes('') || [imagen].includes(null)) {
             setAlerta({mensaje: 'Existen campos vacios', error: true})
             return;
         }
 
-        if (identidad.toString().length === 12) {
-            setAlerta({mensaje: 'Numero de identidad incompleto', 
+        //Validar que el numero de identidad
+        if (/^[0-9]{13}$/.test(identidad)) {
+            setAlerta({})
+            
+        } else {
+            setAlerta({mensaje: 'Numero de identidad invalido', 
                         error: true})
-            return;
+                        return;
         }
+        
 
-        setAlerta({})
+        
+        // if (identidad.toString().length === 13) {
+        //     setAlerta({mensaje: 'Numero de identidad incompleto', 
+        //                 error: true})
+        //     return;
+        // }
+
+        
 
         //registrar el usuario en la api
         try {
@@ -54,6 +69,19 @@ function Registrar() {
         } catch (error) {
             
         }
+
+        //Limpiar Formulario
+        setIdentidad('');
+        setPrimerNombre('');
+        setSegundoNombre('');
+        setPrimerApellido('');
+        setSegundoApellido('');
+        setCarreraPrincipal('');
+        setCarreraSecundaria('');
+        setEmail('');
+        //Limpiamos la Imagen
+        document.getElementById('Imagen').value = null;
+        setCentroRegional('');
     }
         const {mensaje}= alerta
 
@@ -64,7 +92,7 @@ function Registrar() {
             <div>
                 <div className='text-left'>
                 <h1 className='text-indigo-600 text-center font-black text-5xl  ml-12 '>
-                    Registro Para Estudiantes 
+                    Proceso De Admision
                 </h1>
                 <p className='ml-32 mt-2  text-5xl font-black '>
                     Universidad Nacional 
@@ -98,7 +126,7 @@ function Registrar() {
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Identidad </label>
                     <input
                     className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label ' 
-                    type='number'   
+                    type='text'   
                     placeholder='ej: 0801197302222'
                     value={identidad}
                     onChange={(e) => {
@@ -107,14 +135,52 @@ function Registrar() {
                     }
                     />
 
-                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Nombre Completo </label>
+                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Nombre </label>
                     <input
                     className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
-                    placeholder='Escribe Tu Nombre'
-                    value={nombreCompleto}
+                    placeholder='Tu Primer Nombre'
+                    value={primerNombre}
                     onChange={(e) => {
-                        setNombreCompleto(e.target.value)
+                        setPrimerNombre(e.target.value)
+                    }
+                    }
+                    />
+
+                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Segundo Nombre </label>
+                    <input
+                    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    type='text'   
+                    placeholder='Tu Segundo Nombre'
+                    value={segundoNombre}
+                    onChange={(e) => {
+                        setSegundoNombre(e.target.value)
+                    }
+                    }
+                    />
+
+                    
+
+                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Apellido </label>
+                    <input
+                    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    type='text'   
+                    placeholder='Tu Primer Apellido '
+                    value={primerApellido}
+                    onChange={(e) => {
+                        setPrimerApellido(e.target.value)
+                    }
+                    }
+                    />
+
+                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Segundo Apellido </label>
+                    <input
+                    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    type='text'   
+                    placeholder='Tu Segundo Apellido'
+                    value={segundoApellido}
+                    onChange={(e) => {
+                        setSegundoApellido(e.target.value)
                     }
                     }
                     />
@@ -162,6 +228,7 @@ function Registrar() {
                     
                     className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='file'
+                    id='Imagen'
                     accept='image/*'
                     onChange={(e) => {
                         const archivo=e.target.files[0];
