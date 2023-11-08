@@ -29,7 +29,7 @@ function App() {
         <Route>
         <Route path='/SubirCsv' element={<SubirCsv/>} /> 
         <Route path='/olvideContraseña' element={<OlvideContraseña/>} />
-        <Route path='/administrador' element={<LayoutAdmin/>} />
+        <Route path='/Administracion' element={<LayoutAdmin/>} />
         </Route>
 
       </Routes>

@@ -7,7 +7,7 @@ function Docentes() {
         <>
             <div className='flex justify-center mt-28' >
                 <div className='bg-white p-8 rounded-xl border shadow-lg max-w-md w-full'>
-                    <h2 className='mb-6 text-3xl text-center font-bold font-label'>Iniciar Sesión <br /><span>Docentes</span></h2>
+                    <h2 className='mb-6 text-3xl text-center font-bold font-label'>Iniciar Sesión <br /><span>Docente</span></h2>
                     <form >
                         <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >N° Cuenta</label>
                         <input

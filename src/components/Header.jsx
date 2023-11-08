@@ -56,17 +56,25 @@ return (
                 <ul className="py-2  flex flex-col ">
                     <li className="flex items-center">
                     <Link to='/estudiantes' className="flex items-center px-4 py-2 text-gray-800 hover:bg-gray-200"   
-                    onClick={() => handleOpcionClick('Estudiantes')}>
-                    <i className="fas fa-user mr-5"></i> Estudiantes
+                    onClick={() => handleOpcionClick('Estudiante')}>
+                    <i className="fas fa-light fa-user-pen mr-5"></i> Estudiante
                     </Link>
                     </li>
 
                     <li className="flex items-center mr-3">
                     <Link to='/docentes' className="flex items-center px-4 py-2  text-gray-800 hover:bg-gray-200"  
-                    onClick={() => handleOpcionClick('Docentes')}>
-                    <i className="fas fa-chalkboard-teacher mr-4"></i> Docentes
+                    onClick={() => handleOpcionClick('Docente')}>
+                    <i className="fas fa-solid fa-person-chalkboard fa-lg mr-4"></i> Docente
                     </Link>
                     </li>
+
+                    <li className="flex items-center mr-3">
+                    <Link to='/Administrador' className="flex items-center px-4 py-2  text-gray-800 hover:bg-gray-200"  
+                    onClick={() => handleOpcionClick('Administrador')}>
+                    <i className="fas fa-light fa-user-gear mr-4"></i> Administrador
+                    </Link>
+                    </li>
+
                 </ul>
 
             </div>
