@@ -22,7 +22,7 @@ function Principal() {
             }
         }, [location]);
     return (
-        <div className={`${seleccionOpcion === 'Estudiantes' ? ' delay-100 duration-500 bg-yellow-300' : seleccionOpcion === 'Docentes' ? 'delay-100 duration-500 bg-blue-500' : null} min-h-screen`}>
+        <div className={`${seleccionOpcion === 'Estudiantes' ? ' delay-100 duration-500 bg-yellow-300' : seleccionOpcion === 'Docentes' ? 'delay-100 duration-500 bg-blue-500' :null} min-h-screen`}>
 
             <Header 
             seleccionOpcion={seleccionOpcion} 
