@@ -2,12 +2,12 @@ import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import Acceso from './pages/Estudiantes'
 import Registrar from './pages/Registrar'
 import Docentes from './pages/Docentes'
-import Principal from './layout/Principal';
+import LayoutPrincipal from './layout/LayoutPrincipal'
 import SubirCsv from './pages/SubirCsv'
 import OlvideContraseña from './pages/OlvideContraseña'
 import LayoutAdmin from './layout/LayoutAdmin'
 import Administrador from './pages/Administrador';
-
+import VistaPrincipal from './pages/VistaPrincipal';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 function App() {
@@ -18,12 +18,14 @@ function App() {
         <BrowserRouter>
       <Routes>
 
-        <Route path='/' element={<Principal/>}> 
+        <Route path='/' element={<LayoutPrincipal/>}> 
+            <Route index element={<VistaPrincipal/> } />
             <Route path='/estudiantes' element={<Acceso/> } />
             <Route path='/registrar' element={<Registrar/>} />
             <Route path='/docentes' element={<Docentes/>} /> 
             <Route path='/Administrador' element={<Administrador/>} /> 
-             
+
+
               
         </Route>
         <Route>

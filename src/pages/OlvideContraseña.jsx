@@ -31,7 +31,7 @@ function OlvideContraseña() {
                     Recupera Tu Acceso
                 </h1>
                 <p className='mt-2  text-6xl font-black text-center '>
-                    Y no Pierdas Tu 
+                    Y No Pierdas Tu 
                 </p>
                 <p className='text-center mt-2  text-6xl font-black'>
                 Cuenta

@@ -20,17 +20,17 @@ function Header({seleccionOpcion,setSeleccionOpcion}) {
     };
 
 return (
-    <header className="bg-white p-3 border-2 rounded-t-none  rounded-b-lg w-full fixed">
+    <header className="bg-white  p-3 border-2 border-black border-opacity-20 shadow-2xl  rounded-t-none  rounded-b-xl w-full fixed">
         <div className=" flex justify-between ">
 
             <div className='flex '>
 
-                <img className='transition ease-in-out delay-50 hover:scale-150  duration-250 w-12 ml-2' 
-                src="src/img/Logo-Puma.png" 
+                <img className='transition ease-in-out delay-50 hover:scale-150  duration-250 w-9 h-12 ml-8' 
+                src="src/img/UNAH-escudo.png" 
                 alt="Logo-Puma" />
             
                 <Link to='/'>
-                <button  className=" color-texto font-bold font-label text-xl hover:bg-gray-400  py-2 px-4 rounded ml-3" 
+                <button  className=" color-texto font-bold font-label text-2xl hover:bg-gray-400  py-3 px-4 rounded ml-3" 
                 onClick={() => handleOpcionClick(null)}
                 >Inicio</button>
                 </Link>
@@ -38,7 +38,7 @@ return (
             
             <div>
                 <Link to='/registrar'>
-                <button  className=" color-boton hover:bg-blue-700 font-bold font-label text-white  py-2 px-4 rounded mr-5"
+                <button  className=" mt-2 color-boton hover:bg-blue-700 font-bold font-label text-white  py-2 px-4 rounded mr-5"
                 onClick={() => handleOpcionClick(null)}
                 >Regístrate</button>
                 </Link>

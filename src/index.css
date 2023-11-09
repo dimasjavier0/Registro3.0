@@ -18,9 +18,15 @@
 .imagen-oculta {
     opacity: 0; 
 }
-
-
 .imagen-visible {
     opacity: 1; 
     transition: opacity 1.5s ;
+}
+.width-45 {
+    width: 45%;
+}
+.img-footer {
+    background-image: url('src/img/footer.png');
+    background-size: 100% 100% ;
+    background-repeat: no-repeat; 
 }

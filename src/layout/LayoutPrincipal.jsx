@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 
 
 
+
 function Principal() {
     const [seleccionOpcion, setSeleccionOpcion] = useState(null); 
     
@@ -28,14 +29,12 @@ function Principal() {
             seleccionOpcion={seleccionOpcion} 
             setSeleccionOpcion={setSeleccionOpcion}
             />
-    
-            <main className="p-4 ">
-            
+
+            <main className="p-1">
             <Outlet />
             </main>
+            
         </div>
         );
     }
 export default Principal;
-
-
