@@ -19,7 +19,13 @@ function Registrar() {
     const [alerta, setAlerta] = useState({});
     const [mostrarImagen, setMostrarImagen] = useState(false);
 
-    
+    //Evitamos que el usuario ingrese numeros en los campos de tipo=texto
+    const handleKeyDown = (event) => {
+        const key = event.key; 
+        if (/[0-9]/.test(key)) {
+            event.preventDefault();
+        }
+    };
     
 
     useEffect(() => {
@@ -32,13 +38,13 @@ function Registrar() {
     async function handleSubmit (e) {
         e.preventDefault()
 
-        //validar que no existan campos vacios
+        //Validar que no existan campos vacios
         if ([identidad,primerNombre,primerApellido,carreraPrincipal,carreraSecundaria,email,centroRegional].includes('') || [imagen].includes(null)) {
             setAlerta({mensaje: 'Existen campos vacios', error: true})
             return;
         }
 
-        //Validar que el numero de identidad
+        //Validar que el numero de identidad sea de 13 digitos
         if (/^[0-9]{13}$/.test(identidad)) {
             setAlerta({})
             
@@ -141,6 +147,7 @@ function Registrar() {
                     type='text'   
                     placeholder='Tu Primer Nombre'
                     value={primerNombre}
+                    onKeyDown={handleKeyDown}
                     onChange={(e) => {
                         setPrimerNombre(e.target.value)
                     }
@@ -153,6 +160,7 @@ function Registrar() {
                     type='text'   
                     placeholder='Tu Segundo Nombre'
                     value={segundoNombre}
+                    onKeyDown={handleKeyDown}
                     onChange={(e) => {
                         setSegundoNombre(e.target.value)
                     }
@@ -167,6 +175,7 @@ function Registrar() {
                     type='text'   
                     placeholder='Tu Primer Apellido '
                     value={primerApellido}
+                    onKeyDown={handleKeyDown}
                     onChange={(e) => {
                         setPrimerApellido(e.target.value)
                     }
@@ -179,6 +188,7 @@ function Registrar() {
                     type='text'   
                     placeholder='Tu Segundo Apellido'
                     value={segundoApellido}
+                    onKeyDown={handleKeyDown}
                     onChange={(e) => {
                         setSegundoApellido(e.target.value)
                     }
@@ -193,6 +203,7 @@ function Registrar() {
                     type='text'   
                     placeholder='Escribe Tu Carrera Principal'
                     value={carreraPrincipal}
+                    onKeyDown={handleKeyDown}
                     onChange={(e) => {
                         setCarreraPrincipal(e.target.value)
                     }
@@ -205,6 +216,7 @@ function Registrar() {
                     type='text'   
                     placeholder='Escribe Tu Carrera Secundaria'
                     value={carreraSecundaria}
+                    onKeyDown={handleKeyDown}
                     onChange={(e) => {
                         setCarreraSecundaria(e.target.value)
                     }
