@@ -21,7 +21,7 @@ function VistaPrincipal() {
             </div>
             <div className='mt-10 mb-5'>
                 <div className='flex items-center justify-between '>
-                <div class="width-45 border-b"></div>
+                <div className="width-45 border-b"></div>
                 <div>
                     <a 
                     href="https://www.facebook.com/unahoficial/"
@@ -44,7 +44,7 @@ function VistaPrincipal() {
                     <i className="fab fa-linkedin-in fa-bounce text-xl"></i>
                     </a>
                 </div>
-                <div class="width-45 border-b"></div>
+                <div className="width-45 border-b"></div>
                 </div>
             </div>
         </div>
