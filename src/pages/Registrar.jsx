@@ -108,9 +108,9 @@ function Registrar() {
                 </p>
                 </div>
 
-                <div className='ml-40 mt-14'>
-                    <img className={mostrarImagen ? 'imagen-visible' : 'imagen-oculta'}
-                    src="src/img/Puma-UNAH.png"
+                <div className='ml-40 mt-14 '>
+                    <img className={mostrarImagen ? 'imagen-visible ' : 'imagen-oculta'}
+                    src="/img/Puma-UNAH.png"
                     alt="Imagen"
                     />
                 </div>
@@ -166,8 +166,6 @@ function Registrar() {
                     }
                     }
                     />
-
-                    
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Apellido </label>
                     <input

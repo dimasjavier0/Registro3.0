@@ -35,7 +35,7 @@ function Administrador() {
                 </div>
             </div>  
             <div className=''>
-            <img src='/src/img/UNAH-ESTUDIANTES.png' alt="" />
+            <img src='/img/UNAH-ESTUDIANTES.png' alt="" />
             </div>    
         </>
     )

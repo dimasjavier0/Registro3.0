@@ -26,7 +26,7 @@ return (
             <div className='flex '>
 
                 <img className='transition ease-in-out delay-50 hover:scale-150  duration-250 w-9 h-12 ml-8' 
-                src="src/img/UNAH-escudo.png" 
+                src="/img/UNAH-escudo.png" 
                 alt="Logo-Puma" />
             
                 <Link to='/'>

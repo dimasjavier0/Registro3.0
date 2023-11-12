@@ -8,6 +8,7 @@ import OlvideContraseña from './pages/OlvideContraseña'
 import LayoutAdmin from './layout/LayoutAdmin'
 import Administrador from './pages/Administrador';
 import VistaPrincipal from './pages/VistaPrincipal';
+import RegistrarDocentes from './pages/RegistrarDocentes'
 import '@fortawesome/fontawesome-free/css/all.css';
 
 function App() {
@@ -24,18 +25,17 @@ function App() {
             <Route path='/registrar' element={<Registrar/>} />
             <Route path='/docentes' element={<Docentes/>} /> 
             <Route path='/Administrador' element={<Administrador/>} /> 
-
-
-              
         </Route>
-        <Route>
-        <Route path='/SubirCsv' element={<SubirCsv/>} /> 
-        <Route path='/olvideContraseña' element={<OlvideContraseña/>} />
-        <Route path='/Administracion' element={<LayoutAdmin/>} />
+        
+        <Route >
+            <Route path='/SubirCsv' element={<SubirCsv/>} /> 
+            <Route path='/olvideContraseña' element={<OlvideContraseña/>} /> 
         </Route>
 
-      </Routes>
-      <Routes>
+        <Route path='/administracion' element={<LayoutAdmin/>}>
+              <Route path='nuevoDocente' element={<RegistrarDocentes/>} />
+        </Route>
+
       </Routes>
     </BrowserRouter>
     

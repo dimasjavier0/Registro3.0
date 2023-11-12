@@ -31,7 +31,7 @@ function Docentes() {
                 </div>
             </div>
         <div className='imagenn'>
-        <img src='/src/img/UNAH-DOCENTES.png' alt="" />
+        <img src='/img/UNAH-DOCENTES.png' alt="" />
             </div>   
         </>
     )

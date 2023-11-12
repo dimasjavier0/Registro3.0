@@ -6,7 +6,7 @@ function VistaPrincipal() {
         <div className=' mt-36 flex justify-center mb-28 '>
         <img 
         className='hover:scale-130'
-        src="src/img/UNAH-version-horizontal.png" alt="" />
+        src="/img/UNAH-version-horizontal.png" alt="" />
         </div>
         <footer className="bg-gray-700 text-white py-6  text-center img-footer">
         <div className='grid grid-rows-2 '>
@@ -24,22 +24,22 @@ function VistaPrincipal() {
                 <div className="width-45 border-b"></div>
                 <div>
                     <a 
-                    href="https://www.facebook.com/unahoficial/"
+                    href="https://www.facebook.com/unahoficial"
                     className="mr-4 ">
                     <i className="fa-brands fa-facebook-f fa-bounce text-xl "></i>
                     </a>
 
-                    <a href="https://twitter.com/unahoficial/"  
+                    <a href="https://twitter.com/unahoficial"  
                     className="mr-4">
                     <i className="fa-brands fa-twitter fa-bounce text-xl"></i>
                     </a>
 
-                    <a href="https://www.instagram.com/unahoficial/" 
+                    <a href="https://www.instagram.com/unahoficial" 
                     className="mr-4">
                     <i className="fab fa-instagram fa-bounce text-xl"></i>
 
                     </a>
-                    <a href="https://www.linkedin.com/school/unahoficial/"  
+                    <a href="https://www.linkedin.com/school/unahoficial"  
                     className="mr-4">
                     <i className="fab fa-linkedin-in fa-bounce text-xl"></i>
                     </a>
