@@ -4,6 +4,12 @@ var cors = require('cors');
 //var Routes = require('./routes');
 var aspirantes_router = require("./routes/aspirantes_route");
 
+var db = require('./controllers/database');
+
+
+
+
+
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
 
@@ -38,11 +44,29 @@ app.get('/', (req, res) => {
  * el  router aspirantes_route gestiona todas las peticiones se /aspirantes */
 //app.use("/aspirantes",aspirantes_router.post);
 
-app.post('/aspirantes',(req,res)=>{
+app.post('/aspirantes', async (req,res)=>{ //funcion asincrona
+  
+  /** recibe peticion(aspirante) */
+  var aspirante = req.body;
+
+  /**Loguear */
+  await db.setConfigToLogin('asd','1234');
+
+  /** Hacer conexion y guardar en base de datos */
+  await db.connect();
+  var result = db.query('select * from carreras;');
+  /** ver respuesta de db */
+  console.log(result);
+  await db.close();
+
+  /** se recibe los requisitos del aspirante */
+
+  
+  /** mandar respuesta de confirmacion */
   res.send(
       {
-          "respuesta":    
-          req.body
+        'aspirante recibido':aspirante,
+        'respuesta': result
       }
   );
 });
