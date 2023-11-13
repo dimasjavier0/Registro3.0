@@ -45,30 +45,35 @@ app.get('/', (req, res) => {
 //app.use("/aspirantes",aspirantes_router.post);
 
 app.post('/aspirantes', async (req,res)=>{ //funcion asincrona
-  
-  /** recibe peticion(aspirante) */
-  var aspirante = req.body;
+  try{
+    /** recibe peticion(aspirante) */
+    var aspirante = req.body;
 
-  /**Loguear */
-  await db.setConfigToLogin('asd','1234');
+    /**Loguear */
+    await db.setConfigToLogin('asd','1234');
 
-  /** Hacer conexion y guardar en base de datos */
-  await db.connect();
-  var result = db.query('select * from carreras;');
-  /** ver respuesta de db */
-  console.log(result);
-  await db.close();
+    /** Hacer conexion y guardar en base de datos */
+    await db.connect();
+    var result = await db.query('select * from carreras;');
+    /** ver respuesta de db */
+    console.log(result);
+    await db.close();
 
-  /** se recibe los requisitos del aspirante */
+    /** se recibe los requisitos del aspirante */
 
-  
-  /** mandar respuesta de confirmacion */
-  res.send(
-      {
-        'aspirante recibido':aspirante,
-        'respuesta': result
-      }
-  );
+    
+    /** mandar respuesta de confirmacion */
+    res.send(
+        {
+          'aspirante recibido':aspirante,
+          'respuesta': result
+        }
+    );
+
+  }catch (error) {
+    throw error;
+  }
+
 });
 
 
