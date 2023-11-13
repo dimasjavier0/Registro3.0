@@ -15,8 +15,8 @@ function Estudiantes() {
                         <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >N° Cuenta</label>
                         <input
                         className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
-                        type='email'   
-                        placeholder='Numero De Cuenta'/>
+                        type='text'   
+                        placeholder='ej: 20235000400'/>
 
                         <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label'>Clave</label>
                         <input

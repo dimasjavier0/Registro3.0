@@ -69,10 +69,11 @@ function OlvideContraseña() {
                         </button>
                         
 
-                        <Link className='text-gray-500 hover:underline font-label' to='/'>
+                        <Link className='text-gray-500 hover:underline font-label' to='#' onClick={() => window.history.back()}>
                         <button className=' bg-rose-600 duration-300 transition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-4 rounded-lg hover:bg-rose-700 font-medium  uppercase font-label shadow-lg shadow-rose-400/80'>
                             Cancelar
                         </button>
+                        
                         </Link>
                     </div>
                     
