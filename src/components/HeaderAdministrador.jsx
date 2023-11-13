@@ -4,7 +4,14 @@ function HeaderAdministrador() {
 
     return (
         <div className='flex min-h-screen'>
-            <aside className=' bg-indigo-700 py-10'>
+            <aside className=' bg-indigo-700 '>
+                    <div className=' mt-5'>
+                    <Link
+                    to='/' 
+                    className=" ml-72 ">
+                    <i className="text-white fa-regular fa-share-from-square fa-rotate-180 fa-2xl"></i>
+                    </Link>
+                    </div>
                 <div className=' mr-16'>
                 <h1 className='text-4xl ml-8 
                 font-black text-center text-white mt-10'>Administrador
@@ -14,6 +21,12 @@ function HeaderAdministrador() {
                     <Link >
                         <button className='transition text-white ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>
                             Matricula
+                        </button>
+                    </Link>
+
+                    <Link to='/administracion/SubirCsv'>
+                        <button className='transition block mt-10 ml-8 text-white font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>
+                            Subir CSV
                         </button>
                     </Link>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import Papa from 'papaparse'; // Importa la biblioteca papaparse
+import { Link } from 'react-router-dom';
 
 function SubirCsv() {
   const [csvData, setCsvData] = useState([]); // Estado para almacenar los datos CSV
@@ -45,7 +46,7 @@ function SubirCsv() {
   };
 
   return (
-    <div className="py-10">
+    <div className="py-20 ">
       <input
         type="file"
         accept=".csv"
@@ -61,12 +62,12 @@ function SubirCsv() {
       )}
 
 {csvData.length > 0 && (
-        <table className="min-w-full bg-white border shadow-lg">
+        <table className=" bg-white border shadow-lg w-9/12 border-separate  ">
           <thead>
             <tr>
-              <th className="bg-blue-100 text-left px-6 py-3 text-gray-600">ID</th>
-              <th className="bg-blue-100 text-left px-6 py-3 text-gray-600">Nota</th>
-              <th className="bg-blue-100 text-left px-6 py-3 text-gray-600">Tipo de Examen</th>
+              <th className="bg-blue-100  border border-slate-300 text-left px-6 py-3 text-gray-600">ID</th>
+              <th className="bg-blue-100 text-left border border-slate-300 px-6 py-3 text-gray-600">Nota</th>
+              <th className="bg-blue-100 text-left border border-slate-300 px-6 py-3 text-gray-600">Tipo de Examen</th>
             </tr>
           </thead>
           <tbody>
@@ -80,6 +81,8 @@ function SubirCsv() {
           </tbody>
         </table>
       )}
+      
+      
     </div>
   );
 }

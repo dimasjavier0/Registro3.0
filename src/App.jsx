@@ -27,13 +27,13 @@ function App() {
             <Route path='/Administrador' element={<Administrador/>} /> 
         </Route>
         
-        <Route >
-            <Route path='/SubirCsv' element={<SubirCsv/>} /> 
+        <Route > 
             <Route path='/olvideContraseña' element={<OlvideContraseña/>} /> 
         </Route>
 
         <Route path='/administracion' element={<LayoutAdmin/>}>
               <Route path='nuevoDocente' element={<RegistrarDocentes/>} />
+              <Route path='SubirCsv' element={<SubirCsv/>} />
         </Route>
 
       </Routes>
