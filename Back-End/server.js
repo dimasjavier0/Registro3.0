@@ -5,6 +5,7 @@ var cors = require('cors');
 var aspirantes_router = require("./routes/aspirantes_route");
 
 var db = require('./controllers/database');
+const nodemailer = require('nodemailer');
 
 
 
@@ -50,52 +51,121 @@ app.post(
         /** recibe peticion(aspirante) */
     
     /** notas es una arreglo de notas [[,,],[]]*/
-    let notas = req.body.notas;//leerNotasString(req.body.notas);
+    console.log("peticion Recibida:",req.body);
+    let notas = req.body.csvData;//arreglo de JSONs
 
     /**Loguear */
     await db.setConfigToLogin('asd','1234');
 
     /** Hacer conexion */
-    await db.connect();
+    //await db.connect();
     
     console.log("notas Recibidas:",notas);
     
     var datos = {"validos":[],"invalidos":[]};
 
     /**Recorrer cada nota del estudiante */
-      notas.forEach( async array => {
-          let identidad = array[0];
-          let tipoExamen = array[1];
-          let nota = array[2];
+      notas.forEach( async notaJSON => {
            /** Mandar a guardar la nota en la base de datos*/
+          await db.connect();
           let resultQuery = await db.query(
-            `exec [dbo].[subir_nota_estudiante] '${identidad}', ${tipoExamen}, ${nota};`
+            `exec [dbo].[subir_nota_estudiante] '${notaJSON.id}', ${notaJSON.nota}, ${notaJSON.tipoExamen};`
           );
-          if (resultQuery){
-              datos.validos.push(resultQuery);
-          }else{
-              datos.invalidos.push(resultQuery);
-          }
+          await db.close();
       });
-
-      
-
    
 
-    /** ver respuesta de db */
-    //console.log(result);
-    await db.close();
 
-    
-    /** mandar respuesta de confirmacion */
-    res.send(
-        {
-          'notas recibidas':notas,
-          'respuesta': datos
+      /** ver las notas de los estudiantes */
+      await db.connect();
+      let resultadosEstudiantes = await db.query('select id_persona, nota, id_tipo_examen from resultados_examen_admision ');
+      await db.close();
+
+      var estudiantesAprobadosDobles = [];
+      var estudiantesAprobados = [];
+      var estudiantesReprobados = [];
+
+      /**ver si aprobaron cada uno de los estudiantes*/
+      resultadosEstudiantes.forEach(async (jsonEstudiante)=>{
+        /**ver requerimiento del estudiante */
+        await db.connect();
+        
+
+        let requisitosEstudiante = await db.query(`exec [dbo].[requisitos_para_pasar_de_id_persona] '${jsonEstudiante.id_persona}'`);
+        let carrerasAprobadas=[];
+        await db.close();
+
+        requisitosEstudiante.array.forEach(jsonRequisito => {
+          
+          if (jsonEstudiante.nota>= jsonRequisito.puntaje_minimo_examen){
+              carrerasAprobadas.push(jsonRequisito.id_carrera);
+          };
+        });
+        
+        
+
+       
+        
+        /**clasificando si aprobo o reprobo ambas, una o ninguna carrera */
+        switch (length(carrerasAprobadas)) {
+          case 0:
+            estudiantesReprobados.push(jsonEstudiante.id_carrera);
+            break;
+          case 1:
+            estudiantesAprobados.push(jsonEstudiante.id_carrera);
+          break;
+          case 2:
+            estudiantesAprobados.push(jsonEstudiante.id_carrera);
+          break;
+          default:
+            break;
+        };
+
+      });
+
+      console.log(resultadosEstudiantes);
+      //await db.close();
+      
+      await db.connect();
+      let correo = await db.query(`select p.correo from personas p where p.id_persona = ${jsonEstudiante.id_persona}`);
+      await db.close();
+
+      //await db.connect();
+      //let text = await db.query(`select p.correo from personas p where p.id_persona = ${jsonEstudiante.id_persona}`);
+      //await db.close();
+      
+      /**mandar correo de confirmacion de resultados */
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'idsunahcu@gmail.com',
+          pass: 'mdmw ielt kdak djdx'
         }
-    );
+      });
+      
+      const mailOptions = {
+        from: 'idsunahcu@gmail.com',
+        to: `${correo}`,
+        subject: 'RESULTADOS EXAMENES ADMISION UNAH',
+        text: `Hola muy buenas, sus resultados son: `
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Correo enviado: ' + info.response);
+        }
+      });      
 
 
+      /** mandar respuesta de confirmacion al cliente*/
+      res.send(
+          {
+            'notas recibidas':notas,
+            'respuesta': datos
+          }
+      );
     }
 );
 
