@@ -169,6 +169,13 @@ function Registrar() {
                 alerta={alerta}
             />}
 
+{registroExitoso && (
+            <div className='bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4' role='alert'>
+              <p className='font-bold'>¡Registro Exitoso!</p>
+              <p>Se ha registrado correctamente. Por favor, estar pendiente de su correo electrónico.</p>
+            </div>
+          )}
+
 
             <form 
             onSubmit={handleSubmit}
