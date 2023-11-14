@@ -67,16 +67,20 @@ function Registrar() {
         formData.append('centroRegional', centroRegional);
 
           let dataAspirante = {
-            p_nombre: primerNombre,
-            s_nombre: segundoNombre,
-            p_apellido: primerApellido,
-            s_apellido: segundoApellido,
-            carrera_P: carreraPrincipal,
-            carrera_S: carreraSecundaria,
-            identidad: identidad,
-            foto: imagen, 
-            correoPersonal: email,
-            centroRegional: centroRegional        
+     p_nombre:primerNombre,
+     s_nombre:segundoNombre,
+     p_apellido:primerApellido,
+     s_apellido:segundoApellido,
+     carrera_P:carreraPrincipal,
+     carrera_S:carreraSecundaria,
+     identidad:identidad,
+     foto:imagen,
+     cel:"3301-0630",
+     correoPersonal:email,
+     carreraPrincipal:"1",
+     carreraSecundaria:"2",
+     centroRegional:"1",
+     estado:"1"
         };
 
         let config = {
@@ -169,7 +173,6 @@ function Registrar() {
                 alerta={alerta}
             />}
 
-
             <form 
             onSubmit={handleSubmit}
             
@@ -241,31 +244,68 @@ function Registrar() {
 
                 
 
-                <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Carrera Principal</label>
-                <input
-                className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
-                type='text'   
-                placeholder='Escribe Tu Carrera Principal'
-                value={carreraPrincipal}
-                onKeyDown={handleKeyDown}
-                onChange={(e) => {
-                    setCarreraPrincipal(e.target.value)
-                }
-                }
-                />
+// ...
 
-                <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Carrera Secundaria</label>
-                <input
-                className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
-                type='text'   
-                placeholder='Escribe Tu Carrera Secundaria'
-                value={carreraSecundaria}
-                onKeyDown={handleKeyDown}
-                onChange={(e) => {
-                    setCarreraSecundaria(e.target.value)
-                }
-                }
-                />
+<label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Principal</label>
+<select
+  className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
+  value={carreraPrincipal}
+  onChange={(e) => {
+    setCarreraPrincipal(e.target.value);
+  }}
+>
+  <option value='' disabled>-- Seleccione --</option>
+  <option value='1'>Ingeniería en Sistemas</option>
+  <option value='2'>Medicina</option>
+  <option value='3'>Derecho</option>
+  <option value='4'>Administración de Empresas</option>
+  <option value='5'>Psicología</option>
+  <option value='6'>Arquitectura</option>
+  <option value='7'>Ingeniería Civil</option>
+  <option value='8'>Odontología</option>
+  <option value='9'>Química y Farmacia</option>
+  <option value='10'>Derecho</option>
+  <option value='11'>Periodismo</option>
+  <option value='12'>Historia</option>
+  <option value='13'>Letras</option>
+  <option value='14'>Ingeniería en Sistemas</option>
+  <option value='15'>Licenciatura en Matemáticas</option>
+  <option value='16'>Medicina</option>
+  <option value='17'>Odontología</option>
+  <option value='18'>Enfermería</option>
+</select>
+
+<label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Secundaria</label>
+<select
+  className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
+  value={carreraSecundaria}
+  onChange={(e) => {
+    setCarreraSecundaria(e.target.value);
+  }}
+>
+  <option value='' disabled>-- Seleccione --</option>
+  <option value={1}>Ingeniería en Sistemas</option>
+  <option value={2}>Medicina</option>
+  <option value={3}>Derecho</option>
+  <option value={4}>Administración de Empresas</option>
+  <option value={5}>Psicología</option>
+  <option value={6}>Arquitectura</option>
+  <option value={7}>Ingeniería Civil</option>
+  <option value={8}>Odontología</option>
+  <option value={9}>Química y Farmacia</option>
+  <option value={10}>Derecho</option>
+  <option value={11}>Periodismo</option>
+  <option value={12}>Historia</option>
+  <option value={13}>Letras</option>
+  <option value={14}>Ingeniería en Sistemas</option>
+  <option value={15}>Licenciatura en Matemáticas</option>
+  <option value={16}>Medicina</option>
+  <option value={17}>Odontología</option>
+  <option value={18}>Enfermería</option>
+</select>
+
+// ...
+
 
                 <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >E-Mail</label>
                 <input
@@ -303,15 +343,10 @@ function Registrar() {
                 }
                 >
                 <option value='' disabled > -- Seleccione-- </option>
-                <option value='opcionCU'>UNAH-CU</option>
-                <option value='opcionVS'>UNAH-VS</option>
-                <option value='opcionCURC'>UNAH-CURC</option>
-                <option value='opcionCURLA'>UNAH-CURLA</option>
-                <option value='opcionCURLP'>UNAH-CURLP</option>
-                <option value='opcionCUROC'>UNAH-CUROC</option>
-                <option value='opcionCURNO'>UNAH-CURNO</option>
-                <option value='opcionDANLI'>UNAH-TEC Danli</option>
-                <option value='opcionAGUAN'>UNAH-TEC AGUÁN</option>
+                <option value={1}>UNAH-CU</option>
+                <option value={2}>UNAH-VS</option>
+                <option value={3}>UNAH-CURC</option>
+
                 </select>
 
                 <button 
