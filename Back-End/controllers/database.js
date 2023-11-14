@@ -8,13 +8,13 @@ let users = {
 };
 
 var user = 'asd';//
-let pass = '134';//
+let pass = '1234';//
 var host = 'localhost';
 var db = 'Registro';
-var por = 1433;
+var por = 1434;
 
 var sqlConfig = {
-    server:'localhost',
+    server:host,
     authentication: {
         type: "default",
         options: {//configuracion de credencial
@@ -48,6 +48,8 @@ class Database {
          * Crea pool de conexiones, y la guarda la conexion como atributo de la clase.*/
         this.pool = new sql.ConnectionPool(this.config);
         
+        console.log(this.pool);
+
         /**para guardar el resultado del ultimo query que se haga */
         this.lastResultQuery;
         
