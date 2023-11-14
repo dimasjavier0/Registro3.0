@@ -156,7 +156,6 @@ class Database {
                 this.pool = poolTemp;
                 this.accessAdmin = true;
                 
-                
                 //this.config = originalConfig;
                 return `Accediste como Adminador`;
             }

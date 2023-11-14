@@ -61,23 +61,12 @@ app.post('/aspirantes', async (req,res)=>{ //funcion asincrona
     console.log(aspirante.imagen);
 
 
-    /** Mandar a guardar a la base de*/
-    var result=null;
-    
-    /*
+    /** Mandar a guardar aspirante en la base de datos*/
     var result = await db.query(
-      `exec [dbo].[agregar_aspirante] '0801200005005',
-        'MARILYN',
-      'Javier',
-        'Rodriguez',
-      'Cabrera',
-      '33010630',
-        'dimasjavier.0@gmail.com',
-      1,
-      7, 
-      0,
-      1`
-  );*/
+      `exec [dbo].[agregar_aspirante] ${aspirante.identidad} ${aspirante.p_nombre}, '${aspirante.s_nombre}', '${p_apellido}', '${s_apellido}'
+      ,'${aspirante.cel}',  '${aspirante.correoPersonal}',${aspirante.carreraPrincipal},${aspirante.carreraSecundaria}, 
+      ${aspirante.centroRegional},${aspirante.estado}`
+    );
     /** ver respuesta de db */
     //console.log(result);
     await db.close();
