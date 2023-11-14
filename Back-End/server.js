@@ -49,7 +49,8 @@ app.post(
         //exec [dbo].[subir_nota_estudiante] '0801200005002', 2, 1050
         /** recibe peticion(aspirante) */
     
-    let notas = req.body;//leerNotasString(req.body.notas);
+    /** notas es una arreglo de notas [[,,],[]]*/
+    let notas = req.body.notas;//leerNotasString(req.body.notas);
 
     /**Loguear */
     await db.setConfigToLogin('asd','1234');
@@ -58,15 +59,28 @@ app.post(
     await db.connect();
     
     console.log("notas Recibidas:",notas);
+    
+    var datos = {"validos":[],"invalidos":[]};
 
-    /** Limpiar campos del aspirante antes de enviar a la base de datos */
+    /**Recorrer cada nota del estudiante */
+      notas.forEach( async array => {
+          let identidad = array[0];
+          let tipoExamen = array[1];
+          let nota = array[2];
+           /** Mandar a guardar la nota en la base de datos*/
+          let resultQuery = await db.query(
+            `exec [dbo].[subir_nota_estudiante] '${identidad}', ${tipoExamen}, ${nota};`
+          );
+          if (resultQuery){
+              datos.validos.push(resultQuery);
+          }else{
+              datos.invalidos.push(resultQuery);
+          }
+      });
 
-    /** Mandar a guardar aspirante en la base de datos*/
-    /*var resultQuery = await db.query(
-      `exec [dbo].[agregar_aspirante] '${aspirante.identidad}', '${aspirante.p_nombre}', '${aspirante.s_nombre}', '${aspirante.p_apellido}', '${aspirante.s_apellido}'
-      ,'${aspirante.cel}',  '${aspirante.correoPersonal}',${aspirante.carreraPrincipal},${aspirante.carreraSecundaria}, 
-      ${aspirante.centroRegional},${aspirante.estado};`
-    );*/
+      
+
+   
 
     /** ver respuesta de db */
     //console.log(result);
@@ -77,7 +91,7 @@ app.post(
     res.send(
         {
           'notas recibidas':notas,
-          'respuesta': 'resultQuery'
+          'respuesta': datos
         }
     );
 
