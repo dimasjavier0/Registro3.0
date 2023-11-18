@@ -1,3 +1,6 @@
+
+
+/**clase que se comunica con la base de datos */
 class Aspirante_model{
 
     async getAllAspirantes(){//(nombreTabla) {    

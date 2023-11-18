@@ -34,6 +34,11 @@ const nodemailer = require('nodemailer');
 
 
 /**Recibir Peticiones */
+
+  /**Gestion de rutas mediante router para aspirantes */
+  app.use('/aspirantes',aspirantes_router);
+
+
 app.get('/', (req, res) => {
     console.log("HELLO WORLD");
     res.send("HELLO WORLD");

@@ -15,9 +15,11 @@ let mailOptions = {
     text: 'test 1 probado.'
 };
 
+transporter.sendMail(mailOptions, function(error, info){
     if (error) {
         console.log(error);
     } else {
         console.log('Correo enviado: ' + info.response);
     }
 });
+
