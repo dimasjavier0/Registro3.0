@@ -10,7 +10,7 @@ let users = {
 var user = 'asd';//
 let pass = '1234';//
 var host = 'localhost';
-var db = 'Registro';
+var db = 'Registro2';
 var por = 1434;
 
 var sqlConfig = {

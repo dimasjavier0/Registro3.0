@@ -3,7 +3,10 @@
  * SOLO:
 */
 var express = require('express');
+var aspirantesModel = require('../models/aspirantes-model');
+const { Result } = require('postcss');
 var router = express.Router(); // en lugar de app usar router.
+//var db = require('../conections/database');
 
 /**Obtener aspirantes */
 router.get('/',(req,res)=>{});
@@ -13,9 +16,40 @@ router.get('/:idAspirante',(req,res)=>{
     console.log('se recibio:',req.body);
 });
 
-/**Crear un aspirante */
+/**Crear 1 aspirante */
 router.post('/', async (req,res)=>{
+  
+  console.log('peticion Recibida:',req.body);
+  aspiranteJson = req.body;
+  
+  let result = await aspirantesModel.createAspirante(aspiranteJson); 
+  /** crear en la base de datos, internamente tiene que hacer la validacion */
+  if (result){
     
+    console.log(`aspirante Creado:`, result);
+
+    /**enviar respuesta */
+    res.send(
+      {
+        'msj':'Aspirante Agregado con exito',
+        'respuesta':result
+      }
+    );  
+  }else{
+    res.send(
+      {
+        'msj':'ERROR al AGREGAR ASPIRANTE',
+        'respuesta':result
+      }
+    );
+  };
+
+  
+
+});
+
+  /**Crear varios aspirantes */
+router.post('/', async (req,res)=>{
         
     /** notas es una arreglo de notas [[,,],[]]*/
     console.log("peticion Recibida:",req.body);
@@ -30,6 +64,8 @@ router.post('/', async (req,res)=>{
     console.log("notas Recibidas:",notas);
     
     var datos = {"validos":[],"invalidos":[]};
+
+    
 
     /**Recorrer cada nota del estudiante */
       notas.forEach( async notaJSON => {
