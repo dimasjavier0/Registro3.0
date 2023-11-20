@@ -46,6 +46,7 @@ function Registrar() {
         for (let i = 0; i < datosFormulario.length; i++) {
             if (datosFormulario[i] === '' || datosFormulario[i]=== null) {
             setAlerta({ mensaje: `El campo ${nombreCampos[i]} está vacío`, error: true });
+            window.scrollTo(0, 0);
             return;
             }
         }
@@ -57,6 +58,7 @@ function Registrar() {
         } else {
             setAlerta({mensaje: 'Numero de identidad invalido', 
                         error: true})
+                        window.scrollTo(0, 0);
                         return;
         }
 
@@ -144,6 +146,7 @@ function Registrar() {
         setEmail('');
         document.getElementById('Imagen').value = null;
         setCentroRegional('');
+        window.scrollTo(0, 0);
         
 }
         const {mensaje}= alerta
