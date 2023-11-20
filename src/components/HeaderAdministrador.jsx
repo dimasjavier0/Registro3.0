@@ -16,7 +16,7 @@ function HeaderAdministrador() {
                 <h1 className='text-4xl ml-8 
                 font-black text-center text-white mt-10'>Administrador
                 </h1>
-                <img className=' w-44 h-40 ml-20 mb-8' src="/img/Seguridad.png" alt="" />
+                <img className=' w-44 h-40 ml-20 mb-8' src="/img/Seguridad.png" alt="Seguridad" />
                 <nav className=''>
                     <Link >
                         <button className='transition text-white ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>
@@ -26,13 +26,19 @@ function HeaderAdministrador() {
 
                     <Link to='/administracion/SubirCsv'>
                         <button className='transition block mt-10 ml-8 text-white font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>
-                            Subir CSV
+                            Ingresar Notas
                         </button>
                     </Link>
 
                     <Link to='/administracion/nuevoDocente'>
                         <button className='transition block mt-10 ml-8 text-white font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>
                             Nuevo docente
+                        </button>
+                    </Link>
+
+                    <Link to='/administracion/estAdmitidos'>
+                        <button className='transition block mt-10 ml-8 text-white font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>
+                            Estudiantes admitidos
                         </button>
                     </Link>
 
@@ -43,7 +49,7 @@ function HeaderAdministrador() {
                     </Link>
 
                     <Link >
-                        <button className='transition block mt-10 ml-8 text-white font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-2 border-white border-2 pb-1'>
+                        <button className='transition block mt-10 ml-8 mb-16 text-white font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-2 border-white border-2 pb-1'>
                             Cancelaciones excepcionales.
                         </button>
                     </Link>
@@ -52,6 +58,7 @@ function HeaderAdministrador() {
                 </div>
             </aside>
         </div>
+        
     )
 }
 

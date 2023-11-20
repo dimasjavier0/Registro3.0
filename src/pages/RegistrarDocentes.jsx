@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 
 
+
 function RegistrarDocentes() {
     const [numeroEmpleado, setNumeroEmpleado] = useState('');
     const [nombre, setNombre] = useState('');
@@ -33,14 +34,15 @@ function RegistrarDocentes() {
         }
 
         //Validar que el numero de Empleado sea de 11 digitos
-        if (/^[0-9]{11}$/.test(numeroEmpleado)) {
+        if (/^[0-9]{6}$/.test(numeroEmpleado)) {
             setAlerta({})
             
         } else {
-            setAlerta({mensaje: 'Numero de identidad invalido', 
+            setAlerta({mensaje: 'Numero de empleado invalido', 
                         error: true})
                         return;
         }
+
 
         //Limpiar Formulario
         setNumeroEmpleado('');
@@ -76,7 +78,7 @@ function RegistrarDocentes() {
                     <input
                     className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label ' 
                     type='text'   
-                    placeholder='ej: 20231111400'
+                    placeholder='ej: 2023111'
                     value={numeroEmpleado}
                     onChange={(e) => {
                         setNumeroEmpleado(e.target.value)
@@ -86,7 +88,7 @@ function RegistrarDocentes() {
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Nombre </label>
                     <input
-                    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
                     placeholder='Nombre Completo'
                     value={nombre}
@@ -104,10 +106,16 @@ function RegistrarDocentes() {
                     id='Fotografia'
                     accept='image/*'
                     onChange={(e) => {
-                        const archivo=e.target.files[0];
-                        setFotografia(archivo);
-                    }
-                    }    
+                        const archivo = e.target.files[0];
+                        if (archivo) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            const convertirBase64 = reader.result;
+                            setFotografia(convertirBase64);
+                        };
+                        reader.readAsDataURL(archivo);
+                        }
+                    }}    
                     />
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label'>Selecciona el centro regional</label>
@@ -120,15 +128,9 @@ function RegistrarDocentes() {
                     }
                     >
                     <option value='' disabled > -- Seleccione-- </option>
-                    <option value='opcionCU'>UNAH-CU</option>
-                    <option value='opcionVS'>UNAH-VS</option>
-                    <option value='opcionCURC'>UNAH-CURC</option>
-                    <option value='opcionCURLA'>UNAH-CURLA</option>
-                    <option value='opcionCURLP'>UNAH-CURLP</option>
-                    <option value='opcionCUROC'>UNAH-CUROC</option>
-                    <option value='opcionCURNO'>UNAH-CURNO</option>
-                    <option value='opcionDANLI'>UNAH-TEC Danli</option>
-                    <option value='opcionAGUAN'>UNAH-TEC AGUÁN</option>
+                    <option value={1}>UNAH-CU</option>
+                    <option value={2}>UNAH-VS</option>
+                    <option value={3}>UNAH-CURC</option>
                     </select>
 
                 

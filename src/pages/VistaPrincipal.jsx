@@ -6,7 +6,7 @@ function VistaPrincipal() {
         <div className=' mt-36 flex justify-center mb-28 '>
         <img 
         className='hover:scale-130'
-        src="/img/UNAH-version-horizontal.png" alt="" />
+        src="/img/UNAH-version-horizontal.png" alt="UNAH-version-horizontal" />
         </div>
         <footer className="bg-gray-700 text-white py-6  text-center img-footer">
         <div className='grid grid-rows-2 '>

@@ -20,10 +20,10 @@ function Administrador() {
             setAlerta({mensaje: 'Existen campos vacios', error: true})
             return;
         }
-        if (usuario === '20232023111' && contraseña === 'admin') {
+        if (usuario === '202311' && contraseña === 'admin') {
             navigate('/administracion') 
         } else {
-            setAlerta({mensaje: 'Las credenciales invalidas', 
+            setAlerta({mensaje: 'Credenciales invalidas', 
             error: true})
             return;
         }
@@ -47,7 +47,7 @@ function Administrador() {
                         <input
                         className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label ' 
                         type='text'   
-                        placeholder='ej: 20235000400'
+                        placeholder='ej: 202350'
                         value={usuario}
                         onChange={(e) => {
                             setUsuario(e.target.value)

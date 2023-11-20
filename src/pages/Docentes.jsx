@@ -13,7 +13,7 @@ function Docentes() {
                         <input
                         className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                         type='text'   
-                        placeholder='ej: 20235000400'/>
+                        placeholder='ej: 202350'/>
 
                         <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label'>Clave</label>
                         <input
@@ -31,7 +31,7 @@ function Docentes() {
                 </div>
             </div>
         <div className='imagenn'>
-        <img src='/img/UNAH-DOCENTES.png' alt="" />
+        <img src='/img/UNAH-DOCENTES.png' alt="UNAH-DOCENTES" />
             </div>   
         </>
     )
