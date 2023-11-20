@@ -40,9 +40,14 @@ function Registrar() {
         e.preventDefault()
 
         //Validar que no existan campos vacios
-        if ([identidad,primerNombre,primerApellido,carreraPrincipal,carreraSecundaria,email,centroRegional].includes('') || [imagen].includes(null)) {
-            setAlerta({mensaje: 'Existen campos vacios', error: true})
+        const datosFormulario=[identidad,primerNombre,primerApellido,carreraPrincipal,carreraSecundaria,email,imagen,centroRegional]
+        const nombreCampos = ['Identidad', 'Primer nombre', 'Primer apellido', 'Carrera principal','Carrera secundaria', 'Email','Imagen','Centro regional'];
+        
+        for (let i = 0; i < datosFormulario.length; i++) {
+            if (datosFormulario[i] === '' || datosFormulario[i]=== null) {
+            setAlerta({ mensaje: `El campo ${nombreCampos[i]} está vacío`, error: true });
             return;
+            }
         }
 
         //Validar que el numero de identidad sea de 13 digitos
@@ -54,15 +59,6 @@ function Registrar() {
                         error: true})
                         return;
         }
-        
-
-        
-        // if (identidad.toString().length === 13) {
-        //     setAlerta({mensaje: 'Numero de identidad incompleto', 
-        //                 error: true})
-        //     return;
-        // }
-
 
         try {
             // Construir el objeto FormData para enviar la imagen correctamente
@@ -136,8 +132,8 @@ function Registrar() {
             });
         }
     
-        /*
-        // Limpiar Formulario
+        
+        //Limpiar Formulario
         setIdentidad('');
         setPrimerNombre('');
         setSegundoNombre('');
@@ -148,7 +144,7 @@ function Registrar() {
         setEmail('');
         document.getElementById('Imagen').value = null;
         setCentroRegional('');
-        */
+        
 }
         const {mensaje}= alerta
 
@@ -159,13 +155,13 @@ function Registrar() {
             <div>
                 <div className='text-left'>
                 <h1 className='text-indigo-600 text-center font-black text-5xl  ml-12 '>
-                    Proceso De Admision
+                    Proceso de Admisión
                 </h1>
                 <p className='ml-32 mt-2  text-5xl font-black '>
                     Universidad Nacional 
                 </p>
                 <p className='text-center mt-2  text-5xl font-black'>
-                Autonoma De Honduras
+                Autonoma de Honduras
                 </p>
                 </div>
 
