@@ -94,7 +94,7 @@ router.post('/', async (req,res)=>{
 async function evaluarAspirantes(){
 
     var aprobados = {}, reprobados={};
-    var msjs = [];
+    //var msjs = [];
 
     await db.connect();
     
@@ -128,6 +128,7 @@ async function evaluarAspirantes(){
             where a.id_persona = '${idPersona_aspirante}'`
         );
         
+
         /**si hizo examenes */
         if(resultadosExamenes){
             //let carrerasAprobadasAspirante =[];
@@ -137,13 +138,14 @@ async function evaluarAspirantes(){
             let msjFinalAspirante = [];
             let msjsAspirante = [];
             
-
+            console.log(`<<<<${idPersona_aspirante}>>>>`);
             /** ver si paso la carrera Principal. ver si cumplio todos los requisitos */
             for (let requisito of requisitoAspiranteCarrera_P){
                 
                 /**ver si hizo ese examen */
                 for (let examen of resultadosExamenes){
                     /**comparar el mismo tipo de examen */
+                    console.log('<<<<',requisito.id_tipo_examen,examen.id_tipo_examen,'>>>>>');
                     if(requisito.id_tipo_examen == examen.id_tipo_examen){
                         /**ver si saco la calificacion en ese examen */
                         if(examen.nota >= requisito.puntaje_minimo_examen){
@@ -155,8 +157,9 @@ async function evaluarAspirantes(){
                     }
                 }   
             }
+
             /**si paso todos los examenes de la carrera principal entonces aprobo para esa carrera */
-            if(msjFinalAspirante.length >= requisitoAspiranteCarrera_P){
+            if(examenesAprobadosAspirante >= requisitoAspiranteCarrera_P){
                 msjFinalAspirante.push(`Felicidades **Aprobo** para Su Carrera Principal`);
                 /**se agrega al json de los aprobados */
                 aprobados[`${idPersona_aspirante}`]={"msjsAspirantes":msjsAspirante,"msjFinalAspirante":msjFinalAspirante};
@@ -183,11 +186,12 @@ async function evaluarAspirantes(){
                             msjsAspirante.push(`examen ${examen.id_tipo_examen} reprobo con ${examen.nota}`);
                         }
                     }
-                }   
+                } 
+                examenesAprobadosAspirante = 0;  
             }
 
             /**si paso todos los examenes de la carrera Secundaria entonces aprobo para esa carrera */
-            if(msjFinalAspirante.length >= requisitoAspiranteCarrera_P){
+            if(examenesAprobadosAspirante >= requisitoAspiranteCarrera_P){
                 msjFinalAspirante.push(`Felicidades **Aprobo** para Su Carrera Secundaria`);
                 aprobados[`${idPersona_aspirante}`]={"msjsAspirantes":msjsAspirante,"msjFinalAspirante":msjFinalAspirante};
             }else{
