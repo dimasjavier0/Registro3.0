@@ -11,10 +11,14 @@ router.get('/',async (req,res)=>{
     let msj = '';
     listaCarrerasJson= await carrerasModel.getAllCarreras();
     if(listaCarrerasJson){
-        msj='';     
+        msj='correcto';     
     }else{
-
-    }
+        msj='error'
+    } 
+    res.send({
+        'msj':msj,
+        'result':listaCarrerasJson
+    });
 
 });
 

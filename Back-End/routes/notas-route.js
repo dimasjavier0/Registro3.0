@@ -75,7 +75,7 @@ router.post('/', async (req,res)=>{
         for (let notaJSON of existentes){
             for (let resultadoJson of resultadosExamenesAdmision){
                 if(notaJSON.id == resultadoJson.id_persona){
-                    console.log('COMPARACION:::',resultadoJson.id_tipo_examen,notaJSON.tipoExamen);
+                    console.log('\nCOMPARACION:::',resultadoJson.id_tipo_examen,notaJSON.tipoExamen,'\n');
                     if (resultadoJson.id_tipo_examen != notaJSON.tipoExamen ){
                         await db.query(
                             `exec [dbo].[subir_nota_estudiante] '${notaJSON.id}', ${notaJSON.tipoExamen}, ${notaJSON.nota};`
