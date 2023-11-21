@@ -28,7 +28,10 @@ router.post('/', async (req,res)=>{
         let carrerasCodigos = {
             'PAA':1,
             'PAM':2,
-            'PCN':3
+            'PCN':3,
+            'paa':1,
+            'pam':2,
+            'pcn':3
         };
 
         /** notas es una arreglo de notas [[,,],[]]*/
@@ -61,12 +64,25 @@ router.post('/', async (req,res)=>{
         console.log('existentes::',existentes);
         console.log('inexistentes::',inexistentes);
 
-        
+        /**verificar que no tiene ese examen subido */
+        let resultadosExamenesAdmision = await db.query(`select * from resultados_examen_admision`);
+        //let exist = false;
+
+        //let notasValidasToSubmit = [];
+
+
         /**subir notas de los aspirantes que si existen */
         for (let notaJSON of existentes){
-            await db.query(
-                `exec [dbo].[subir_nota_estudiante] '${notaJSON.id}', ${notaJSON.nota}, ${notaJSON.tipoExamen};`
-            );
+            for (let resultadoJson of resultadosExamenesAdmision){
+                if(notaJSON.id == resultadoJson.id_persona){
+                    console.log('COMPARACION:::',resultadoJson.id_tipo_examen,notaJSON.tipoExamen);
+                    if (resultadoJson.id_tipo_examen != notaJSON.tipoExamen ){
+                        await db.query(
+                            `exec [dbo].[subir_nota_estudiante] '${notaJSON.id}', ${notaJSON.tipoExamen}, ${notaJSON.nota};`
+                        );            
+                    }
+                }
+            }            
         };
 
         
@@ -108,7 +124,7 @@ async function evaluarAspirantes(){
         let idPersona_aspirante = idPersonaJson.id_persona;
         console.log('::::::::::::',idPersona_aspirante);
 
-
+        
         let requisitoAspiranteCarrera_P = await db.query(
             `SELECT c.id_carrera, rc.puntaje_minimo_examen, rc.id_tipo_examen from aspirantes a 
             inner join carreras c on a.carrera_principal = c.id_carrera --or a.carrera_secundaria = c.id_carrera
@@ -129,7 +145,10 @@ async function evaluarAspirantes(){
         );
         
 
+        
         /**si hizo examenes */
+        console.log(`<<<< RESULTADO EXAMENES de ${idPersona_aspirante}: ${resultadosExamenes}>>>>`);
+        
         if(resultadosExamenes){
             //let carrerasAprobadasAspirante =[];
             
@@ -138,7 +157,7 @@ async function evaluarAspirantes(){
             let msjFinalAspirante = [];
             let msjsAspirante = [];
             
-            console.log(`<<<<${idPersona_aspirante}>>>>`);
+            
             /** ver si paso la carrera Principal. ver si cumplio todos los requisitos */
             for (let requisito of requisitoAspiranteCarrera_P){
                 
