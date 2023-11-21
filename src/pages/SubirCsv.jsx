@@ -51,6 +51,21 @@ function SubirCsv() {
     }
   };
 
+  const sendCsvData = async () => {
+    try {
+      const response = await axios.post('http://localhost:8888/notas', { csvData });
+
+      if (response.status === 200) {
+        alert('Datos CSV enviados con éxito.');
+      } else {
+        alert('Error al enviar los datos CSV.');
+      }
+    } catch (error) {
+      console.error('Error al realizar la petición:', error);
+      alert('Error al enviar los datos CSV.');
+    }
+  };
+
   return (
     <div className=" py-8">
       <h2 className=' bg-gray-100 shadow-xl mr-64 ml-32 text-center py-1 text-opacity-80 mb-16 text-slate-700  font-label text-4xl font-bold'>Notas de examenes que el <span className='text-indigo-700'>estudiante</span> realizo</h2>
@@ -68,7 +83,7 @@ function SubirCsv() {
       {error && (
         <div className="text-red-500 font-semibold mb-4">{error}</div>
       )}
-      <div className='inline ml-72'>
+      <div className='inline ml-48'>
         <button className=' bg-rose-600 duration-300  ransition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-7 rounded-lg hover:bg-rose-700 font-medium  uppercase font-label shadow-lg shadow-rose-400/80'
         onClick={() => {
             handleLimpiarTb();
@@ -80,7 +95,11 @@ function SubirCsv() {
             Regresar
         </button>
       </Link>
+      <button onClick={sendCsvData} className="bg-indigo-600 duration-300 ml-8  ransition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-5 rounded-lg hover:bg-indigo-700 font-medium  uppercase font-label shadow-lg shadow-blue-400/80">
+            Enviar
+          </button>
       </div>
+
 {csvData.length > 0 && (
       <div className=' max-h-96 overflow-y-auto mr-96 mt-6'>
         <table className=" bg-white border shadow-lg border-separate w-full ">
