@@ -4,6 +4,7 @@ var cors = require('cors');
 //var Routes = require('./routes');
 var aspirantes_router = require("./routes/aspirantes-route");
 var notas_router = require("./routes/notas-route");
+var carreras_router = require('./routes/carreras-route');
 
 //var db = require('./conections/database');
 const nodemailer = require('nodemailer');
@@ -41,6 +42,9 @@ const nodemailer = require('nodemailer');
   
   /** Gestion de rutas para notas mediante notas_route  */
   app.use('/notas',notas_router);
+
+  /**para la Gestion de peticiones de Carreas */
+  app.use('/carreras',carreras_router);
   
 
 app.get('/', (req, res) => {
