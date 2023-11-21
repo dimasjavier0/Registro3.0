@@ -18,6 +18,8 @@ function Registrar() {
     
     const [alerta, setAlerta] = useState({});
     const [mostrarImagen, setMostrarImagen] = useState(false);
+    const [carreras, setCarreras] = useState([]); // Estado para almacenar las carreras
+
 
 
     //Evitamos que el usuario ingrese numeros en los campos de tipo=texto
@@ -30,11 +32,44 @@ function Registrar() {
     
 
     useEffect(() => {
+        /**  Función para obtener las carreras*/
+       const obtenerCarreras = async () => {
+            try {
+                const resultado = await axios.get('http://localhost:8888/carreras');
+                if (resultado.data && resultado.data.result) {
+                    setCarreras(resultado.data.result);
+                }
+            } catch (error) {
+                console.error('Error al obtener carreras:', error);
+            }
+        };
+
+        // Llamada a la función para obtener las carreras
+        obtenerCarreras();
+
+        
+
+         /* Datos simulados de las carreras
+         const datosCarrerasSimulados = [
+            { "id_carrera": 1, "nombre_carrera": "Periodismo", "puntaje_minimo_PAA": 900 },
+            { "id_carrera": 2, "nombre_carrera": "Historia", "puntaje_minimo_PAA": 700 },
+            { "id_carrera": 3, "nombre_carrera": "Ingeniería en Sistemas", "puntaje_minimo_PAA": 1000 },
+            { "id_carrera": 4, "nombre_carrera": "Medicina", "puntaje_minimo_PAA": 1100 },
+            { "id_carrera": 5, "nombre_carrera": "Enfermería", "puntaje_minimo_PAA": 900 }
+        ];*/
+
+        // Establecer los datos simulados en el estado
+        //setCarreras(datosCarrerasSimulados);
+
+
+
         const timer = setTimeout(() => {
-        setMostrarImagen(true);
+            setMostrarImagen(true);
         }, 150); 
         return () => clearTimeout(timer);
-    }, []);
+
+    }, []); // Dependencias vacías para que se ejecute una sola vez al montar el componente
+
 
     async function handleSubmit (e) {
         e.preventDefault()
@@ -253,63 +288,37 @@ function Registrar() {
                     }
                     />
 
-                    <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Principal</label>
-                    <select
-                    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
-                    value={carreraPrincipal}
-                    onChange={(e) => {
-                        setCarreraPrincipal(e.target.value);
-                    }}
-                    >
-                    <option value='' disabled>-- Seleccione --</option>
-                    <option value={3}>Ingeniería en Sistemas</option>
-                    <option value={4}>Medicina</option>
-                    <option value='30'>Derecho</option>
-                    <option value='40'>Administración de Empresas</option>
-                    <option value='5'>Psicología</option>
-                    <option value='6'>Arquitectura</option>
-                    <option value='7'>Ingeniería Civil</option>
-                    <option value='8'>Odontología</option>
-                    <option value='9'>Química y Farmacia</option>
-                    <option value='10'>Derecho</option>
-                    <option value='11'>Periodismo</option>
-                    <option value='12'>Historia</option>
-                    <option value='13'>Letras</option>
-                    <option value='14'>Ingeniería en Sistemas</option>
-                    <option value='15'>Licenciatura en Matemáticas</option>
-                    <option value='16'>Medicina</option>
-                    <option value='17'>Odontología</option>
-                    <option value='18'>Enfermería</option>
-                    </select>
+<label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Principal</label>
+            <select
+                className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
+                value={carreraPrincipal}
+                onChange={(e) => {
+                    setCarreraPrincipal(e.target.value);
+                }}
+            >
+                <option value='' disabled>-- Seleccione --</option>
+                {carreras.map((carrera) => (
+                    <option key={carrera.id_carrera} value={carrera.id_carrera}>
+                        {carrera.nombre_carrera}
+                    </option>
+                ))}
+            </select>lllll
 
-                    <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Secundaria</label>
-                    <select
-                    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
-                    value={carreraSecundaria}
-                    onChange={(e) => {
-                        setCarreraSecundaria(e.target.value);
-                    }}
-                    >
-                    <option value='' disabled>-- Seleccione --</option>
-                    <option value={3}>Ingeniería en Sistemas</option>
-                    <option value={4}>Medicina</option>
-                    <option value={20}>Derecho</option>
-                    <option value={40}>Administración de Empresas</option>
-                    <option value={5}>Psicología</option>
-                    <option value={6}>Arquitectura</option>
-                    <option value={7}>Ingeniería Civil</option>
-                    <option value={8}>Odontología</option>
-                    <option value={9}>Química y Farmacia</option>
-                    <option value={10}>Derecho</option>
-                    <option value={11}>Periodismo</option>
-                    <option value={12}>Historia</option>
-                    <option value={13}>Letras</option>
-                    <option value={14}>Ingeniería en Sistemas</option>
-                    <option value={15}>Licenciatura en Matemáticas</option>
-                    <option value={16}>Medicina</option>
-                    <option value={17}>Odontología</option>
-                    <option value={18}>Enfermería</option>
-                    </select>
+            <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Secundaria</label>
+            <select
+                className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
+                value={carreraPrincipal}
+                onChange={(e) => {
+                    setCarreraSecundaria(e.target.value);
+                }}
+            >
+                <option value='' disabled>-- Seleccione --</option>
+                {carreras.map((carrera) => (
+                    <option key={carrera.id_carrera} value={carrera.id_carrera}>
+                        {carrera.nombre_carrera}
+                    </option>
+                ))}
+            </select>
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >E-Mail</label>
                     <input
@@ -371,3 +380,4 @@ function Registrar() {
 }
 
 export default Registrar
+

@@ -45,6 +45,8 @@ const nodemailer = require('nodemailer');
 
   /**para la Gestion de peticiones de Carreas */
   app.use('/carreras',carreras_router);
+
+  /** */
   
 
 app.get('/', (req, res) => {

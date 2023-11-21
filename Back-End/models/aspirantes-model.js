@@ -20,9 +20,10 @@ class AspirantesModel{
         try {
             var aspirante = aspirante_DTO.verify(aspiranteJson); 
             
-            console.log(`mostrando Aspirante`,aspirante.toString());
+            
 
             if (aspirante != null){//quiere decir que si es valido. lo guarda en la base de datos
+                console.log(`mostrando Aspirante`,aspirante.toString());
                 await db.connect();
                 
                 /** */
@@ -41,6 +42,7 @@ class AspirantesModel{
                 return result;
             }
         } catch (error) {
+            console.log(error);
             return error.originalError.message;
         }
     }
