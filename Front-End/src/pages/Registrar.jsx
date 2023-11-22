@@ -29,11 +29,10 @@ function Registrar() {
             event.preventDefault();
         }
     };
-    
 
     useEffect(() => {
         /**  Función para obtener las carreras*/
-       const obtenerCarreras = async () => {
+        const obtenerCarreras = async () => {
             try {
                 const resultado = await axios.get('http://localhost:8888/carreras');
                 if (resultado.data && resultado.data.result) {
@@ -47,10 +46,8 @@ function Registrar() {
         // Llamada a la función para obtener las carreras
         obtenerCarreras();
 
-        
-
-         /* Datos simulados de las carreras
-         const datosCarrerasSimulados = [
+        /* Datos simulados de las carreras
+        const datosCarrerasSimulados = [
             { "id_carrera": 1, "nombre_carrera": "Periodismo", "puntaje_minimo_PAA": 900 },
             { "id_carrera": 2, "nombre_carrera": "Historia", "puntaje_minimo_PAA": 700 },
             { "id_carrera": 3, "nombre_carrera": "Ingeniería en Sistemas", "puntaje_minimo_PAA": 1000 },
@@ -60,8 +57,6 @@ function Registrar() {
 
         // Establecer los datos simulados en el estado
         //setCarreras(datosCarrerasSimulados);
-
-
 
         const timer = setTimeout(() => {
             setMostrarImagen(true);
@@ -149,12 +144,12 @@ function Registrar() {
                 })
                 .catch(error => {
                     console.log('Error al enviar la petición ', error);
+                    return;
         
                 });
         
                 // Agregamos un comentario para indicar que la petición se realizó correctamente
                 console.log('Petición POST realizada con éxito');
-        
                 setAlerta({
                 mensaje: 'Registro Exitoso!',
                 error: false,
@@ -162,11 +157,11 @@ function Registrar() {
         
             }catch (error) {
             console.error('Error en la petición:', error);
-        
             setAlerta({
                 mensaje: 'Error al enviar la petición',
                 error: true,
             });
+            return;
         }
     
         
@@ -238,7 +233,7 @@ function Registrar() {
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Nombre </label>
                     <input
-                    className='w-full lowercase p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
                     placeholder='Tu Primer Nombre'
                     value={primerNombre}
@@ -251,7 +246,7 @@ function Registrar() {
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Segundo Nombre </label>
                     <input
-                    className='w-full lowercase p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full  p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
                     placeholder='Tu Segundo Nombre'
                     value={segundoNombre}
@@ -264,7 +259,7 @@ function Registrar() {
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Apellido </label>
                     <input
-                    className='w-full lowercase p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full  p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
                     placeholder='Tu Primer Apellido '
                     value={primerApellido}
@@ -277,7 +272,7 @@ function Registrar() {
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Segundo Apellido </label>
                     <input
-                    className='w-full lowercase p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full  p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
                     placeholder='Tu Segundo Apellido'
                     value={segundoApellido}
@@ -288,41 +283,41 @@ function Registrar() {
                     }
                     />
 
-<label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Principal</label>
-            <select
-                className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
-                value={carreraPrincipal}
-                onChange={(e) => {
-                    setCarreraPrincipal(e.target.value);
-                }}
-            >
-                <option value='' disabled>-- Seleccione --</option>
-                {carreras.map((carrera) => (
-                    <option key={carrera.id_carrera} value={carrera.id_carrera}>
-                        {carrera.nombre_carrera}
-                    </option>
-                ))}
-            </select>lllll
+                    <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Principal</label>
+                    <select
+                        className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
+                        value={carreraPrincipal}
+                        onChange={(e) => {
+                            setCarreraPrincipal(e.target.value);
+                        }}
+                    >
+                        <option value='' disabled>-- Seleccione --</option>
+                        {carreras.map((carrera) => (
+                            <option key={carrera.id_carrera} value={carrera.id_carrera}>
+                                {carrera.nombre_carrera}
+                            </option>
+                        ))}
+                    </select>
 
-            <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Secundaria</label>
-            <select
-                className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
-                value={carreraPrincipal}
-                onChange={(e) => {
-                    setCarreraSecundaria(e.target.value);
-                }}
-            >
-                <option value='' disabled>-- Seleccione --</option>
-                {carreras.map((carrera) => (
-                    <option key={carrera.id_carrera} value={carrera.id_carrera}>
-                        {carrera.nombre_carrera}
-                    </option>
-                ))}
-            </select>
+                    <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Secundaria</label>
+                    <select
+                        className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
+                        value={carreraPrincipal}
+                        onChange={(e) => {
+                            setCarreraSecundaria(e.target.value);
+                        }}
+                    >
+                        <option value='' disabled>-- Seleccione --</option>
+                        {carreras.map((carrera) => (
+                            <option key={carrera.id_carrera} value={carrera.id_carrera}>
+                                {carrera.nombre_carrera}
+                            </option>
+                        ))}
+                    </select>
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >E-Mail</label>
                     <input
-                    className='w-full lowercase p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='email'   
                     placeholder='Tu Correo Personal'
                     value={email}
@@ -370,8 +365,7 @@ function Registrar() {
                     <button 
                         type='submit' 
                         className='bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 font-medium w-full uppercase mb-9 font-label shadow-lg shadow-indigo-400/100'>Enviar</button>
-                </form>
-
+                </form>  
                 
             </div>
             </div>         

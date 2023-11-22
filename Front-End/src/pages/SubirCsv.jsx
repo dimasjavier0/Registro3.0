@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import Papa from 'papaparse'; // Importa la biblioteca papaparse
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 
 function SubirCsv() {
   const [csvData, setCsvData] = useState([]); // Estado para almacenar los datos CSV
@@ -67,12 +67,15 @@ function SubirCsv() {
 
       if (response.status === 200) {
         alert('Datos CSV enviados con éxito.');
+        handleLimpiarTb();
       } else {
         alert('Error al enviar los datos CSV.');
+        return;
       }
     } catch (error) {
       console.error('Error al realizar la petición:', error);
       alert('Error al enviar los datos CSV.');
+      return;
     }
   };
 
@@ -93,19 +96,16 @@ function SubirCsv() {
       {error && (
         <div className="text-red-500 font-semibold mb-4">{error}</div>
       )}
-      <div className='inline ml-48'>
-        <button className=' bg-rose-600 duration-300  ransition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-7 rounded-lg hover:bg-rose-700 font-medium  uppercase font-label shadow-lg shadow-rose-400/80'
-        onClick={() => {
-            handleLimpiarTb();
-        }}>Limpiar
-        </button>
-      <Link 
+      <div className='inline ml-36'>
+
+      {/* <Link 
         className='text-gray-500 hover:underline font-label' to='/administracion' >            
         <button className=' bg-rose-600 duration-300 ml-8  ransition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-5 rounded-lg hover:bg-rose-700 font-medium  uppercase font-label shadow-lg shadow-rose-400/80'>
             Regresar
         </button>
-      </Link>
-      <button onClick={sendCsvData} className="bg-indigo-600 duration-300 ml-8  ransition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-5 rounded-lg hover:bg-indigo-700 font-medium  uppercase font-label shadow-lg shadow-blue-400/80">
+      </Link> */}
+
+      <button onClick={sendCsvData} className="bg-rose-600 duration-300 ml-8  ransition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-5 rounded-lg hover:bg-rose-700 font-medium  uppercase font-label shadow-lg shadow-rose-400/80">
             Enviar
           </button>
       </div>

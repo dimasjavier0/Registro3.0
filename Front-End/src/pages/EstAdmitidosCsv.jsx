@@ -52,6 +52,24 @@ function EstAdmitidosCsv() {
         }
     };
 
+    const sendCsvData = async () => {
+            try {
+            const response = await axios.post('http://localhost:8888/notas', { csvData });
+
+            if (response.status === 200) {
+            alert('Datos CSV enviados con éxito.');
+            handleLimpiarTb();
+            } else {
+            alert('Error al enviar los datos CSV.');
+            return;
+            }
+        } catch (error) {
+            console.error('Error al realizar la petición:', error);
+            alert('Error al enviar los datos CSV.');
+            return;
+        }
+    };
+
     return (
         <div className="mt-8 py-8">
             <h2 className=' bg-gray-100 shadow-xl mr-64 ml-32 text-center py-1 text-opacity-80 mb-16 text-slate-700  font-label text-4xl font-bold'>Listado de <span className='text-indigo-700'>estudiantes</span> admitidos</h2>
@@ -69,18 +87,19 @@ function EstAdmitidosCsv() {
         {error && (
             <div className="text-red-500 font-semibold mb-4">{error}</div>
         )}
-        <div className='inline ml-72'>
-            <button className=' bg-rose-600 duration-300  ransition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-7 rounded-lg hover:bg-rose-700 font-medium  uppercase font-label shadow-lg shadow-rose-400/80'
-            onClick={() => {
-                handleLimpiarTb()
-            }}>Limpiar
-            </button>
-        <Link 
+        <div className='inline ml-36'>
+
+        <button  className="bg-rose-600 duration-300 ml-8  ransition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-5 rounded-lg hover:bg-rose-700 font-medium  uppercase font-label shadow-lg shadow-rose-400/80">
+            Enviar
+        </button>
+
+        {/* <Link 
             className='text-gray-500 hover:underline font-label' to='/administracion' >            
             <button className=' bg-rose-600 duration-300 ml-8  ransition ease-in-out hover:translate-y-1 hover:scale-110  text-white py-2 px-5 rounded-lg hover:bg-rose-700 font-medium  uppercase font-label shadow-lg shadow-rose-400/80'>
                 Regresar
             </button>
-        </Link>
+        </Link> */}
+
         </div>
 
     {csvData.length > 0 && (
