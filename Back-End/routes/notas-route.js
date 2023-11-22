@@ -272,18 +272,29 @@ async function evaluarAspirantes(){
         console.log(await db.query(`select * from estudiantes where id_persona = '${id_persona_aprobado}'`));
 
         /**enviar correo de aprobacion */
+        // Consulta para agregar al estudiante y obtener su número de cuenta y correo institucional
+        let estudianteInfo = await db.query(`SELECT num_cuenta, correo_institucional FROM estudiantes WHERE id_persona = '${id_persona_aprobado}'`);
+        let numCuenta = estudianteInfo[0].num_cuenta;
+        let correoInstitucional = estudianteInfo[0].correo_institucional;
+
         let infoPersonaArray = await db.query(`select * from personas p where p.numero_identidad='${id_persona_aprobado}'`);
         let jsonPersona = infoPersonaArray[0];
         
         let email = jsonPersona.correo;
         
-        let msjPersonalizado = 
+       /* let msjPersonalizado =  
             `Hola muy buenas estimado ${jsonPersona.primer_nombre} ${jsonPersona.primer_apellido}. Por medio del presente le informamos que su puntacion es: \n
             ${aprobados[id_persona_aprobado].msjsAspirantes}.
             ${aprobados[id_persona_aprobado].msjFinalAspirante}
             Y por tanto le extendemos su numero de cuenta vigente ${jsonPersona.num_cuenta} y su proximo correo institucional ${email}
             `;
-        correo.enviarCorreo(email,msjPersonalizado);
+        correo.enviarCorreo(email,msjPersonalizado); */
+        let msjPersonalizado = 
+        `Hola muy buenas estimado ${jsonPersona.primer_nombre} ${jsonPersona.primer_apellido}. Por medio del presente le informamos que su puntuación es: \n
+        ${aprobados[id_persona_aprobado].msjsAspirantes}
+        Y por tanto le extendemos su número de cuenta vigente ${numCuenta} y su próximo correo institucional ${correoInstitucional}`;
+    correo.enviarCorreo(jsonPersona.correo, msjPersonalizado);
+
     }
 
     //let mailText = await db.query(``);
