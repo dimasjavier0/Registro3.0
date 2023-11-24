@@ -27,7 +27,7 @@ async function registrarDocente(docenteData) {
             .input('SegundoApellido', sql.NVarChar, docenteData.segundoApellido)
             .input('Correo', sql.NVarChar, docenteData.correo)
             .input('NumeroEmpleado', sql.Int, docenteData.numeroEmpleado)
-            .input('Foto', sql.VarBinary(sql.MAX), docenteData.fotografia)
+            .input('Foto', sql.VarBinary(sql.MAX), Buffer.from(docenteData.fotografia, 'base64'))
             .input('DeptoAcademicoId', sql.Int, docenteData.departamento)
             .input('CentroId', sql.Int, docenteData.centroRegional)
             .execute('RegistrarDocente');
