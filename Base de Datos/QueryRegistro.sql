@@ -200,8 +200,9 @@ CREATE TABLE secciones(
 	id_periodo INT FOREIGN KEY REFERENCES periodos_academicos(id_periodo),
 	hora_inicio INT NOT NULL,
 	hora_fin INT NOT NULL,
-	dias INT, --no se si aqui es mejor tener una tabla de los dias de la semana?,
-	cupos_maximos INT NOT NULL
+	dias NVARCHAR(255),
+	cupos_maximos INT NOT NULL,
+	ruta_video NVARCHAR(255)
 )
 
 CREATE TABLE estado_calificacion( --reprobado, aprobado, abandono, no se presento 
