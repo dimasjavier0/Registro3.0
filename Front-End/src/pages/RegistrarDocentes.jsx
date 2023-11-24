@@ -66,6 +66,22 @@ function RegistrarDocentes() {
 
 
         try {
+
+            const validacionResp = await axios.post('http://localhost:8888/docentesvalidar/validar', {
+                Identidad,
+                numeroEmpleado,
+              });
+        
+              if (validacionResp.data.identidadExiste || validacionResp.data.numeroEmpleadoExiste) {
+                let mensajeError = '';
+                if (validacionResp.data.identidadExiste) {
+                  mensajeError += 'La identidad ya existe. ';
+                }
+                if (validacionResp.data.numeroEmpleadoExiste) {
+                  mensajeError += 'El número de empleado ya existe.';
+                }
+                setAlerta({ mensaje: mensajeError, error: true });
+              } else {
             // Enviar los datos al backend
             const response = await axios.post('http://localhost:8888/docentes/agregarDocente', docenteData);
             console.log(response.data);
@@ -73,8 +89,10 @@ function RegistrarDocentes() {
 
  console.log('Registro exitoso:', response.data);
             // Limpiar el formulario si es necesario
+              }
         } catch (error) {
             console.error('Hubo un error al enviar los datos', error);
+            setAlerta({ mensaje: 'Error al enviar los datos', error: true });
             // Manejar el error aquí...
         }
     

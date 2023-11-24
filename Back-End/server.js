@@ -6,6 +6,8 @@ var aspirantes_router = require("./routes/aspirantes-route");
 var notas_router = require("./routes/notas-route");
 var carreras_router = require('./routes/carreras-route');
 var docentesRouter = require('./routes/agregardocentes-route'); 
+const validarDocenteRouter = require('./routes/ValidarDocente-route'); 
+
 
 //var db = require('./conections/database');
 const nodemailer = require('nodemailer');
@@ -50,6 +52,8 @@ const nodemailer = require('nodemailer');
   app.use('/carreras',carreras_router);
 /**para la Gestion de peticiones de docentes */
   app.use('/docentes', docentesRouter);
+  /**para la Gestion de peticiones de validar existencia de docentes */
+  app.use('/docentesvalidar', validarDocenteRouter);
 
   /** */
   
