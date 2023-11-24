@@ -11,6 +11,7 @@ import VistaPrincipal from './pages/VistaPrincipal';
 import RegistrarDocentes from './pages/RegistrarDocentes';
 import EstAdmitidosCsv from './pages/EstAdmitidosCsv';
 import VistaAdmin from './pages/VistaAdmin';
+import Dc_ClasesAsignadas from './pages/Dc_ClasesAsignadas';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 function App() {
@@ -38,6 +39,10 @@ function App() {
               <Route path='nuevoDocente' element={<RegistrarDocentes/>} />
               <Route path='SubirCsv' element={<SubirCsv/>} />
               <Route path='estAdmitidos' element={<EstAdmitidosCsv/>} />
+        </Route>
+
+        <Route > 
+            <Route path='/clasesAsignadas' element={<Dc_ClasesAsignadas/>} /> 
         </Route>
 
       </Routes>
