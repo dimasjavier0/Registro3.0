@@ -223,3 +223,9 @@ CREATE TABLE fotos_estudiantes(
 	id_estudiante NVARCHAR(11) FOREIGN KEY REFERENCES estudiantes(num_cuenta),
 	fotografia VARBINARY(MAX) NOT NULL,
 )
+
+CREATE TABLE usuarios (
+    id_usuario INT PRIMARY KEY IDENTITY(1,1),
+    nombre_usuario NVARCHAR(11) NOT NULL UNIQUE,
+    password_hash NVARCHAR(100) NOT NULL
+);
