@@ -157,7 +157,7 @@ function RegistrarDocentes() {
                 >
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Identidad</label>
                     <input
-                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full p-2  border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
                     placeholder='ej: 0801197302222'
                     value={Identidad}
@@ -183,7 +183,7 @@ function RegistrarDocentes() {
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Nombre </label>
                     <input
-                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full p-2  border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
                     placeholder='Primer nombre'
                     value={Primernombre}
@@ -195,7 +195,7 @@ function RegistrarDocentes() {
                     />
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Segundo Nombre </label>
                     <input
-                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full p-2  border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
                     placeholder='Segundo Nombre'
                     value={Segundonombre}
@@ -207,7 +207,7 @@ function RegistrarDocentes() {
                     />
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Apellido </label>
                     <input
-                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full p-2  border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
                     placeholder='Primer Apellido'
                     value={PrimerApellido}
@@ -219,7 +219,7 @@ function RegistrarDocentes() {
                     />
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Segundo Apellido </label>
                     <input
-                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
                     placeholder='Segundo Apellido'
                     value={SegundoApellido}
@@ -233,9 +233,9 @@ function RegistrarDocentes() {
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Correo</label>
                     <input
                     id='email'
-                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    className='w-full p-2  border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
-                    placeholder='Correo@example.com'
+                    placeholder='correo@example.com'
                     value={correo}
                     onChange={(e) => {
                         setcorreo(e.target.value)
