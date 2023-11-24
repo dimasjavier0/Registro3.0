@@ -5,6 +5,7 @@ var cors = require('cors');
 var aspirantes_router = require("./routes/aspirantes-route");
 var notas_router = require("./routes/notas-route");
 var carreras_router = require('./routes/carreras-route');
+var docentesRouter = require('./routes/agregardocentes-route'); 
 
 //var db = require('./conections/database');
 const nodemailer = require('nodemailer');
@@ -28,9 +29,11 @@ const nodemailer = require('nodemailer');
     /** Para Recibir Peticiones en formato JSON */
     app.use(express.json());
     /**Recibir una Peticion POST */
-    app.use(bodyParser.json());
+    //app.use(bodyParser.json());
+    app.use(bodyParser.json({ limit: '50mb' }));
     /** con esto tenemos acceso a un nuevo JSON llamado body*/
-    app.use(bodyParser.urlencoded({extended:true})); 
+    //app.use(bodyParser.urlencoded({extended:true})); 
+    app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
     /**para el manejo de rutas */
     //app.use(Routes);
 
@@ -45,6 +48,8 @@ const nodemailer = require('nodemailer');
 
   /**para la Gestion de peticiones de Carreas */
   app.use('/carreras',carreras_router);
+/**para la Gestion de peticiones de docentes */
+  app.use('/docentes', docentesRouter);
 
   /** */
   

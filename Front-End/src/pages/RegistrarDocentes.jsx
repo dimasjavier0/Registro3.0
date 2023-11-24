@@ -2,16 +2,23 @@ import React from 'react'
 import { useState } from 'react'
 import AlertaError from '../components/AlertaError';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 
 
 
 
 function RegistrarDocentes() {
+    const [Identidad, setIdentidad] = useState('');
     const [numeroEmpleado, setNumeroEmpleado] = useState('');
-    const [nombre, setNombre] = useState('');
+    const [Primernombre, setPrimerNombre] = useState('');
+    const [Segundonombre, setSegundoNombre] = useState('');
+    const [PrimerApellido, setprimerApellido] = useState('');
+    const [SegundoApellido, setSegundoApellido] = useState('');
     const [fotografia, setFotografia] = useState(null);
     const [centroRegional, setCentroRegional] = useState('');
+    const [Departamento, setDepartamento] = useState('');
+    const [correo, setcorreo] = useState('');
     
     const [alerta, setAlerta] = useState({});
 
@@ -24,11 +31,11 @@ function RegistrarDocentes() {
         }
     };
     
-    function handleSubmit (e) {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        //Validar que no existan campos vacios
-        if ([numeroEmpleado,nombre,centroRegional].includes('') || [fotografia].includes(null)) {
+      /*  //Validar que no existan campos vacios
+        if ([numeroEmpleado,Primernombre,Primernombre, Segundonombre, PrimerApellido, SegundoApellido, correo, centroRegional, Departamento].includes('') || [fotografia].includes(null)) {
             setAlerta({mensaje: 'Existen campos vacios', error: true})
             return;
         }
@@ -40,13 +47,44 @@ function RegistrarDocentes() {
         } else {
             setAlerta({mensaje: 'Numero de empleado invalido', 
                         error: true})
-                        return;
+                    return;
+                   
+        } */
+        const docenteData = {
+            numeroEmpleado,
+            Identidad:Identidad,
+            primerNombre: Primernombre,
+            segundoNombre: Segundonombre,
+            primerApellido: PrimerApellido,
+            segundoApellido: SegundoApellido,
+            correo:correo,
+            centroRegional:centroRegional,
+            departamento: Departamento,
+            fotografia // Asegúrate de que esto sea una cadena en formato Base64
+        };
+    
+
+
+        try {
+            // Enviar los datos al backend
+            const response = await axios.post('http://localhost:8888/docentes/agregarDocente', docenteData);
+            console.log(response.data);
+            // Manejar la respuesta aquí...
+
+ console.log('Registro exitoso:', response.data);
+            // Limpiar el formulario si es necesario
+        } catch (error) {
+            console.error('Hubo un error al enviar los datos', error);
+            // Manejar el error aquí...
         }
+    
+
+
 
 
         //Limpiar Formulario
         setNumeroEmpleado('');
-        setNombre('');
+       
         setCentroRegional('');
         //Limpiamos la Imagen
         document.getElementById('Fotografia').value = null;
@@ -73,6 +111,19 @@ function RegistrarDocentes() {
                 onSubmit={handleSubmit}
                 
                 >
+                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Identidad</label>
+                    <input
+                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    type='text'   
+                    placeholder='Nombre Completo'
+                    value={Identidad}
+                    onChange={(e) => {
+                        setIdentidad(e.target.value)
+                    }
+                    }
+                    />
+
+
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Numero Empleado </label>
                     <input
@@ -86,15 +137,64 @@ function RegistrarDocentes() {
                     }
                     />
 
-                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Nombre </label>
+                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Nombre </label>
                     <input
                     className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='text'   
                     placeholder='Nombre Completo'
-                    value={nombre}
+                    value={Primernombre}
                     onKeyDown={handleKeyDown}
                     onChange={(e) => {
-                        setNombre(e.target.value)
+                        setPrimerNombre(e.target.value)
+                    }
+                    }
+                    />
+                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Segundo Nombre </label>
+                    <input
+                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    type='text'   
+                    placeholder='Nombre Completo'
+                    value={Segundonombre}
+                    onKeyDown={handleKeyDown}
+                    onChange={(e) => {
+                        setSegundoNombre(e.target.value)
+                    }
+                    }
+                    />
+                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Apellido </label>
+                    <input
+                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    type='text'   
+                    placeholder='Nombre Completo'
+                    value={PrimerApellido}
+                    onKeyDown={handleKeyDown}
+                    onChange={(e) => {
+                        setprimerApellido(e.target.value)
+                    }
+                    }
+                    />
+                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Segundo Apellido </label>
+                    <input
+                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    type='text'   
+                    placeholder='Nombre Completo'
+                    value={SegundoApellido}
+                    onKeyDown={handleKeyDown}
+                    onChange={(e) => {
+                        setSegundoApellido(e.target.value)
+                    }
+                    }
+                    />
+
+                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Correo</label>
+                    <input
+                    className='w-full p-2 lowercase border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    type='text'   
+                    placeholder='Nombre Completo'
+                    value={correo}
+                    onKeyDown={handleKeyDown}
+                    onChange={(e) => {
+                        setcorreo(e.target.value)
                     }
                     }
                     />
@@ -133,6 +233,21 @@ function RegistrarDocentes() {
                     <option value={3}>UNAH-CURC</option>
                     </select>
 
+                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label'>Selecciona el Departamento</label>
+                    <select 
+                    className='w-full p-2 border border-gray-300 rounded-md mb-8 bg-gray-100 font-label'
+                    value={Departamento}
+                    onChange={(e) => {
+                        setDepartamento(e.target.value)
+                    }
+                    }
+                    >
+                    <option value='' disabled > -- Seleccione-- </option>
+                    <option value={1}>UNAH-CU</option>
+                    <option value={2}>UNAH-VS</option>
+                    <option value={3}>UNAH-CURC</option>
+                    </select>
+
                 
                         <div className='flex justify-end mr-0 mt-3 font-bold'>
                         <button 
@@ -157,3 +272,4 @@ function RegistrarDocentes() {
 }
 
 export default RegistrarDocentes
+

@@ -8,10 +8,10 @@ let users = {
 };
 
 var user = 'asd';//
-let pass = '1234';//
+let pass = '134';//
 var host = 'localhost';
-var db = 'Registro2';
-var por = 1434;
+var db = 'registro';
+var por = 1433;
 
 var sqlConfig = {
     server:host,
