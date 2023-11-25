@@ -2,10 +2,10 @@ const sql = require('mssql');
 const bcrypt = require('bcrypt');
 
 const config = {
-  user: 'asd',
-  password: '134',
+  user: 'Grupo',
+  password: '1234',
   server: 'localhost',
-  database: 'registro',
+  database: 'Registro2',
   options: {
     encrypt: true,
     trustServerCertificate: true,

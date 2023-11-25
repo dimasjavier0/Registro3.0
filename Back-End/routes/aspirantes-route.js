@@ -56,7 +56,7 @@ router.post('/', async (req,res)=>{
     let notas = req.body.csvData;//arreglo de JSONs
 
     /**Loguear */
-    await db.setConfigToLogin('asd','1234');
+    await db.setConfigToLogin('Grupo','1234');
 
     /** Hacer conexion */
     //await db.connect();
