@@ -40,8 +40,7 @@ function Administrador() {
                     alerta={alerta}
                     />}
 
-                    <form 
-                    onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit}>
                         
                         <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >N° Empleado </label>
                         <input

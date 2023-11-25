@@ -200,8 +200,9 @@ CREATE TABLE secciones(
 	id_periodo INT FOREIGN KEY REFERENCES periodos_academicos(id_periodo),
 	hora_inicio INT NOT NULL,
 	hora_fin INT NOT NULL,
-	dias INT, --no se si aqui es mejor tener una tabla de los dias de la semana?,
-	cupos_maximos INT NOT NULL
+	dias NVARCHAR(255),
+	cupos_maximos INT NOT NULL,
+	ruta_video NVARCHAR(255)
 )
 
 CREATE TABLE estado_calificacion( --reprobado, aprobado, abandono, no se presento 
@@ -223,3 +224,9 @@ CREATE TABLE fotos_estudiantes(
 	id_estudiante NVARCHAR(11) FOREIGN KEY REFERENCES estudiantes(num_cuenta),
 	fotografia VARBINARY(MAX) NOT NULL,
 )
+
+CREATE TABLE usuarios (
+    id_usuario INT PRIMARY KEY IDENTITY(1,1),
+    nombre_usuario NVARCHAR(11) NOT NULL UNIQUE,
+    password_hash NVARCHAR(100) NOT NULL
+);
