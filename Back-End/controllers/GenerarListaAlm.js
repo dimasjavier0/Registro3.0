@@ -1,3 +1,4 @@
+
 const exceljs = require('exceljs');
 const mssql = require('mssql');
 
@@ -62,10 +63,10 @@ class EstudianteController {
       // Agregar datos a la hoja de cálculo
       worksheet.addRows(estudiantesMatriculados);
 
-      // Guardar el archivo Excel, se guarda en routes por defecto
+      // Guardar el archivo Excel
       const fileName = `estudiantes_seccion_${idSeccion}.xlsx`;
       await workbook.xlsx.writeFile(fileName);
-      return { fileName };
+      return fileName;
     } catch (error) {
       console.error('Error al obtener estudiantes matriculados:', error);
       throw error;
