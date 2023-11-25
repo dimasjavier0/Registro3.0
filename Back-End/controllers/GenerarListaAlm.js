@@ -62,7 +62,7 @@ class EstudianteController {
       // Agregar datos a la hoja de cálculo
       worksheet.addRows(estudiantesMatriculados);
 
-      // Guardar el archivo Excel
+      // Guardar el archivo Excel, se guarda en routes por defecto
       const fileName = `estudiantes_seccion_${idSeccion}.xlsx`;
       await workbook.xlsx.writeFile(fileName);
       return { fileName };
