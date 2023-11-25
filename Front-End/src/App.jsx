@@ -12,7 +12,10 @@ import RegistrarDocentes from './pages/RegistrarDocentes';
 import EstAdmitidosCsv from './pages/EstAdmitidosCsv';
 import VistaAdmin from './pages/VistaAdmin';
 import Dc_ClasesAsignadas from './pages/Dc_ClasesAsignadas';
+import HeaderEstudiantes from './components/HeaderEstudiante';
+import PerfilEstudiante from './pages/PerfilEstudiante';
 import '@fortawesome/fontawesome-free/css/all.css';
+import LayoutEstudiante from './layout/LayoutEstudiante';
 
 function App() {
   
@@ -44,6 +47,11 @@ function App() {
         <Route > 
             <Route path='/clasesAsignadas' element={<Dc_ClasesAsignadas/>} /> 
         </Route>
+
+        <Route path='/principalEstudiante' element={<LayoutEstudiante/>}>
+            <Route path='perfilEstudiante' element={<PerfilEstudiante/>} /> 
+        </Route>
+
 
       </Routes>
     </BrowserRouter>
