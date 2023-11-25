@@ -230,3 +230,6 @@ CREATE TABLE usuarios (
     nombre_usuario NVARCHAR(11) NOT NULL UNIQUE,
     password_hash NVARCHAR(100) NOT NULL
 );
+
+ALTER TABLE usuarios
+ADD correoElectronico NVARCHAR(100);
