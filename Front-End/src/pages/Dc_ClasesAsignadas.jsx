@@ -5,6 +5,7 @@ import axios from 'axios';
 function App() {
   const [idDocente, setIdDocente] = useState('');
   const [clasesAsignadas, setClasesAsignadas] = useState([]);
+  const [idSeccion, setIdSeccion] = useState('');
 
   const obtenerClasesAsignadas = async () => {
     try {
@@ -12,6 +13,28 @@ function App() {
       setClasesAsignadas(response.data);
     } catch (error) {
       console.error('Error al obtener clases asignadas:', error);
+    }
+  };
+
+  //Descargar listado de alumnos
+
+  const handleDescargarListado = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8888/ap/Listado/${idSeccion}/estudiantes
+      `, {
+        responseType: 'blob', // Indica que la respuesta es un archivo binario
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `estudiantes_seccion_${idSeccion}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error al descargar estudiantes matriculados:', error);
+      // Manejo del error
     }
   };
 
@@ -25,6 +48,21 @@ function App() {
       <button 
       className='bg-blue-500 ml-20 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mb-4'
       onClick={obtenerClasesAsignadas}>Obtener Clases</button>
+
+<input
+          className="border-2  border-rose-800 mb-20 ml-9 p-4"
+          type="text"
+          placeholder="Ingrese ID de Sección Para Descargar Listado"
+          value={idSeccion}
+          onChange={(e) => setIdSeccion(e.target.value)}
+        />
+        <button
+          className="bg-blue-500 ml-20 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mb-4"
+          onClick={handleDescargarListado}
+        >
+        Descargar Listado
+        </button>
+
 
       <table className='min-w-full bg-white border border-gray-300'>
         <thead>
