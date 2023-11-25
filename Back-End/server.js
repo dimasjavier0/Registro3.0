@@ -9,8 +9,8 @@ var docentesRouter = require('./routes/agregardocentes-route');
 const validarDocenteRouter = require('./routes/ValidarDocente-route'); 
 const docenteAsignadosRouter = require('./routes/MostrarMatriculados-route'); 
 const ListaEstudianteRoutes = require('./routes/ExportarAlumnos-route');
-
-
+const videoRouter = require('./routes/Videos-route');
+const multer = require('multer');
 //var db = require('./conections/database');
 const nodemailer = require('nodemailer');
 
@@ -61,6 +61,8 @@ const nodemailer = require('nodemailer');
 
   app.use('/ap', ListaEstudianteRoutes);  // Ruta para estudiantes
 
+  app.use('/api/videos', videoRouter);//Ruta para Videos
+
 /*
 
 
@@ -84,6 +86,19 @@ app.post(
         /** recibe peticion(aspirante) */
 
 });
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // El destino donde se guardarán los videos
+    cb(null, 'uploads/videos');
+  },
+  filename: (req, file, cb) => {
+    // El nombre del archivo se mantiene igual
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 
 async function leerNotasString(notasString){

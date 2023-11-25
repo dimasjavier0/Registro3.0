@@ -16,6 +16,7 @@ import HeaderEstudiantes from './components/HeaderEstudiante';
 import PerfilEstudiante from './pages/PerfilEstudiante';
 import '@fortawesome/fontawesome-free/css/all.css';
 import LayoutEstudiante from './layout/LayoutEstudiante';
+import SubirVideoFormulario from './pages/AsignarVideo';
 
 function App() {
   
@@ -46,6 +47,8 @@ function App() {
 
         <Route > 
             <Route path='/clasesAsignadas' element={<Dc_ClasesAsignadas/>} /> 
+            <Route path='/videosporasignatura' element={<SubirVideoFormulario/>} /> 
+           
         </Route>
 
         <Route path='/principalEstudiante' element={<LayoutEstudiante/>}>
