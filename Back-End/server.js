@@ -5,6 +5,7 @@ var cors = require('cors');
 var aspirantes_router = require("./routes/aspirantes-route");
 var notas_router = require("./routes/notas-route");
 var carreras_router = require('./routes/carreras-route');
+var departamentos_router = require('./routes/departamentos-route');
 var docentesRouter = require('./routes/agregardocentes-route'); 
 const validarDocenteRouter = require('./routes/ValidarDocente-route'); 
 const docenteAsignadosRouter = require('./routes/MostrarMatriculados-route'); 
@@ -52,6 +53,8 @@ const nodemailer = require('nodemailer');
 
   /**para la Gestion de peticiones de Carreas */
   app.use('/carreras',carreras_router);
+    /**para la Gestion de peticiones de Departamentos */
+    app.use('/departamentos',departamentos_router);
 /**para la Gestion de peticiones de docentes */
   app.use('/docentes', docentesRouter);
   /**para la Gestion de peticiones de validar existencia de docentes */
@@ -132,7 +135,7 @@ app.post('/aspirantes', async (req,res)=>{ //funcion asincrona
     console.log(req.body);
 
     /**Loguear */
-    await db.setConfigToLogin('asd','1234');
+    await db.setConfigToLogin('Grupo','1234');
 
     /** Hacer conexion */
     await db.connect();

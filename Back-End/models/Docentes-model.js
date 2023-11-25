@@ -3,10 +3,10 @@ const {createLoginAndUser} = require('../controllers/loginUsers');
 
 // Configuración de la conexión a la base de datos
 const dbConfig = {
-    user: 'asd', //asd
-    password: '134', //134
-    server: 'localhost', //localhost
-    database: 'registro',
+    user: 'Grupo', 
+    password: '1234',
+    server: 'localhost',
+    database: 'Registro2',
     options: {
         encrypt: false, // Si estás usando Azure SQL
         trustServerCertificate: true // Solo para desarrollo, no usar en producción
