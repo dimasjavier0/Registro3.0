@@ -1,10 +1,11 @@
 const sql = require('mssql');
+const {createLoginAndUser} = require('../controllers/loginUsers');
 
 // Configuración de la conexión a la base de datos
 const dbConfig = {
-    user: 'asd',
+    user: 'asd', 
     password: '134',
-    server: 'localhost', 
+    server: 'localhost',
     database: 'registro',
     options: {
         encrypt: false, // Si estás usando Azure SQL
@@ -32,7 +33,8 @@ async function registrarDocente(docenteData) {
             .input('CentroId', sql.Int, docenteData.centroRegional)
             .execute('RegistrarDocente');
 
-        console.log('Docente registrado con éxito');
+        const passwordLogin = await createLoginAndUser(docenteData.numeroEmpleado, 'docente');
+        console.log('Docente registrado con éxito y su password es:', passwordLogin);
     } catch (err) {
         console.error('Error al registrar el docente:', err);
         throw err;
