@@ -4,13 +4,13 @@ const sql = require('mssql');
 * Tipos de usuarios predefinidos para loguear a la base de datos */
 let users = {
     admin:{user:'admin',password:'adminpassword'},
-    public:{user:'asd',password:'asd'}
+    public:{user:'Grupo',password:'1234'}
 };
 
-var user = 'asd';//
-let pass = '134';//
+var user = 'Grupo';//
+let pass = '1234';//
 var host = 'localhost';
-var db = 'registro';
+var db = 'Registro2';
 var por = 1433;
 
 var sqlConfig = {

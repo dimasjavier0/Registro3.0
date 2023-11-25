@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import AlertaError from '../components/AlertaError';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -21,6 +21,7 @@ function RegistrarDocentes() {
     const [correo, setcorreo] = useState('');
     
     const [alerta, setAlerta] = useState({});
+    const [departamentos, setDepartamentos] = useState([]);
 
     const correoRegex = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -31,6 +32,23 @@ function RegistrarDocentes() {
             event.preventDefault();
         }
     };
+
+    useEffect(() => {
+        /**  Función para obtener las carreras*/
+    const obtenerDepartamentos = async () => {
+        try {
+            const resultado = await axios.get('http://localhost:8888/departamentos');
+            if (resultado.data && resultado.data.result) {
+                setDepartamentos(resultado.data.result);
+            }
+        } catch (error) {
+            console.error('Error al obtener departamentos:', error);
+        }
+    };
+
+    // Llamada a la función para obtener las carreras
+    obtenerDepartamentos();
+    }, []);
     
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -277,19 +295,20 @@ function RegistrarDocentes() {
                     <option value={3}>UNAH-CURC</option>
                     </select>
 
-                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label'>Selecciona el Departamento</label>
-                    <select 
-                    className='w-full p-2 border border-gray-300 rounded-md mb-8 bg-gray-100 font-label'
-                    value={Departamento}
-                    onChange={(e) => {
-                        setDepartamento(e.target.value)
-                    }
-                    }
+                    <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Departamento</label>
+                    <select
+                        className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
+                        value={Departamento}
+                        onChange={(e) => {
+                            setDepartamento(e.target.value);
+                        }}
                     >
-                    <option value='' disabled > -- Seleccione-- </option>
-                    <option value={1}>UNAH-CU</option>
-                    <option value={2}>UNAH-VS</option>
-                    <option value={3}>UNAH-CURC</option>
+                        <option value='' disabled>-- Seleccione --</option>
+                        {departamentos.map((departamento) => (
+                            <option key={departamento.id_dep_academico} value={departamento.id_dep_academico}>
+                                {departamento.nombre}
+                            </option>
+                        ))}
                     </select>
 
                 
