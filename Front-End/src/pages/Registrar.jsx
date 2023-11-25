@@ -12,6 +12,7 @@ function Registrar() {
     const [segundoApellido, setSegundoApellido] = useState('');
     const [carreraPrincipal, setCarreraPrincipal] = useState('');
     const [carreraSecundaria, setCarreraSecundaria] = useState('');
+    const [telefono, setTelefono] = useState('');
     const [email, setEmail] = useState('');
     const [imagen, setImagen] = useState(null);
     const [centroRegional, setCentroRegional] = useState('');
@@ -70,8 +71,8 @@ function Registrar() {
         e.preventDefault()
 
         //Validar que no existan campos vacios
-        const datosFormulario=[identidad,primerNombre,primerApellido,carreraPrincipal,carreraSecundaria,email,imagen,centroRegional]
-        const nombreCampos = ['Identidad', 'Primer nombre', 'Primer apellido', 'Carrera principal','Carrera secundaria', 'Email','Imagen','Centro regional'];
+        const datosFormulario=[identidad,primerNombre,primerApellido,carreraPrincipal,carreraSecundaria,telefono,email,imagen,centroRegional]
+        const nombreCampos = ['Identidad', 'Primer nombre', 'Primer apellido', 'Carrera principal','Carrera secundaria', 'Teléfono', 'Correo Personal','Imagen','Centro regional'];
         
         for (let i = 0; i < datosFormulario.length; i++) {
             if (datosFormulario[i] === '' || datosFormulario[i]=== null) {
@@ -92,6 +93,16 @@ function Registrar() {
                         return;
         }
 
+        if (/^[0-9]{8}$/.test(telefono)) {
+            setAlerta({})
+        
+        } else {
+            setAlerta({mensaje: 'Numero de telefono invalido', 
+                        error: true})
+                        window.scrollTo(0, 0);
+                        return;
+        }
+
         try {
             // Construir el objeto FormData para enviar la imagen correctamente
             const formData = new FormData();
@@ -102,6 +113,7 @@ function Registrar() {
             formData.append('segundoApellido', segundoApellido);
             formData.append('carreraPrincipal', carreraPrincipal);
             formData.append('carreraSecundaria', carreraSecundaria);
+            formData.append('telefono', telefono);
             formData.append('email', email);
             formData.append('imagen', imagen);
             formData.append('centroRegional', centroRegional);
@@ -115,7 +127,7 @@ function Registrar() {
             carrera_S:carreraSecundaria,
             identidad:identidad,
             foto:imagen,
-            cel:"3301-0630",
+            cel:telefono,
             correoPersonal:email,
             carreraPrincipal:"1",
             carreraSecundaria:"2",
@@ -154,6 +166,19 @@ function Registrar() {
                 mensaje: 'Registro Exitoso!',
                 error: false,
                 });
+                //Limpiar Formulario
+                setIdentidad('');
+                setPrimerNombre('');
+                setSegundoNombre('');
+                setPrimerApellido('');
+                setSegundoApellido('');
+                setCarreraPrincipal('');
+                setCarreraSecundaria('');
+                setTelefono('')
+                setEmail('');
+                document.getElementById('Imagen').value = null;
+                setCentroRegional('');
+                window.scrollTo(0, 0);
         
             }catch (error) {
             console.error('Error en la petición:', error);
@@ -163,20 +188,6 @@ function Registrar() {
             });
             return;
         }
-    
-        
-        //Limpiar Formulario
-        setIdentidad('');
-        setPrimerNombre('');
-        setSegundoNombre('');
-        setPrimerApellido('');
-        setSegundoApellido('');
-        setCarreraPrincipal('');
-        setCarreraSecundaria('');
-        setEmail('');
-        document.getElementById('Imagen').value = null;
-        setCentroRegional('');
-        window.scrollTo(0, 0);
         
 }
         const {mensaje}= alerta
@@ -302,7 +313,7 @@ function Registrar() {
                     <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Secundaria</label>
                     <select
                         className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
-                        value={carreraPrincipal}
+                        value={carreraSecundaria}
                         onChange={(e) => {
                             setCarreraSecundaria(e.target.value);
                         }}
@@ -315,11 +326,23 @@ function Registrar() {
                         ))}
                     </select>
 
-                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >E-Mail</label>
+                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Teléfono</label>
+                    <input
+                    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
+                    type='text'   
+                    placeholder='ej: 99887755'
+                    value={telefono}
+                    onChange={(e) => {
+                        setTelefono(e.target.value)
+                    }
+                    }
+                    />
+
+                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Correo Personal</label>
                     <input
                     className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='email'   
-                    placeholder='Tu Correo Personal'
+                    placeholder='ej: correo@example.com'
                     value={email}
                     onChange={(e) => {
                         setEmail(e.target.value)
