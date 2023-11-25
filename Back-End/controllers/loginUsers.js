@@ -2,9 +2,9 @@ const sql = require('mssql');
 const bcrypt = require('bcrypt');
 
 const config = {
-  user: 'asd',
-  password: '134',
-  server: 'localhost',
+  user: 'sa',
+  password: '1234',
+  server: 'DESKTOP-9JI7NS5',
   database: 'registro',
   options: {
     encrypt: true,
@@ -13,15 +13,15 @@ const config = {
 };
 
 function randomPassword() {
-    const caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let password = '';
-  
-    for (let i = 0; i < 10; i++) {
-      const randomIndex = Math.floor(Math.random() * caracteres.length);
-      password += caracteres.charAt(randomIndex);
-    }
-    
-    return password;
+  const caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let password = '';
+
+  for (let i = 0; i < 10; i++) {
+    const randomIndex = Math.floor(Math.random() * caracteres.length);
+    password += caracteres.charAt(randomIndex);
+  }
+
+  return password;
 }
 
 // Función para hashear una contraseña
@@ -39,33 +39,50 @@ async function hashPassword(password) {
   }
 }
 
-//funcion para crear usuarios y logins en la base de datos
-async function createLoginAndUser(nameLogin, userDataBase) {
+// Función para crear usuarios y logins en la base de datos
+async function createLoginAndUser(nameLogin, correoElectronico, userDataBase) {
+  let pool;
   try {
+    const nombreLogin = nameLogin.toString();
+
     // Conectar a la base de datos
-    await sql.connect(config);
+    pool = await sql.connect(config);
 
-    // Crear el login
-    passwordLogin = hashPassword(randomPassword())
-    await sql.query(`USE master; CREATE LOGIN ${nameLogin} WITH PASSWORD = '${passwordLogin}'`);
+    const transaction = new sql.Transaction(pool);
+    await transaction.begin();
 
-    // Crear el usuario en la base de datos
-    await sql.query(`USE ${config.database}; CREATE USER ${nameLogin} FOR LOGIN ${nameLogin}`);
+    passwordUser = randomPassword(); //La contraseña que se enviara al correo
 
-    if(userDataBase === 'docente'){
-        //agregar el rol docente a un usuario
-        await sql.query(`ALTER ROLE docente ADD MEMBER ${nameLogin}`);
+    try {
+      // Crear el login
+      const passwordLogin = await hashPassword(passwordUser);
+      await sql.query(`USE master;`);
+      await sql.query(`CREATE LOGIN [${nombreLogin}] WITH PASSWORD = '${passwordLogin}';`);
+
+      // Crear el usuario en la base de datos
+      await sql.query(`USE ${config.database}; CREATE USER [${nombreLogin}] FOR LOGIN [${nombreLogin}];`);
+
+      if (userDataBase === 'docente') {
+        // Agregar el rol docente a un usuario
+        await sql.query(`ALTER ROLE docente ADD MEMBER [${nombreLogin}];`);
+
+        await sql.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico)
+                        VALUES('${nombreLogin}', '${passwordLogin}', '${correoElectronico}')`);
+      } // Código para agregar el rol de estudiante
+
+      await transaction.commit();
+
+    } catch (errConsulta) {
+      console.error('Error al crear el login y el usuario:', errConsulta);
+      await transaction.rollback();
+      throw errConsulta;
     }
-    // Codigo para agregar el rol de estudiante
-
-    return passwordLogin;
-  } catch (err) {
-    console.error('Error al crear el login y el usuario:', err);
-    throw err;
+  } catch (errConexion) {
+    throw errConexion;
   } finally {
     // Cerrar la conexión
-    await sql.close();
+    if (pool) await pool.close();
   }
 }
 
-module.exports = { createLoginAndUser, hashPassword};
+module.exports = {createLoginAndUser};
