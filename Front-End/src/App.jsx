@@ -12,10 +12,10 @@ import RegistrarDocentes from './pages/RegistrarDocentes';
 import EstAdmitidosCsv from './pages/EstAdmitidosCsv';
 import VistaAdmin from './pages/VistaAdmin';
 import Dc_ClasesAsignadas from './pages/Dc_ClasesAsignadas';
-import HeaderEstudiantes from './components/HeaderEstudiante';
 import PerfilEstudiante from './pages/PerfilEstudiante';
 import '@fortawesome/fontawesome-free/css/all.css';
 import LayoutEstudiante from './layout/LayoutEstudiante';
+import LayoutDocente from './layout/LayoutDocente';
 import SubirVideoFormulario from './pages/AsignarVideo';
 
 function App() {
@@ -45,14 +45,13 @@ function App() {
               <Route path='estAdmitidos' element={<EstAdmitidosCsv/>} />
         </Route>
 
-        <Route > 
-            <Route path='/clasesAsignadas' element={<Dc_ClasesAsignadas/>} /> 
-            <Route path='/videosporasignatura' element={<SubirVideoFormulario/>} /> 
-           
-        </Route>
-
         <Route path='/principalEstudiante' element={<LayoutEstudiante/>}>
             <Route path='perfilEstudiante' element={<PerfilEstudiante/>} /> 
+        </Route>
+
+        <Route path='/principalDocente' element={<LayoutDocente/>}>
+            <Route path='clasesAsignadas' element={<Dc_ClasesAsignadas/>} /> 
+            <Route path='videosporasignatura' element={<SubirVideoFormulario/>} />
         </Route>
 
 

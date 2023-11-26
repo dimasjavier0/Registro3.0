@@ -27,7 +27,7 @@ function OlvideContraseña() {
     const respuesta = await axios.put(url, data);
 
     
-    const mensajePersonalizado = `Se ha enviado un correo al correo: ${email}. Con mensaje: ${respuesta.data.mensaje}`;
+    const mensajePersonalizado = `Se ha enviado un correo al correo: ${email}. Con mensaje: ${respuesta}`;
 
     setAlerta({
       mensaje: mensajePersonalizado,
