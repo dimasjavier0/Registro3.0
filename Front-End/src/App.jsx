@@ -46,7 +46,7 @@ function App() {
         </Route>
 
         <Route path='/principalEstudiante' element={<LayoutEstudiante/>}>
-            <Route path='perfilEstudiante' element={<PerfilEstudiante/>} /> 
+            <Route path='perfilEstudiante/:numeroCuenta' element={<PerfilEstudiante/>} /> 
         </Route>
 
         <Route path='/principalDocente' element={<LayoutDocente/>}>
