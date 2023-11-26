@@ -5,7 +5,7 @@ const config = {
     user: 'Grupo',
     password: '1234',
     server: 'localhost', 
-    database: 'registro2',
+    database: 'Registro2',
     options: {
         encrypt: false, // Si estás usando Azure SQL
         trustServerCertificate: true // Solo para desarrollo, no usar en producción
