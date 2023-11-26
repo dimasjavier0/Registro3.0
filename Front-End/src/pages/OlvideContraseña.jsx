@@ -7,37 +7,32 @@ import axios from 'axios';
 function OlvideContraseña() {
   const [email, setEmail] = useState('');
   const [alerta, setAlerta] = useState({});
-  const [submitted, setSubmitted] = useState(false);
- // Estado para controlar el envío del formulario
+  const [respuestaServidor, setRespuestaServidor] = useState(null);
 
- useEffect(() => {
-    // Solo realiza la petición POST cuando submitted es true
-    if (submitted) {
-      axios.put('http://localhost:8888/cr7/usuarios', { email })
-        .then(response => {
-          setAlerta({ mensaje: 'Revise su correo', error: false });
-        })
-        .catch(error => {
-          if (error.response && error.response.status === 404) {
-            setAlerta({ mensaje: 'No existe este correo', error: true });
-          } else {
-            setAlerta({ mensaje: 'Ha ocurrido un error', error: true });
-          }
-        })
-        .finally(() => {
-          setSubmitted(false); // Restablece submitted para futuros envíos
-        });
-    }
-  }, [submitted, email]); // Dependencias del efecto
-
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    if (!email) {
-      setAlerta({ mensaje: 'Existen campos vacíos', error: true });
-    } else {
-      setSubmitted(true); // Activa submitted para disparar el efecto
-    }
+
+    if ([email].includes('')) {
+      setAlerta({mensaje: 'Existen campos vacios', error: true})
+      return;   
   }
+  setAlerta({})
+
+    try {
+      const url = 'http://localhost:8888/cr7/usuarios';
+      const data = {
+        correo: email,
+      };
+
+      const respuesta = await axios.put(url, data);
+
+      setRespuestaServidor(respuesta.data);
+    } catch (error) {
+      console.error('Error al enviar la solicitud:', error);
+    }
+  };
+
+
 
   const { mensaje, error } = alerta; // Desestructuración para usar en JSX
 
@@ -63,6 +58,22 @@ function OlvideContraseña() {
             
             <div className='bg-white p-8 rounded-xl shadow-lg border w-10/12 ml-10'>
                 <h2 className='text-indigo-600 mb-6 text-3xl text-center font-black font-label uppercase '>Recupera Tu Cuenta <br /><span className='text-black'>UNAH</span></h2>
+
+                {respuestaServidor && (
+            <div>
+              {respuestaServidor.result ? (
+                <p>
+                  Se ha enviado un correo al correo: {email}. Con mensaje:{' '}
+                  {respuestaServidor.mensaje}
+                </p>
+              ) : (
+                <p>
+                  Hubo un problema al procesar la solicitud. Por favor,
+                  inténtalo de nuevo.
+                </p>
+              )}
+            </div>
+          )}
 
                 {mensaje && <AlertaError 
                     alerta={alerta}
