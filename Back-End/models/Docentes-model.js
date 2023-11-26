@@ -10,6 +10,7 @@ const dbConfig = {
     options: {
         encrypt: false, // Si estás usando Azure SQL
         trustServerCertificate: true // Solo para desarrollo, no usar en producción
+        
     }
 };
 
@@ -34,7 +35,7 @@ async function registrarDocente(docenteData) {
             .execute('RegistrarDocente');
 
         
-        await createLoginAndUser(docenteData.numeroEmpleado, docenteData.correo, 'docente');
+        //await createLoginAndUser(docenteData.numeroEmpleado, docenteData.correo, 'docente');
            
         console.log('Docente registrado con éxito');
     } catch (err) {

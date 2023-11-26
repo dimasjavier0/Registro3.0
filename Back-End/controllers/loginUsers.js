@@ -1,14 +1,20 @@
+
+/*
+
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
+
+
 
 const config = {
   user: 'Grupo',
   password: '1234',
   server: 'localhost',
-  database: 'Registro2',
+  database: 'Registro2',//Registro2
   options: {
-    encrypt: true,
+    encrypt: false,
     trustServerCertificate: true,
+    
   },
 };
 
@@ -86,3 +92,4 @@ async function createLoginAndUser(nameLogin, correoElectronico, userDataBase) {
 }
 
 module.exports = {createLoginAndUser};
+*/

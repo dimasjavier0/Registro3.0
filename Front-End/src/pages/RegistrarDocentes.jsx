@@ -54,8 +54,8 @@ function RegistrarDocentes() {
         e.preventDefault()
 
         //Validar que no existan campos vacios
-        const datosFormulario=[Identidad,numeroEmpleado,Primernombre,PrimerApellido,correo,fotografia,centroRegional,Departamento]
-        const nombreCampos = ['Identidad','Numero empleado', 'Primer nombre', 'Primer apellido', 'Correo','Fotografia', 'Centro Regional','Departamento'];
+        const datosFormulario=[Identidad,numeroEmpleado,Primernombre,PrimerApellido,correo,fotografia,centroRegional]
+        const nombreCampos = ['Identidad','Numero empleado', 'Primer nombre', 'Primer apellido', 'Correo','Fotografia', 'Centro Regional'];
         
         for (let i = 0; i < datosFormulario.length; i++) {
             if (datosFormulario[i] === '' || datosFormulario[i]=== null) {
@@ -295,22 +295,7 @@ function RegistrarDocentes() {
                     <option value={3}>UNAH-CURC</option>
                     </select>
 
-                    <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Departamento</label>
-                    <select
-                        className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
-                        value={Departamento}
-                        onChange={(e) => {
-                            setDepartamento(e.target.value);
-                        }}
-                    >
-                        <option value='' disabled>-- Seleccione --</option>
-                        {departamentos.map((departamento) => (
-                            <option key={departamento.id_dep_academico} value={departamento.id_dep_academico}>
-                                {departamento.nombre}
-                            </option>
-                        ))}
-                    </select>
-
+                    
                 
                         <div className='flex justify-end mr-0 mt-3 font-bold mb-4'>
                         <button 

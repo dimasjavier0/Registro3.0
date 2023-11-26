@@ -54,7 +54,7 @@ const nodemailer = require('nodemailer');
   /**para la Gestion de peticiones de Carreas */
   app.use('/carreras',carreras_router);
     /**para la Gestion de peticiones de Departamentos */
-    app.use('/departamentos',departamentos_router);
+//app.use('/departamentos',departamentos_router);
 /**para la Gestion de peticiones de docentes */
   app.use('/docentes', docentesRouter);
   /**para la Gestion de peticiones de validar existencia de docentes */

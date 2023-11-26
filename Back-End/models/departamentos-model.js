@@ -1,4 +1,4 @@
-var db = require('../conections/database');
+/*var db = require('../conections/database');
 
 class DepartamentosModel{
     constructor(){
@@ -14,4 +14,4 @@ class DepartamentosModel{
     }
 }
 
-module.exports = new DepartamentosModel();
+module.exports = new DepartamentosModel();*/
