@@ -15,7 +15,8 @@ function HeaderEstudiantes() {
                 <div className=' mr-16'>
                 <div>
                 <h1 className='text-4xl ml-8 
-                font-black text-center text-white mt-10'>Área personal
+                font-black text-center text-white mt-10'>Área personal <br />
+                <h1>estudiante</h1>
                 </h1>
                 <img className=' w-44 h-40 ml-20 mb-8 mt-10' src="/img/vista-estudiante.png" alt="Seguridad" /> 
                 <nav className=''>
