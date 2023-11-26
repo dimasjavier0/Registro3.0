@@ -377,22 +377,22 @@ CREATE TABLE dias_matricula (
 --Alter Table Asignaturas_PAC drop constraint FK_secciones --Foreign key (id_seccion) references secciones (id_seccion);
 
 
-Alter table secciones drop constraint FK__secciones__id_as__41EDCAC5;
+--Alter table secciones drop constraint FK__secciones__id_as__41EDCAC5;
 
 Alter Table secciones add constraint FK_sec_PAC Foreign key (id_asignatura) references  Asignaturas_PAC (id_asignatura_pac);
 
 --alter table asignaturas drop constraint FK_secciones_asig_PAC
-alter table asignaturas_PAC drop constraint FK__Asignatur__id_as__5D95E53A;
+--alter table asignaturas_PAC drop constraint FK__Asignatur__id_as__5D95E53A;
 
 
 
 
 --Alter Table secciones add constraint FK_secciones_asig_PAC Foreign key (id_asignatura) references asignaturas (id_asignatura);
 
-alter table secciones drop constraint FK_secciones_asig_PAC;
+--alter table secciones drop constraint FK_secciones_asig_PAC;
 
 
-ALTER TABLE secciones ADD CONSTRAINT FK_secciones_asig_PAC FOREIGN KEY (id_asignatura) REFERENCES asignaturas_PAC (id_asignatura_pac);
+--ALTER TABLE secciones ADD CONSTRAINT FK_secciones_asig_PAC FOREIGN KEY (id_asignatura) REFERENCES asignaturas_PAC (id_asignatura_pac);
 --alter table secciones drop constraint FK_secciones_asig_PAC;
 --borrar manualmente alter table Asignaturas_PAC drop constraint FK__Asignatur__id_as;
 
@@ -676,3 +676,5 @@ INSERT INTO dias_matricula (id_proceso, indice_inicial, indice_final, dia_comien
 (4, 51, 100, '2023-12-01', '2023-12-05'),
 (5, 0, 50, '2024-01-01', '2024-01-05');
 
+
+alter Usuarios add column rol nvarchar(30);

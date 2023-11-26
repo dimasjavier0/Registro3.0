@@ -200,7 +200,9 @@ class Database {
             /**manda un query */
             this.lastResultQuery = await poolRequest.query(query);
             /**Retorna solo el resultado de la ultima query */
-            console.log('RESPUESTA query :::::::: ',query);
+            console.log('query ENVIADA :::::::: ',query);
+            //console.log('respuesta query::::',this.lastResultQuery);
+            console.log('recordset::::',this.lastResultQuery.recordset);
             return this.lastResultQuery.recordset;//mandando solo el resultado
         } catch (error) {
             throw error;

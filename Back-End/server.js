@@ -26,7 +26,7 @@ const usuarios_route = require('./routes/usuarios-route');
     const app = express();
     app.set('port', PORT);
 
-    /* permite peticiones de otros origenes./
+    /* permite peticiones de otros origenes.*/
     app.use(cors()); 
     //app.use(express.static('public')); //busca la direccion que recibe en la carpeta public.
 

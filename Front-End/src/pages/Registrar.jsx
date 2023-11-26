@@ -35,11 +35,19 @@ function Registrar() {
         /**  Función para obtener las carreras*/
         const obtenerCarreras = async () => {
             try {
-                const resultado = await axios.get('http://localhost:8888/carreras');
-                if (resultado.data && resultado.data.result) {
-                    setCarreras(resultado.data.result);
+                // Uso de async/await en lugar de then
+                const response = await axios.get('http://localhost:8888/carreras');
+                console.warn(response);
+                const resultado = response.data;
+                console.log(`respuesta del backend: ${JSON.stringify(resultado)}`);
+        
+                // Asegúrate de que esta lógica concuerde con la estructura de tus datos
+                if (resultado && resultado.result) {
+                    setCarreras(resultado.result);
                 }
+        
             } catch (error) {
+                // En caso de error, 'resultado' no estará definido
                 console.error('Error al obtener carreras:', error);
             }
         };
@@ -167,7 +175,7 @@ function Registrar() {
                 error: false,
                 });
                 //Limpiar Formulario
-                setIdentidad('');
+                /*setIdentidad('');
                 setPrimerNombre('');
                 setSegundoNombre('');
                 setPrimerApellido('');
@@ -177,7 +185,7 @@ function Registrar() {
                 setTelefono('')
                 setEmail('');
                 document.getElementById('Imagen').value = null;
-                setCentroRegional('');
+                setCentroRegional('');*/
                 window.scrollTo(0, 0);
         
             }catch (error) {
