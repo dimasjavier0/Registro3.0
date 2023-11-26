@@ -15,6 +15,7 @@ const multer = require('multer');
 //var db = require('./conections/database');
 const nodemailer = require('nodemailer');
 const usuarios_route = require('./routes/usuarios-route');
+const estudianteRoutes = require('./routes/estudiante-route');
 
 
 
@@ -67,6 +68,9 @@ const usuarios_route = require('./routes/usuarios-route');
   app.use('/api/videos', videoRouter);//Ruta para Videos
 
   app.use('/cr7', usuarios_route);//ruta para recuperar contrasenia
+  
+  app.use(cors());
+  app.use('/api/estudiante', estudianteRoutes);
 /*
 
 
