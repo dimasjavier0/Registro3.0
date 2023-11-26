@@ -397,3 +397,282 @@ ALTER TABLE secciones ADD CONSTRAINT FK_secciones_asig_PAC FOREIGN KEY (id_asign
 --borrar manualmente alter table Asignaturas_PAC drop constraint FK__Asignatur__id_as;
 
 --Alter table secciones add constraint fk_seccion_PAC foreign key (id_asignatura) references asignaturas_PAC (id_asignatura_pac);
+
+INSERT INTO carreras (nombre_carrera) VALUES
+('Ingeniería en Sistemas'),
+('Medicina'),
+('Derecho'),
+('Arquitectura'),
+('Contaduría Pública');
+
+INSERT INTO tipos_examen_admision (id_tipo_examen, nombre_examen) VALUES
+(1, 'Prueba de Aptitud Académica'),
+(2, 'Examen de Conocimientos Generales'),
+(3, 'Examen de Matemáticas'),
+(4, 'Examen de Ciencias'),
+(5, 'Examen de Humanidades');
+
+INSERT INTO requisitos_carreras (id_requisito_carrera, id_carrera, id_tipo_examen, puntaje_minimo_examen) VALUES
+(1, 1, 1, 70),
+(2, 2, 2, 75),
+(3, 3, 3, 65),
+(4, 4, 4, 60),
+(5, 5, 5, 80);
+
+INSERT INTO departamentos (nombre_departamento) VALUES
+('Francisco Morazán'),
+('Cortés'),
+('Yoro'),
+('Atlántida'),
+('Comayagua');
+
+INSERT INTO municipios (nombre_municipio, id_departamento) VALUES
+('Tegucigalpa', 1),
+('San Pedro Sula', 2),
+('El Progreso', 3),
+('La Ceiba', 4),
+('Comayagua', 5);
+
+INSERT INTO direcciones (descripcion, id_municipio) VALUES
+('Colonia Universidad', 1),
+('Barrio Las Acacias', 2),
+('Sector El Centro', 3),
+('Avenida Atlántida', 4),
+('Residencial Los Pinos', 5);
+
+
+INSERT INTO centros_regionales (id_centro, nombre_centro, id_direccion) VALUES
+(1, 'Centro Universitario Tegucigalpa', 1),
+(2, 'Centro Universitario San Pedro Sula', 2),
+(3, 'Centro Universitario El Progreso', 3),
+(4, 'Centro Universitario La Ceiba', 4),
+(5, 'Centro Universitario Comayagua', 5);
+
+INSERT INTO usuarios (nombre_usuario, password_hash) VALUES
+('juan.perez@unah.hn', 'hash1'),
+('maria.lopez@unah.hn', 'hash2'),
+('carlos.gomez@unah.hn', 'hash3'),
+('lucia.hernandez@unah.hn', 'hash4'),
+('david.martinez@unah.hn', 'hash5');
+
+INSERT INTO personas (numero_identidad, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, telefono, correo, id_usuario) VALUES
+('0801198512345', 'Juan', 'Alberto', 'Pérez', 'Cáceres', '99887766', 'juan.perez@unah.hn', 1),
+('0802198523456', 'María', 'Fernanda', 'López', 'Morales', '99887767', 'maria.lopez@unah.hn', 2),
+('0803198534567', 'Carlos', 'Enrique', 'Gómez', 'Fernández', '99887768', 'carlos.gomez@unah.hn', 3),
+('0804198545678', 'Lucía', 'Isabel', 'Hernández', 'Valladares', '99887769', 'lucia.hernandez@unah.hn', 4),
+('0805198556789', 'David', 'José', 'Martínez', 'Rodríguez', '99887770', 'david.martinez@unah.hn', 5);
+
+INSERT INTO aspirantes (id_aspirante, id_persona, carrera_principal, carrera_secundaria, id_centro) VALUES
+(1, '0801198512345', 1, 2, 1),
+(2, '0802198523456', 2, 3, 2),
+(3, '0803198534567', 3, 4, 3),
+(4, '0804198545678', 4, 5, 4),
+(5, '0805198556789', 5, 1, 5);
+
+INSERT INTO resultados_examen_admision (id_aspirante, FechaExamen, id_tipo_examen, nota, id_persona) VALUES
+(1, '2023-01-15', 1, 85, '0801198512345'),
+(2, '2023-01-16', 2, 80, '0802198523456'),
+(3, '2023-01-17', 3, 75, '0803198534567'),
+(4, '2023-01-18', 4, 70, '0804198545678'),
+(5, '2023-01-19', 5, 65, '0805198556789');
+
+INSERT INTO estudiantes_aprobados (id_aspirante, id_carrera) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5);
+
+INSERT INTO estudiantes (num_cuenta, id_persona, id_carrera, id_direccion, id_centro_regional, correo_institucional) VALUES
+('20230001', '0801198512345', 1, 1, 1, '20230001@est.unah.hn'),
+('20230002', '0802198523456', 2, 2, 2, '20230002@est.unah.hn'),
+('20230003', '0803198534567', 3, 3, 3, '20230003@est.unah.hn'),
+('20230004', '0804198545678', 4, 4, 4, '20230004@est.unah.hn'),
+('20230005', '0805198556789', 5, 5, 5, '20230005@est.unah.hn');
+
+INSERT INTO departamentos_academicos (nombre) VALUES
+('Ciencias de la Computación'),
+('Medicina y Cirugía'),
+('Ciencias Jurídicas'),
+('Arquitectura y Diseño'),
+('Ciencias Económicas y Administrativas');
+
+INSERT INTO docentes (id_persona, id_dep_academico, id_centro) VALUES
+('0801198512345', 1, 1),
+('0802198523456', 2, 2),
+('0803198534567', 3, 3),
+('0804198545678', 4, 4),
+('0805198556789', 5, 5);
+
+INSERT INTO periodos_academicos (num_periodo, descripcion, fecha_inicio, fecha_fin, anio_academico) VALUES
+(1, 'Primer Semestre', '2023-01-15', '2023-06-30', 2023),
+(2, 'Segundo Semestre', '2023-07-15', '2023-12-15', 2023),
+(3, 'Tercer Periodo', '2023-09-01', '2023-12-15', 2023),
+(1, 'Primer Semestre', '2024-01-15', '2024-06-30', 2024),
+(2, 'Segundo Semestre', '2024-07-15', '2024-12-15', 2024);
+
+INSERT INTO Procesos_academicos_periodo (estado, id_periodo) VALUES
+(1, 1),
+(0, 2),
+(1, 3),
+(0, 4),
+(1, 5);
+
+INSERT INTO Procesos_academicos (id_PAC, tipo_proceso, descripcion, fecha_inicio, fecha_fin) VALUES
+(1, 1, 'Proceso de Matrícula', '2023-01-01', '2023-01-10'),
+(2, 2, 'Proceso de Evaluación', '2023-06-01', '2023-06-10'),
+(3, 1, 'Proceso de Matrícula', '2023-07-01', '2023-07-10'),
+(4, 2, 'Proceso de Evaluación', '2023-12-01', '2023-12-10'),
+(5, 1, 'Proceso de Matrícula', '2024-01-01', '2024-01-10');
+
+INSERT INTO estudiantes (num_cuenta, id_persona, id_carrera, id_direccion, id_centro_regional, correo_institucional) VALUES
+('201901234', '0801198512345', 1, 1, 1, 'estudiante1@unah.hn'),
+('201902345', '0802198523456', 2, 2, 2, 'estudiante2@unah.hn'),
+('201903456', '0803198534567', 3, 3, 3, 'estudiante3@unah.hn'),
+('201904567', '0804198545678', 4, 4, 4, 'estudiante4@unah.hn'),
+('201905678', '0805198556789', 5, 5, 5, 'estudiante5@unah.hn');
+
+INSERT INTO Solicitudes (id_solicitud, tipo_solicitud, num_cuenta_solicitante, fecha_solicitud, fecha_respuesta, estado) VALUES
+(1, 'Cambio de Carrera', '201901234', '2023-03-01', '2023-03-05', 1),
+(2, 'Cancelación de Clase', '201902345', '2023-04-01', '2023-04-05', 0),
+(3, 'Reposición de Examen', '201903456', '2023-05-01', '2023-05-05', 1),
+(4, 'Cambio de Centro', '201904567', '2023-06-01', '2023-06-05', 1),
+(5, 'Solicitud de Práctica', '201905678', '2023-07-01', '2023-07-05', 0);
+
+INSERT INTO Pago_Reposicion_Solicitud (id_solicitud, fecha_pago, precio_pago) VALUES
+(3, '2023-05-02', 500);
+
+INSERT INTO Cancelacion_Excepcional_Solicitud (id_solicitud, motivo_cancelacion) VALUES
+(1, 'Enfermedad'),
+(2, 'Viaje de emergencia'),
+(3, 'Problemas personales'),
+(4, 'Dificultades financieras'),
+(5, 'Cambio de ciudad');
+
+INSERT INTO Cambio_Centro_Regional_Solicitud (id_solicitud, id_centro_destino) VALUES
+(1, 2),
+(2, 3),
+(3, 4),
+(4, 5),
+(5, 1);
+
+INSERT INTO Cambio_Carrera_Solicitud (id_solicitud, id_carrera_destino) VALUES
+(1, 2),
+(2, 3),
+(3, 4),
+(4, 5),
+(5, 1);
+
+INSERT INTO carreras_CentrosRegionales (id_centro, id_carrera) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5);
+
+INSERT INTO edificios (nombre, id_centro) VALUES
+('Edificio Central', 1),
+('Edificio de Ingenierías', 2),
+('Edificio de Ciencias Médicas', 3),
+('Edificio de Humanidades', 4),
+('Edificio Administrativo', 5);
+
+INSERT INTO aulas (numero_aula, id_edificio) VALUES
+('Aula 101', 1),
+('Aula 201', 2),
+('Aula 301', 3),
+('Aula 401', 4),
+('Aula 501', 5);
+
+INSERT INTO asignaturas (codigo_asignatura, nombre_asig, unidades_valorativas, id_dep_academico) VALUES
+('IS-101', 'Introducción a la Informática', 3, 1),
+('ME-201', 'Anatomía Humana', 4, 2),
+('DE-301', 'Derecho Constitucional', 3, 3),
+('AR-401', 'Diseño Arquitectónico', 4, 4),
+('CP-501', 'Contabilidad General', 3, 5);
+
+INSERT INTO asignaturas_carreras (id_asignatura, id_carrera, id_requisito) VALUES
+(1, 1, NULL),
+(2, 2, NULL),
+(3, 3, NULL),
+(4, 4, NULL),
+(5, 5, NULL);
+
+INSERT INTO secciones (id_asignatura, id_docente, id_aula, hora_inicio, hora_fin, dias, cupos_maximos, ruta_video) VALUES
+(1, 1, 1, 800, 950, 'Lunes y Miércoles', 30, 'ruta_video_1'),
+(2, 2, 2, 1000, 1150, 'Martes y Jueves', 30, 'ruta_video_2'),
+(3, 3, 3, 1200, 1350, 'Lunes y Miércoles', 30, 'ruta_video_3'),
+(4, 4, 4, 1400, 1550, 'Martes y Jueves', 30, 'ruta_video_4'),
+(5, 5, 5, 1600, 1750, 'Lunes y Miércoles', 30, 'ruta_video_5');
+
+INSERT INTO estado_calificacion (estado) VALUES
+('Aprobado'),
+('Reprobado'),
+('Abandono'),
+('Pendiente'),
+('Incompleto');
+
+INSERT INTO matricula_estudiantes (id_estudiante, id_seccion, nota, id_estado_calificacion) VALUES
+('20230001', 1, 85, 1),
+('20230002', 2, 80, 1),
+('20230003', 3, 75, 2),
+('20230004', 4, 70, 2),
+('20230005', 5, 65, 3);
+
+-- Suponiendo que las fotografías están almacenadas como archivos binarios.
+INSERT INTO fotos_estudiantes (id_estudiante, fotografia) VALUES
+('20230001', 0x0123456789ABCDEF),
+('20230002', 0x0123456789ABCDEF),
+('20230003', 0x0123456789ABCDEF),
+('20230004', 0x0123456789ABCDEF),
+('20230005', 0x0123456789ABCDEF);
+
+INSERT INTO Administradores (id_usuario, correo) VALUES
+(1, 'admin1@unah.hn'),
+(2, 'admin2@unah.hn'),
+(3, 'admin3@unah.hn'),
+(4, 'admin4@unah.hn'),
+(5, 'admin5@unah.hn');
+
+INSERT INTO Dias (id_dia, descripcion) VALUES
+(1, 'Lunes'),
+(2, 'Martes'),
+(3, 'Miércoles'),
+(4, 'Jueves'),
+(5, 'Viernes');
+
+INSERT INTO Dias_asignatura (id_seccion, id_dia) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5);
+
+INSERT INTO Anios_academicos (id_anio, fecha_inicio, fecha_fin, id_periodo_academico) VALUES
+(1, '2023-01-01', '2023-12-31', 1),
+(2, '2024-01-01', '2024-12-31', 2),
+(3, '2025-01-01', '2025-12-31', 3),
+(4, '2026-01-01', '2026-12-31', 4),
+(5, '2027-01-01', '2027-12-31', 5);
+
+INSERT INTO Asignaturas_PAC (id_asignatura_pac, id_periodo, id_carrera, id_asignatura_carrera) VALUES
+(1, 1, 1, 1),
+(2, 2, 2, 2),
+(3, 3, 3, 3),
+(4, 4, 4, 4),
+(5, 5, 5, 5);
+
+INSERT INTO solicitudes_disponibles (id_centro, tipo_solicitud) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 1);
+
+INSERT INTO dias_matricula (id_proceso, indice_inicial, indice_final, dia_comienzo_matricula, dia_final_matricula) VALUES
+(1, 0, 50, '2023-01-01', '2023-01-05'),
+(2, 51, 100, '2023-06-01', '2023-06-05'),
+(3, 0, 50, '2023-07-01', '2023-07-05'),
+(4, 51, 100, '2023-12-01', '2023-12-05'),
+(5, 0, 50, '2024-01-01', '2024-01-05');
+
