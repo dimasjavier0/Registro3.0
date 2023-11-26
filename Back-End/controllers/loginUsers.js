@@ -1,33 +1,110 @@
-
-/*
-
-const sql = require('mssql');
+const db = require('../conections/database');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
+class UserAndLogin{
+  constructor() {};
 
+  /*Metodo para crea una contraseña provisional*/
+  generarPasswordProvisional() {
+    return crypto.randomBytes(8).toString('hex'); // Genera una cadena hex segura
+  }
+  
+  /*Metodo para crear un usuario*/
+  async crearUsuario(nombreUsuario, correoElectronico, rol) {
+    try {
+      // Conectar a la base de datos
+      await db.connect();
 
-const config = {
-  user: 'Grupo',
-  password: '1234',
-  server: 'localhost',
-  database: 'Registro2',//Registro2
-  options: {
-    encrypt: false,
-    trustServerCertificate: true,
-    
-  },
-};
+      const nombreLogin = nombreUsuario.toString();
 
-function randomPassword() {
-  const caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let password = '';
+      const resultado = await db.query(`SELECT nombre_usuario FROM usuarios WHERE nombre_usuario = '${nombreLogin}'`);
 
-  for (let i = 0; i < 10; i++) {
-    const randomIndex = Math.floor(Math.random() * caracteres.length);
-    password += caracteres.charAt(randomIndex);
+      const passwordUser = this.generarPasswordProvisional(); //La contraseña que se enviara al correo
+
+      if (resultado.length === 0) {
+        const passwordHash = await hashPassword(passwordUser);
+
+        if (rol === 'docente') {
+          await db.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico, rol)
+                          VALUES('${nombreLogin}', '${passwordHash}', '${correoElectronico}', 'docente')`);
+        } else if (rol === 'estudiante') {
+          await db.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico, rol)
+                          VALUES('${nombreLogin}', '${passwordHash}', '${correoElectronico}', 'estudiante')`);
+        }
+      } else {
+        throw new Error(`El usuario ${nombreLogin} ya existe`);
+      }
+
+      console.log(passwordUser);
+      db.close();
+    } catch (err) {
+      console.error('Error al crear el usuario:', err);
+      throw err;
+    }
   }
 
-  return password;
+  /*Metodo para cambiar el password de un login y user en la base de datos*/
+  async cambiarPassword(nombreUsuario, nuevaPassword) {
+    try {
+      const nombreLogin = nombreUsuario.toString();
+
+      // Conectar a la base de datos
+      await db.connect();
+
+      const resultado = await db.query(`SELECT nombre_usuario FROM usuarios WHERE nombre_usuario = '${nombreLogin}'`);
+
+      if (resultado.length > 0) {
+        const passwordLogin = await hashPassword(nuevaPassword);
+
+        await db.query(`UPDATE usuarios 
+                        SET password_hash = '${passwordLogin}'
+                        WHERE nombre_usuario = '${nombreLogin}';`);
+      } else {
+        throw new Error('El usuario no existe');
+      }
+
+      db.close();
+
+    } catch (err) {
+      console.error('Error cambiar el password:', err);
+      throw err;
+    }
+  }
+
+  async verificarCredenciales(nombreUsuario, passwordUser, rol){
+    try{
+      const nombreLogin = nombreUsuario.toString();
+      await db.connect();
+
+      const resultado = await db.query(`SELECT nombre_usuario FROM usuarios 
+                                        WHERE nombre_usuario = '${nombreLogin}' and rol = '${rol}'`);
+      
+      if (resultado.length === 0){
+        throw new Error('El usuario no existe');
+      }else {
+        const passwordBase = await db.query(`SELECT password_hash FROM usuarios 
+                                            WHERE nombre_usuario = '${nombreLogin}' and rol = '${rol}'`);
+
+        //Verificar la contraseña 
+        bcrypt.compare(passwordUser, passwordBase[0].password_hash, (err, result) => {
+          if (err) {
+            throw new Error('Error al comparar las contraseñas:', err);
+          }
+
+          if (result) {
+            console.log('La contraseña es correcta');
+          } else {
+           throw new Error('La contraseña es incorrecta');
+          }
+        });
+        db.close();
+      }
+
+    }catch (err){
+      throw err;
+    }
+  }
 }
 
 // Función para hashear una contraseña
@@ -40,56 +117,22 @@ async function hashPassword(password) {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     return hashedPassword;
-  } catch (error) {
-    throw new Error('Error al hashear la contraseña: ' + error.message);
+  } catch (err) {
+    throw new Error('Error al hashear la contraseña: ', err);
   }
-}
+};
 
-// Función para crear usuarios y logins en la base de datos
-async function createLoginAndUser(nameLogin, correoElectronico, userDataBase) {
-  let pool;
-  try {
-    const nombreLogin = nameLogin.toString();
+module.exports = {UserAndLogin};
+// const userLogin = new UserAndLogin();
 
-    // Conectar a la base de datos
-    pool = await sql.connect(config);
+// function ejecutar(){
+//   try {
+//     //userLogin.crearUsuario(2020234, 'mi@gmail.com', 'docente');
+//     userLogin.verificarCredenciales(2020234, 'mi1234', 'docente');
+//     //userLogin.cambiarPassword(2020234, 'mi1234')
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
-    const transaction = new sql.Transaction(pool);
-    await transaction.begin();
-
-    passwordUser = randomPassword(); //La contraseña que se enviara al correo
-
-    try {
-      // Crear el login
-      const passwordLogin = await hashPassword(passwordUser);
-      await sql.query(`USE master;`);
-      await sql.query(`CREATE LOGIN [${nombreLogin}] WITH PASSWORD = '${passwordLogin}';`);
-
-      // Crear el usuario en la base de datos
-      await sql.query(`USE ${config.database}; CREATE USER [${nombreLogin}] FOR LOGIN [${nombreLogin}];`);
-
-      if (userDataBase === 'docente') {
-        // Agregar el rol docente a un usuario
-        await sql.query(`ALTER ROLE docente ADD MEMBER [${nombreLogin}];`);
-
-        await sql.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico)
-                        VALUES('${nombreLogin}', '${passwordLogin}', '${correoElectronico}')`);
-      } // Código para agregar el rol de estudiante
-
-      await transaction.commit();
-
-    } catch (errConsulta) {
-      console.error('Error al crear el login y el usuario:', errConsulta);
-      await transaction.rollback();
-      throw errConsulta;
-    }
-  } catch (errConexion) {
-    throw errConexion;
-  } finally {
-    // Cerrar la conexión
-    if (pool) await pool.close();
-  }
-}
-
-module.exports = {createLoginAndUser};
-*/
+// ejecutar();

@@ -1,7 +1,7 @@
 const sql = require('mssql');
-const {createLoginAndUser} = require('../controllers/loginUsers');
+const {UserAndLogin} = require('../controllers/loginUsers');
 
-// Configuración de la conexión a la base de datos
+//Configuración de la conexión a la base de datos
 const dbConfig = {
     user: 'Grupo', 
     password: '1234',
@@ -10,7 +10,6 @@ const dbConfig = {
     options: {
         encrypt: false, // Si estás usando Azure SQL
         trustServerCertificate: true // Solo para desarrollo, no usar en producción
-        
     }
 };
 
@@ -34,9 +33,10 @@ async function registrarDocente(docenteData) {
             .input('CentroId', sql.Int, docenteData.centroRegional)
             .execute('RegistrarDocente');
 
+        //Crear el usuario en la base de datos
+        const userLogin = new UserAndLogin();
+        await userLogin.crearUsuario(docenteData.numeroEmpleado, docenteData.correo, 'docente');
         
-        //await createLoginAndUser(docenteData.numeroEmpleado, docenteData.correo, 'docente');
-           
         console.log('Docente registrado con éxito');
     } catch (err) {
         console.error('Error al registrar el docente:', err);
