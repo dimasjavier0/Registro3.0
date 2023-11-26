@@ -1,25 +1,46 @@
-import React from 'react'
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AlertaError from '../components/AlertaError';
-
+import axios from 'axios';
 
 
 function OlvideContraseña() {
-    const [email, setEmail] = useState('');
-    const [alerta, setAlerta] = useState({});
+  const [email, setEmail] = useState('');
+  const [alerta, setAlerta] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+ // Estado para controlar el envío del formulario
 
-    function handleSubmit(e) {
-        e.preventDefault();
-
-        if ([email].includes('')) {
-            setAlerta({mensaje: 'Existen campos vacios', error: true})
-            return;   
-        }
-        setAlerta({})
-        setEmail('')
+ useEffect(() => {
+    // Solo realiza la petición POST cuando submitted es true
+    if (submitted) {
+      axios.post('http://localhost:8888/api/olvideContrasena', { email })
+        .then(response => {
+          setAlerta({ mensaje: 'Revise su correo', error: false });
+        })
+        .catch(error => {
+          if (error.response && error.response.status === 404) {
+            setAlerta({ mensaje: 'No existe este correo', error: true });
+          } else {
+            setAlerta({ mensaje: 'Ha ocurrido un error', error: true });
+          }
+        })
+        .finally(() => {
+          setSubmitted(false); // Restablece submitted para futuros envíos
+        });
     }
-    const {mensaje}= alerta
+  }, [submitted, email]); // Dependencias del efecto
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!email) {
+      setAlerta({ mensaje: 'Existen campos vacíos', error: true });
+    } else {
+      setSubmitted(true); // Activa submitted para disparar el efecto
+    }
+  }
+
+  const { mensaje, error } = alerta; // Desestructuración para usar en JSX
+
 
     return (
         <>
@@ -89,4 +110,5 @@ function OlvideContraseña() {
     )
 }
 
-export default OlvideContraseña
+export default OlvideContraseña;
+
