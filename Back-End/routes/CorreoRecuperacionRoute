@@ -1,0 +1,13 @@
+//http://localhost:5176/olvideContrase%C3%B1a
+//ruta con la que conecto a react
+//agregar al server con la misma estructura de cristian rodil 
+
+const express = require('express');
+const router = express.Router();
+const correoRecuperacion = require('../controllers/CorreoRecuperacion');
+
+// Cambia la ruta para que coincida con la URL proporcionada
+// Asegúrate de que la URL está correctamente codificada y usa 'olvideContrasena'
+router.post('/api/olvideContrasena', correoRecuperacion.manejarSolicitudRecuperacion);
+
+module.exports = router;
