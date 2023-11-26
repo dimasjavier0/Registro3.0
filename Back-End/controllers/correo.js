@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const db = require('../conections/database');
 
 class Correo{
     constructor(){
@@ -23,9 +24,9 @@ class Correo{
         });
     }
 
-    async enviarCorreo(mail,msjToSend){
+    async enviarCorreo(mail,subject,msjToSend){
         this.mailOptions.to = mail;
-        this.mailOptions.subject = '<<RESULTADOS UNAH>>';
+        this.mailOptions.subject = subject;//'<<RESULTADOS UNAH>>'
         this.mailOptions.text = msjToSend;
 
         /** metodo de la conexion para enviar correo */
@@ -36,6 +37,7 @@ class Correo{
                 console.log('Correo enviado: ' + info.response);
             }
         });
+        
     }
     
 }

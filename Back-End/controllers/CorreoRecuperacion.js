@@ -62,6 +62,7 @@ async function actualizarContraseniaUsuario(idUsuario, contraseniaHasheada) {
 }
 
 async function manejarSolicitudRecuperacion(req, res) {
+  console.log("= = = = entro al correoRecuperacion.js = = = = =");
   const { email } = req.body;
 
   try {

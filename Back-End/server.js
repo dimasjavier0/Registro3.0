@@ -14,7 +14,7 @@ const videoRouter = require('./routes/Videos-route');
 const multer = require('multer');
 //var db = require('./conections/database');
 const nodemailer = require('nodemailer');
-const correoRecuperacion = require('./routes/CorreoRecuperacionRoute');
+const usuarios_route = require('./routes/usuarios-route');
 
 
 
@@ -66,7 +66,7 @@ const correoRecuperacion = require('./routes/CorreoRecuperacionRoute');
 
   app.use('/api/videos', videoRouter);//Ruta para Videos
 
-  app.use('/cr7', correoRecuperacion);//ruta para recuperar contrasenia
+  app.use('/cr7', usuarios_route);//ruta para recuperar contrasenia
 /*
 
 
