@@ -18,19 +18,28 @@ function OlvideContraseña() {
   }
   setAlerta({})
 
-    try {
-      const url = 'http://localhost:8888/cr7/usuarios';
-      const data = {
-        correo: email,
-      };
+  try {
+    const url = 'http://localhost:8888/cr7/usuarios';
+    const data = {
+      correo: email,
+    };
 
-      const respuesta = await axios.put(url, data);
+    const respuesta = await axios.put(url, data);
 
-      setRespuestaServidor(respuesta.data);
-    } catch (error) {
-      console.error('Error al enviar la solicitud:', error);
-    }
-  };
+    
+    const mensajePersonalizado = `Se ha enviado un correo al correo: ${email}. Con mensaje: ${respuesta.data.mensaje}`;
+
+    setAlerta({
+      mensaje: mensajePersonalizado,
+      error: false,
+    });
+  } catch (error) {
+    setAlerta({
+      mensaje: 'Hubo un problema al procesar la solicitud. Por favor, inténtalo de nuevo.',
+      error: true,
+    });
+  }
+};
 
 
 
