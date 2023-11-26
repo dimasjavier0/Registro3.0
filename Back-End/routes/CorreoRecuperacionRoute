@@ -8,6 +8,6 @@ const correoRecuperacion = require('../controllers/CorreoRecuperacion');
 
 // Cambia la ruta para que coincida con la URL proporcionada
 // Asegúrate de que la URL está correctamente codificada y usa 'olvideContrasena'
-router.post('/api/olvideContrasena', correoRecuperacion.manejarSolicitudRecuperacion);
+router.post('/olvideContrasena', correoRecuperacion.manejarSolicitudRecuperacion);
 
 module.exports = router;

@@ -7,8 +7,8 @@ const nodemailer = require('nodemailer');
 const sql = require('mssql');
 
 const dbConfig = {
-  user: 'asd',
-  password: '134',
+  user: 'Grupo',
+  password: '1234',
   server: 'localhost',
   database: 'registro',
   options: {
@@ -90,7 +90,7 @@ async function manejarSolicitudRecuperacion(req, res) {
         from: 'idsunahcu@gmail.com',
         to: email,
         subject: 'Recuperación de contraseña UNAH',
-        text: `Tu contraseña provisional es: ${contraseniaProvisional}. Por favor, cambia tu contraseña una vez que inicies sesión.`
+        text: `Tu contraseña nueva es: ${contraseniaProvisional}.`
       };
 
       // Envío de correo
@@ -98,6 +98,7 @@ async function manejarSolicitudRecuperacion(req, res) {
         await transporter.sendMail(mailOptions);
         res.json({ mensaje: 'Se ha enviado un correo con la contraseña provisional.' });
       } catch (error) {
+        console.error('Ocurrio un error:', error);
         res.status(500).json({ mensaje: 'Error al enviar el correo.' });
       }
     } else {

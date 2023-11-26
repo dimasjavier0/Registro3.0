@@ -13,7 +13,7 @@ function OlvideContraseña() {
  useEffect(() => {
     // Solo realiza la petición POST cuando submitted es true
     if (submitted) {
-      axios.post('http://localhost:8888/api/olvideContrasena', { email })
+      axios.post('http://localhost:8888/cr7/olvideContrasena', { email })
         .then(response => {
           setAlerta({ mensaje: 'Revise su correo', error: false });
         })

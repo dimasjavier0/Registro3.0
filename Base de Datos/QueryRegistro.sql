@@ -16,7 +16,7 @@ CREATE TABLE tipos_examen_admision (
 GO
 
 CREATE TABLE requisitos_carreras (
-    id_requisito_carrera INT IDENTITY PRIMARY KEY,
+    id_requisito_carrera INT PRIMARY KEY,
     id_carrera INT NOT NULL FOREIGN KEY REFERENCES carreras(id_carrera),
 	id_tipo_examen INT FOREIGN KEY REFERENCES tipos_examen_admision(id_tipo_examen),
 	puntaje_minimo_examen INT,
@@ -232,4 +232,7 @@ CREATE TABLE usuarios (
 );
 
 ALTER TABLE usuarios
-ADD correoElectronico NVARCHAR(100);
+ADD correoElectronico NVARCHAR(255);
+
+INSERT INTO usuarios (nombre_usuario, password_hash, correoElectronico)
+VALUES ('20181030913', '$2b$12$A9NoXVOx0Wr1luys8Mb9me/crCyo8TA4jSPIhyUAnt7ZhckXQt/Yi', 'papardosmith1917@gmail.com');

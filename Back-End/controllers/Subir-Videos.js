@@ -1,8 +1,8 @@
 const mssql = require('mssql');
 
 const config = {
-    user: 'asd',
-    password: '134',
+    user: 'Grupo',
+    password: '1234',
     server: 'localhost', 
     database: 'registro',
     options: {
