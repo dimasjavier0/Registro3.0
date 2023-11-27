@@ -31,6 +31,13 @@ function Registrar() {
         }
     };
 
+    //Evitamos que en el campo identidad se ingresen letras o signos no deseados
+    const handleSoloNumeros = (e) => {
+        if (/^\d*$/.test(e.target.value)) {
+        setIdentidad(e.target.value);
+        }
+    };
+
     useEffect(() => {
         /**  Función para obtener las carreras*/
         const obtenerCarreras = async () => {
@@ -79,8 +86,8 @@ function Registrar() {
         e.preventDefault()
 
         //Validar que no existan campos vacios
-        const datosFormulario=[identidad,primerNombre,primerApellido,carreraPrincipal,carreraSecundaria,telefono,email,imagen,centroRegional]
-        const nombreCampos = ['Identidad', 'Primer nombre', 'Primer apellido', 'Carrera principal','Carrera secundaria', 'Teléfono', 'Correo Personal','Imagen','Centro regional'];
+        const datosFormulario=[identidad,primerNombre,primerApellido,carreraPrincipal,carreraSecundaria,telefono,email,centroRegional]
+        const nombreCampos = ['Identidad', 'Primer nombre', 'Primer apellido', 'Carrera principal','Carrera secundaria', 'Teléfono', 'Correo Personal','Centro regional'];
         
         for (let i = 0; i < datosFormulario.length; i++) {
             if (datosFormulario[i] === '' || datosFormulario[i]=== null) {
@@ -101,6 +108,7 @@ function Registrar() {
                         return;
         }
 
+        //validar que el numero de telefono contenga solo numeros y sea de 8 digitos
         if (/^[0-9]{8}$/.test(telefono)) {
             setAlerta({})
         
@@ -109,6 +117,16 @@ function Registrar() {
                         error: true})
                         window.scrollTo(0, 0);
                         return;
+        }
+
+        //Validar que la carrera principal sea distinta a la carrera secundaria
+        if (carreraPrincipal === carreraSecundaria) {
+            setAlerta({mensaje: 'No puede seleccionar 2 carreras iguales', 
+                        error: true})
+                        window.scrollTo(0, 0);
+                        return;
+        }else{
+            setAlerta({})
         }
 
         try {
@@ -244,10 +262,7 @@ function Registrar() {
                     type='text'   
                     placeholder='ej: 0801197302222'
                     value={identidad}
-                    onChange={(e) => {
-                        setIdentidad(e.target.value)
-                    }
-                    }
+                    onChange={handleSoloNumeros}
                     />
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Nombre </label>
