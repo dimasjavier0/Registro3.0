@@ -34,7 +34,7 @@ router.post('/', async (req,res)=>{
             "pam":2,
             "pcn":3
         };
-
+        
         /** notas es una arreglo de notas [[,,],[]]*/
         console.log("Peticion Recibida:",req.body);
 
