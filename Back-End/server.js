@@ -55,7 +55,7 @@ const estudianteRoutes = require('./routes/estudiante-route');
   /**para la Gestion de peticiones de Carreas */
   app.use('/carreras',carreras_router);
     /**para la Gestion de peticiones de Departamentos */
-//app.use('/departamentos',departamentos_router);
+  app.use('/departamentos',departamentos_router);
 /**para la Gestion de peticiones de docentes */
   app.use('/docentes', docentesRouter);
   /**para la Gestion de peticiones de validar existencia de docentes */
@@ -69,6 +69,7 @@ const estudianteRoutes = require('./routes/estudiante-route');
 
   app.use('/cr7', usuarios_route);//ruta para recuperar contrasenia
   app.use('/api/estudiante', estudianteRoutes);
+
 /*
 
 
