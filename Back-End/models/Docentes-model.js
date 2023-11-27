@@ -19,6 +19,7 @@ async function registrarDocente(docenteData) {
         // Conectar a la base de datos
         let pool = await sql.connect(dbConfig);
 
+        const imageBuffer = Buffer.from(docenteData.fotografia.split(',')[1], 'base64');
         // Ejecutar el procedimiento almacenado
         await pool.request()
             .input('Identidad', sql.NVarChar, docenteData.Identidad)
@@ -28,7 +29,7 @@ async function registrarDocente(docenteData) {
             .input('SegundoApellido', sql.NVarChar, docenteData.segundoApellido)
             .input('Correo', sql.NVarChar, docenteData.correo)
             .input('NumeroEmpleado', sql.Int, docenteData.numeroEmpleado)
-            .input('Foto', sql.VarBinary(sql.MAX), Buffer.from(docenteData.fotografia, 'base64'))
+            .input('Foto', sql.VarBinary,imageBuffer)
             .input('DeptoAcademicoId', sql.Int, docenteData.departamento)
             .input('CentroId', sql.Int, docenteData.centroRegional)
             .execute('RegistrarDocente');

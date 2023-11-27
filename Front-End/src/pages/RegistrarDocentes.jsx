@@ -136,6 +136,8 @@ function RegistrarDocentes() {
             // Manejar la respuesta aquí...
 
             console.log('Registro exitoso:', response.data);
+            setAlerta({mensaje: 'Registro Exitoso!', 
+            error: false}) 
             //Limpiar Formulario
             setIdentidad('');
             setNumeroEmpleado('');
