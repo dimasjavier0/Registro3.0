@@ -1,16 +1,17 @@
 const mssql = require('mssql');
 
-const config = {
 
+const config = {
     user: 'Grupo',
     password: '1234',
-    server: 'localhost', 
-    database: 'Registro2',
+    server: 'localhost',
+    database: 'Registro2',//Registro2
     options: {
-        encrypt: false, // Si estás usando Azure SQL
-        trustServerCertificate: true // Solo para desarrollo, no usar en producción
-    }
-};
+      encrypt: false,
+      trustServerCertificate: true,
+      
+    },
+  };
 
 
 const pool = new mssql.ConnectionPool(config);

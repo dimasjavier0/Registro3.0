@@ -8,6 +8,7 @@ const config = {
   options: {
     encrypt: false,
     trustServerCertificate: true,
+    
   },
 };
 

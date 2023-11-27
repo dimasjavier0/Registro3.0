@@ -20,12 +20,14 @@ var sqlConfig = {
         options: {//configuracion de credencial
           userName: user,
           password: pass
+
         }
       },
       options: {//configuracion de acceso a la base
         port: por,
         database: db,
-        trustServerCertificate: true
+        trustServerCertificate: true,
+        
       }
 };
 

@@ -15,7 +15,7 @@ router.get('/',(req,res)=>{});
 router.get('/:idAspirante',(req,res)=>{
     console.log('se recibio:',req.body);
 });
-
+//C:\Program Files\OpenSSL-Win64
 /**Crear 1 aspirante */
 router.post('/', async (req,res)=>{
   

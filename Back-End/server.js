@@ -11,11 +11,11 @@ const validarDocenteRouter = require('./routes/ValidarDocente-route');
 const docenteAsignadosRouter = require('./routes/MostrarMatriculados-route'); 
 const ListaEstudianteRoutes = require('./routes/ExportarAlumnos-route');
 const videoRouter = require('./routes/Videos-route');
+const Ingreso = require('./routes/ValidarCredenciales-route');
 const multer = require('multer');
 //var db = require('./conections/database');
 const nodemailer = require('nodemailer');
-const usuarios_route = require('./routes/usuarios-route');
-const estudianteRoutes = require('./routes/estudiante-route');
+
 
 
 
@@ -23,11 +23,11 @@ const estudianteRoutes = require('./routes/estudiante-route');
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
 
-    //instancia del modulo express/
+    /**instancia del modulo express*/
     const app = express();
     app.set('port', PORT);
 
-    /* permite peticiones de otros origenes.*/
+    /** permite peticiones de otros origenes.*/
     app.use(cors()); 
     //app.use(express.static('public')); //busca la direccion que recibe en la carpeta public.
 
@@ -37,7 +37,7 @@ const estudianteRoutes = require('./routes/estudiante-route');
     /**Recibir una Peticion POST */
     //app.use(bodyParser.json());
     app.use(bodyParser.json({ limit: '50mb' }));
-    /* con esto tenemos acceso a un nuevo JSON llamado body/
+    /** con esto tenemos acceso a un nuevo JSON llamado body*/
     //app.use(bodyParser.urlencoded({extended:true})); 
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
     /**para el manejo de rutas */
@@ -55,7 +55,7 @@ const estudianteRoutes = require('./routes/estudiante-route');
   /**para la Gestion de peticiones de Carreas */
   app.use('/carreras',carreras_router);
     /**para la Gestion de peticiones de Departamentos */
-//app.use('/departamentos',departamentos_router);
+  app.use('/departamentos',departamentos_router);
 /**para la Gestion de peticiones de docentes */
   app.use('/docentes', docentesRouter);
   /**para la Gestion de peticiones de validar existencia de docentes */
@@ -67,10 +67,8 @@ const estudianteRoutes = require('./routes/estudiante-route');
 
   app.use('/api/videos', videoRouter);//Ruta para Videos
 
-  app.use('/cr7', usuarios_route);//ruta para recuperar contrasenia
-  
-  app.use(cors());
-  app.use('/api/estudiante', estudianteRoutes);
+  app.use('/', Ingreso);//para el logeo  de docentes y estudiantes
+
 /*
 
 
@@ -164,7 +162,7 @@ app.post('/aspirantes', async (req,res)=>{ //funcion asincrona
 
     /** Limpiar campos del aspirante antes de enviar a la base de datos */
 
-    /* Mandar a guardar aspirante en la base de datos/
+    /** Mandar a guardar aspirante en la base de datos*/
     var resultQuery = await db.query(
       `exec [dbo].[agregar_aspirante] '${aspirante.identidad}', '${aspirante.p_nombre}', '${aspirante.s_nombre}', '${aspirante.p_apellido}', '${aspirante.s_apellido}'
       ,'${aspirante.cel}',  '${aspirante.correoPersonal}',${aspirante.carreraPrincipal},${aspirante.carreraSecundaria}, 
