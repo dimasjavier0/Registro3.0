@@ -127,23 +127,14 @@ class UserAndLogin{
 
                                             //const hashedPasswordFromDB = passwordBase[0].password_hash;
         //Verificar la contraseña 
-        bcrypt.compare(passwordUser, passwordBase, (err, result) => {
-          if (err) {
-            throw new Error('Error al comparar las contraseñas:', err);
-          }
-
-          if (result) {
-            console.log('La contraseña es correcta');
-            return true;
-          } else {
-           throw new Error('La contraseña es incorrecta');
-          }
+      await  bcrypt.compare(passwordUser, passwordBase, (err, result) => {
+         
         });
-        pool.close();
+       // pool.close();
       }
 
     }catch (err){
-      throw err;
+      
     }
   }
 }

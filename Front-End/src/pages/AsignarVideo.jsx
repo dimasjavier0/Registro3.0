@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { useUser } from "../useContext";
 const VideoUploader = () => {
+
+  const { nombreUsuario } = useUser();
   const [video, setVideo] = useState(null);
   const [idDocente, setIdDocente] = useState(''); // Asegúrate de tener el idDocente adecuado
   const [asignaturas, setAsignaturas] = useState([]);
@@ -9,9 +11,11 @@ const VideoUploader = () => {
 
   useEffect(() => {
     // Obtener la lista de asignaturas al montar el componente
+   
     const fetchAsignaturas = async () => {
       try {
-        const response = await axios.get(`http://localhost:8888/api/docentes/${2023115}/clases`); // Ajusta la ruta según tu API
+         //idDocente = parseInt(nombreUsuario, 6);
+        const response = await axios.get(`http://localhost:8888/api/docentes/${200110}/clases`); // Ajusta la ruta según tu API
         setAsignaturas(response.data);
       } catch (error) {
         console.error('Error al obtener asignaturas:', error);
@@ -19,7 +23,7 @@ const VideoUploader = () => {
     };
 
     fetchAsignaturas();
-  }, [idDocente]);
+  }, [200110]);
 
   const handleVideoChange = (event) => {
     setVideo(event.target.files[0]);
@@ -57,8 +61,8 @@ const VideoUploader = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto border-blue-900 mt-28 p-6 ml-20 bg-white rounded-md shadow-2xl border-2">
-      <h2 className="text-2xl font-lato mb-4 font-bold">Subir Video</h2>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-md shadow-md">
+      <h2 className="text-2xl font-semibold mb-4">Subir Video</h2>
 
       <label className="block mb-4">
         <span className="text-gray-700">Seleccionar Video:</span>
@@ -77,7 +81,7 @@ const VideoUploader = () => {
         </select>
       </label>
 
-      <button onClick={handleUpload} className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
+      <button onClick={handleUpload} className="bg-blue-500 text-white px-4 py-2 rounded-md">
         Subir Video
       </button>
     </div>
