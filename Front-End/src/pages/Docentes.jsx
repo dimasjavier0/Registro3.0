@@ -153,7 +153,7 @@ function Docentes() {
                 rol,
             });
            
-            setUsuario(parseInt(response.data.nombreUsuario, 10));
+            setUsuario(response.data.nombreUsuario);
 
             // Maneja la respuesta del servidor aquí
             console.log(response.data);

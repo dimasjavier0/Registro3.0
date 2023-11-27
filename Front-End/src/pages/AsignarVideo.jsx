@@ -15,7 +15,7 @@ const VideoUploader = () => {
     const fetchAsignaturas = async () => {
       try {
          //idDocente = parseInt(nombreUsuario, 6);
-        const response = await axios.get(`http://localhost:8888/api/docentes/${200110}/clases`); // Ajusta la ruta según tu API
+        const response = await axios.get(`http://localhost:8888/api/docentes/${nombreUsuario}/clases`); // Ajusta la ruta según tu API
         setAsignaturas(response.data);
       } catch (error) {
         console.error('Error al obtener asignaturas:', error);
@@ -23,7 +23,7 @@ const VideoUploader = () => {
     };
 
     fetchAsignaturas();
-  }, [200110]);
+  }, [nombreUsuario]);
 
   const handleVideoChange = (event) => {
     setVideo(event.target.files[0]);

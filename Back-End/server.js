@@ -12,7 +12,7 @@ const docenteAsignadosRouter = require('./routes/MostrarMatriculados-route');
 const ListaEstudianteRoutes = require('./routes/ExportarAlumnos-route');
 const videoRouter = require('./routes/Videos-route');
 const multer = require('multer');
-//var db = require('./conections/database');
+var db = require('./conections/database');
 const nodemailer = require('nodemailer');
 const usuarios_route = require('./routes/usuarios-route');
 const estudianteRoutes = require('./routes/estudiante-route');
@@ -55,7 +55,7 @@ const estudianteRoutes = require('./routes/estudiante-route');
   /**para la Gestion de peticiones de Carreas */
   app.use('/carreras',carreras_router);
     /**para la Gestion de peticiones de Departamentos */
-//app.use('/departamentos',departamentos_router);
+app.use('/departamentos',departamentos_router);
 /**para la Gestion de peticiones de docentes */
   app.use('/docentes', docentesRouter);
   /**para la Gestion de peticiones de validar existencia de docentes */
@@ -68,6 +68,7 @@ const estudianteRoutes = require('./routes/estudiante-route');
   app.use('/api/videos', videoRouter);//Ruta para Videos
 
   app.use('/cr7', usuarios_route);//ruta para recuperar contrasenia
+  
   app.use('/api/estudiante', estudianteRoutes);
 /*
 
