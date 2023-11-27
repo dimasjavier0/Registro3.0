@@ -150,7 +150,7 @@ CREATE TABLE Procesos_academicos_periodo (
 CREATE TABLE Procesos_academicos (
     id_proceso INT PRIMARY KEY identity(1,1),
     id_PAC INT,
-    tipo_proceso INT , -- COMMENT 'seg˙n el n˙mero es un tipo de proceso: 1-> reposiciÛn, 2-> cancelaciÛn excepcional, etc',
+    tipo_proceso INT , -- COMMENT 'seg√∫n el n√∫mero es un tipo de proceso: 1-> reposici√≥n, 2-> cancelaci√≥n excepcional, etc',
     descripcion NVARCHAR(255),
     fecha_inicio DATE,
     fecha_fin DATE,
@@ -399,16 +399,16 @@ Alter Table secciones add constraint FK_sec_PAC Foreign key (id_asignatura) refe
 --Alter table secciones add constraint fk_seccion_PAC foreign key (id_asignatura) references asignaturas_PAC (id_asignatura_pac);
 
 INSERT INTO carreras (nombre_carrera) VALUES
-('IngenierÌa en Sistemas'),
+('Ingenier√≠a en Sistemas'),
 ('Medicina'),
 ('Derecho'),
 ('Arquitectura'),
-('ContadurÌa P˙blica');
+('Contadur√≠a P√∫blica');
 
 INSERT INTO tipos_examen_admision (id_tipo_examen, nombre_examen) VALUES
-(1, 'Prueba de Aptitud AcadÈmica'),
+(1, 'Prueba de Aptitud Acad√©mica'),
 (2, 'Examen de Conocimientos Generales'),
-(3, 'Examen de Matem·ticas'),
+(3, 'Examen de Matem√°ticas'),
 (4, 'Examen de Ciencias'),
 (5, 'Examen de Humanidades');
 
@@ -420,10 +420,10 @@ INSERT INTO requisitos_carreras (id_requisito_carrera, id_carrera, id_tipo_exame
 (5, 5, 5, 80);
 
 INSERT INTO departamentos (nombre_departamento) VALUES
-('Francisco Moraz·n'),
-('CortÈs'),
+('Francisco Moraz√°n'),
+('Cort√©s'),
 ('Yoro'),
-('Atl·ntida'),
+('Atl√°ntida'),
 ('Comayagua');
 
 INSERT INTO municipios (nombre_municipio, id_departamento) VALUES
@@ -437,7 +437,7 @@ INSERT INTO direcciones (descripcion, id_municipio) VALUES
 ('Colonia Universidad', 1),
 ('Barrio Las Acacias', 2),
 ('Sector El Centro', 3),
-('Avenida Atl·ntida', 4),
+('Avenida Atl√°ntida', 4),
 ('Residencial Los Pinos', 5);
 
 
@@ -456,11 +456,11 @@ INSERT INTO usuarios (nombre_usuario, password_hash) VALUES
 ('david.martinez@unah.hn', 'hash5');
 
 INSERT INTO personas (numero_identidad, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, telefono, correo, id_usuario) VALUES
-('0801198512345', 'Juan', 'Alberto', 'PÈrez', 'C·ceres', '99887766', 'juan.perez@unah.hn', 1),
-('0802198523456', 'MarÌa', 'Fernanda', 'LÛpez', 'Morales', '99887767', 'maria.lopez@unah.hn', 2),
-('0803198534567', 'Carlos', 'Enrique', 'GÛmez', 'Fern·ndez', '99887768', 'carlos.gomez@unah.hn', 3),
-('0804198545678', 'LucÌa', 'Isabel', 'Hern·ndez', 'Valladares', '99887769', 'lucia.hernandez@unah.hn', 4),
-('0805198556789', 'David', 'JosÈ', 'MartÌnez', 'RodrÌguez', '99887770', 'david.martinez@unah.hn', 5);
+('0801198512345', 'Juan', 'Alberto', 'P√©rez', 'C√°ceres', '99887766', 'juan.perez@unah.hn', 1),
+('0802198523456', 'Mar√≠a', 'Fernanda', 'L√≥pez', 'Morales', '99887767', 'maria.lopez@unah.hn', 2),
+('0803198534567', 'Carlos', 'Enrique', 'G√≥mez', 'Fern√°ndez', '99887768', 'carlos.gomez@unah.hn', 3),
+('0804198545678', 'Luc√≠a', 'Isabel', 'Hern√°ndez', 'Valladares', '99887769', 'lucia.hernandez@unah.hn', 4),
+('0805198556789', 'David', 'Jos√©', 'Mart√≠nez', 'Rodr√≠guez', '99887770', 'david.martinez@unah.hn', 5);
 
 INSERT INTO aspirantes (id_aspirante, id_persona, carrera_principal, carrera_secundaria, id_centro) VALUES
 (1, '0801198512345', 1, 2, 1),
@@ -491,11 +491,11 @@ INSERT INTO estudiantes (num_cuenta, id_persona, id_carrera, id_direccion, id_ce
 ('20230005', '0805198556789', 5, 5, 5, '20230005@est.unah.hn');
 
 INSERT INTO departamentos_academicos (nombre) VALUES
-('Ciencias de la ComputaciÛn'),
-('Medicina y CirugÌa'),
-('Ciencias JurÌdicas'),
-('Arquitectura y DiseÒo'),
-('Ciencias EconÛmicas y Administrativas');
+('Ciencias de la Computaci√≥n'),
+('Medicina y Cirug√≠a'),
+('Ciencias Jur√≠dicas'),
+('Arquitectura y Dise√±o'),
+('Ciencias Econ√≥micas y Administrativas');
 
 INSERT INTO docentes (id_persona, id_dep_academico, id_centro) VALUES
 ('0801198512345', 1, 1),
@@ -519,11 +519,11 @@ INSERT INTO Procesos_academicos_periodo (estado, id_periodo) VALUES
 (1, 5);
 
 INSERT INTO Procesos_academicos (id_PAC, tipo_proceso, descripcion, fecha_inicio, fecha_fin) VALUES
-(1, 1, 'Proceso de MatrÌcula', '2023-01-01', '2023-01-10'),
-(2, 2, 'Proceso de EvaluaciÛn', '2023-06-01', '2023-06-10'),
-(3, 1, 'Proceso de MatrÌcula', '2023-07-01', '2023-07-10'),
-(4, 2, 'Proceso de EvaluaciÛn', '2023-12-01', '2023-12-10'),
-(5, 1, 'Proceso de MatrÌcula', '2024-01-01', '2024-01-10');
+(1, 1, 'Proceso de Matr√≠cula', '2023-01-01', '2023-01-10'),
+(2, 2, 'Proceso de Evaluaci√≥n', '2023-06-01', '2023-06-10'),
+(3, 1, 'Proceso de Matr√≠cula', '2023-07-01', '2023-07-10'),
+(4, 2, 'Proceso de Evaluaci√≥n', '2023-12-01', '2023-12-10'),
+(5, 1, 'Proceso de Matr√≠cula', '2024-01-01', '2024-01-10');
 
 INSERT INTO estudiantes (num_cuenta, id_persona, id_carrera, id_direccion, id_centro_regional, correo_institucional) VALUES
 ('201901234', '0801198512345', 1, 1, 1, 'estudiante1@unah.hn'),
@@ -534,10 +534,10 @@ INSERT INTO estudiantes (num_cuenta, id_persona, id_carrera, id_direccion, id_ce
 
 INSERT INTO Solicitudes (id_solicitud, tipo_solicitud, num_cuenta_solicitante, fecha_solicitud, fecha_respuesta, estado) VALUES
 (1, 'Cambio de Carrera', '201901234', '2023-03-01', '2023-03-05', 1),
-(2, 'CancelaciÛn de Clase', '201902345', '2023-04-01', '2023-04-05', 0),
-(3, 'ReposiciÛn de Examen', '201903456', '2023-05-01', '2023-05-05', 1),
+(2, 'Cancelaci√≥n de Clase', '201902345', '2023-04-01', '2023-04-05', 0),
+(3, 'Reposici√≥n de Examen', '201903456', '2023-05-01', '2023-05-05', 1),
 (4, 'Cambio de Centro', '201904567', '2023-06-01', '2023-06-05', 1),
-(5, 'Solicitud de Pr·ctica', '201905678', '2023-07-01', '2023-07-05', 0);
+(5, 'Solicitud de Pr√°ctica', '201905678', '2023-07-01', '2023-07-05', 0);
 
 INSERT INTO Pago_Reposicion_Solicitud (id_solicitud, fecha_pago, precio_pago) VALUES
 (3, '2023-05-02', 500);
@@ -572,8 +572,8 @@ INSERT INTO carreras_CentrosRegionales (id_centro, id_carrera) VALUES
 
 INSERT INTO edificios (nombre, id_centro) VALUES
 ('Edificio Central', 1),
-('Edificio de IngenierÌas', 2),
-('Edificio de Ciencias MÈdicas', 3),
+('Edificio de Ingenier√≠as', 2),
+('Edificio de Ciencias M√©dicas', 3),
 ('Edificio de Humanidades', 4),
 ('Edificio Administrativo', 5);
 
@@ -585,10 +585,10 @@ INSERT INTO aulas (numero_aula, id_edificio) VALUES
 ('Aula 501', 5);
 
 INSERT INTO asignaturas (codigo_asignatura, nombre_asig, unidades_valorativas, id_dep_academico) VALUES
-('IS-101', 'IntroducciÛn a la Inform·tica', 3, 1),
-('ME-201', 'AnatomÌa Humana', 4, 2),
+('IS-101', 'Introducci√≥n a la Inform√°tica', 3, 1),
+('ME-201', 'Anatom√≠a Humana', 4, 2),
 ('DE-301', 'Derecho Constitucional', 3, 3),
-('AR-401', 'DiseÒo ArquitectÛnico', 4, 4),
+('AR-401', 'Dise√±o Arquitect√≥nico', 4, 4),
 ('CP-501', 'Contabilidad General', 3, 5);
 
 INSERT INTO asignaturas_carreras (id_asignatura, id_carrera, id_requisito) VALUES
@@ -599,11 +599,11 @@ INSERT INTO asignaturas_carreras (id_asignatura, id_carrera, id_requisito) VALUE
 (5, 5, NULL);
 
 INSERT INTO secciones (id_asignatura, id_docente, id_aula, hora_inicio, hora_fin, dias, cupos_maximos, ruta_video) VALUES
-(1, 1, 1, 800, 950, 'Lunes y MiÈrcoles', 30, 'ruta_video_1'),
+(1, 1, 1, 800, 950, 'Lunes y Mi√©rcoles', 30, 'ruta_video_1'),
 (2, 2, 2, 1000, 1150, 'Martes y Jueves', 30, 'ruta_video_2'),
-(3, 3, 3, 1200, 1350, 'Lunes y MiÈrcoles', 30, 'ruta_video_3'),
+(3, 3, 3, 1200, 1350, 'Lunes y Mi√©rcoles', 30, 'ruta_video_3'),
 (4, 4, 4, 1400, 1550, 'Martes y Jueves', 30, 'ruta_video_4'),
-(5, 5, 5, 1600, 1750, 'Lunes y MiÈrcoles', 30, 'ruta_video_5');
+(5, 5, 5, 1600, 1750, 'Lunes y Mi√©rcoles', 30, 'ruta_video_5');
 
 INSERT INTO estado_calificacion (estado) VALUES
 ('Aprobado'),
@@ -619,7 +619,7 @@ INSERT INTO matricula_estudiantes (id_estudiante, id_seccion, nota, id_estado_ca
 ('20230004', 4, 70, 2),
 ('20230005', 5, 65, 3);
 
--- Suponiendo que las fotografÌas est·n almacenadas como archivos binarios.
+-- Suponiendo que las fotograf√≠as est√°n almacenadas como archivos binarios.
 INSERT INTO fotos_estudiantes (id_estudiante, fotografia) VALUES
 ('20230001', 0x0123456789ABCDEF),
 ('20230002', 0x0123456789ABCDEF),
@@ -637,7 +637,7 @@ INSERT INTO Administradores (id_usuario, correo) VALUES
 INSERT INTO Dias (id_dia, descripcion) VALUES
 (1, 'Lunes'),
 (2, 'Martes'),
-(3, 'MiÈrcoles'),
+(3, 'Mi√©rcoles'),
 (4, 'Jueves'),
 (5, 'Viernes');
 
@@ -677,4 +677,6 @@ INSERT INTO dias_matricula (id_proceso, indice_inicial, indice_final, dia_comien
 (5, 0, 50, '2024-01-01', '2024-01-05');
 
 
-alter Usuarios add column rol nvarchar(30);
+ALTER TABLE Usuarios add rol Nvarchar(30);
+
+ALTER TABLE Usuarios ADD correoElectronico NVARCHAR(100);
