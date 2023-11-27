@@ -32,11 +32,19 @@ function Registrar() {
     };
 
     //Evitamos que en el campo identidad se ingresen letras o signos no deseados
-    const handleSoloNumeros = (e) => {
+    const handleSoloNumerosID = (e) => {
         if (/^\d*$/.test(e.target.value)) {
         setIdentidad(e.target.value);
         }
     };
+
+    const handleSoloNumerosTel = (e) => {
+        if (/^\d*$/.test(e.target.value)) {
+        setTelefono(e.target.value);
+        }
+    };
+
+    
 
     useEffect(() => {
         /**  Función para obtener las carreras*/
@@ -117,6 +125,10 @@ function Registrar() {
                         error: true})
                         window.scrollTo(0, 0);
                         return;
+        }
+
+        if (/^[a-zA-Z\s]+$/.test(primerNombre) || primerNombre === '') {
+            
         }
 
         //Validar que la carrera principal sea distinta a la carrera secundaria
@@ -262,7 +274,7 @@ function Registrar() {
                     type='text'   
                     placeholder='ej: 0801197302222'
                     value={identidad}
-                    onChange={handleSoloNumeros}
+                    onChange={handleSoloNumerosID}
                     />
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Nombre </label>
@@ -273,9 +285,8 @@ function Registrar() {
                     value={primerNombre}
                     onKeyDown={handleKeyDown}
                     onChange={(e) => {
-                        setPrimerNombre(e.target.value)
-                    }
-                    }
+                        setPrimerNombre(e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]/g, ''));
+                    }}
                     />
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Segundo Nombre </label>
@@ -286,9 +297,8 @@ function Registrar() {
                     value={segundoNombre}
                     onKeyDown={handleKeyDown}
                     onChange={(e) => {
-                        setSegundoNombre(e.target.value)
-                    }
-                    }
+                        setSegundoNombre(e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]/g, ''));
+                    }}
                     />
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Apellido </label>
@@ -299,9 +309,8 @@ function Registrar() {
                     value={primerApellido}
                     onKeyDown={handleKeyDown}
                     onChange={(e) => {
-                        setPrimerApellido(e.target.value)
-                    }
-                    }
+                        setPrimerApellido(e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]/g, ''));
+                    }}
                     />
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Segundo Apellido </label>
@@ -312,9 +321,8 @@ function Registrar() {
                     value={segundoApellido}
                     onKeyDown={handleKeyDown}
                     onChange={(e) => {
-                        setSegundoApellido(e.target.value)
-                    }
-                    }
+                        setSegundoApellido(e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]/g, ''));
+                    }}
                     />
 
                     <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Principal</label>
@@ -355,10 +363,7 @@ function Registrar() {
                     type='text'   
                     placeholder='ej: 99887755'
                     value={telefono}
-                    onChange={(e) => {
-                        setTelefono(e.target.value)
-                    }
-                    }
+                    onChange={handleSoloNumerosTel}
                     />
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Correo Personal</label>
