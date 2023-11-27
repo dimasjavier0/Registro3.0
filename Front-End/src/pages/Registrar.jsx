@@ -144,7 +144,7 @@ function Registrar() {
             formData.append('imagen', imagen);
             formData.append('centroRegional', centroRegional);
     
-                let dataAspirante = {
+            let dataAspirante = {
             p_nombre:primerNombre,
             s_nombre:segundoNombre,
             p_apellido:primerApellido,
@@ -177,6 +177,8 @@ function Registrar() {
                 await axios(config)
                 .then(response => {
                     //console.log('config:',this.config)
+                    
+                    setAlerta(response.msj);
                     console.log('Respuesta del servidor:', response.data);        
         
                 })
