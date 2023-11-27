@@ -31,15 +31,30 @@ function Registrar() {
         }
     };
 
+    //Evitamos que en el campo identidad se ingresen letras o signos no deseados
+    const handleSoloNumeros = (e) => {
+        if (/^\d*$/.test(e.target.value)) {
+        setIdentidad(e.target.value);
+        }
+    };
+
     useEffect(() => {
         /**  Función para obtener las carreras*/
         const obtenerCarreras = async () => {
             try {
-                const resultado = await axios.get('http://localhost:8888/carreras');
-                if (resultado.data && resultado.data.result) {
-                    setCarreras(resultado.data.result);
+                // Uso de async/await en lugar de then
+                const response = await axios.get('http://localhost:8888/carreras');
+                console.warn(response);
+                const resultado = response.data;
+                console.log(`respuesta del backend: ${JSON.stringify(resultado)}`);
+        
+                // Asegúrate de que esta lógica concuerde con la estructura de tus datos
+                if (resultado && resultado.result) {
+                    setCarreras(resultado.result);
                 }
+        
             } catch (error) {
+                // En caso de error, 'resultado' no estará definido
                 console.error('Error al obtener carreras:', error);
             }
         };
@@ -71,8 +86,8 @@ function Registrar() {
         e.preventDefault()
 
         //Validar que no existan campos vacios
-        const datosFormulario=[identidad,primerNombre,primerApellido,carreraPrincipal,carreraSecundaria,telefono,email,imagen,centroRegional]
-        const nombreCampos = ['Identidad', 'Primer nombre', 'Primer apellido', 'Carrera principal','Carrera secundaria', 'Teléfono', 'Correo Personal','Imagen','Centro regional'];
+        const datosFormulario=[identidad,primerNombre,primerApellido,carreraPrincipal,carreraSecundaria,telefono,email,centroRegional]
+        const nombreCampos = ['Identidad', 'Primer nombre', 'Primer apellido', 'Carrera principal','Carrera secundaria', 'Teléfono', 'Correo Personal','Centro regional'];
         
         for (let i = 0; i < datosFormulario.length; i++) {
             if (datosFormulario[i] === '' || datosFormulario[i]=== null) {
@@ -93,6 +108,7 @@ function Registrar() {
                         return;
         }
 
+        //validar que el numero de telefono contenga solo numeros y sea de 8 digitos
         if (/^[0-9]{8}$/.test(telefono)) {
             setAlerta({})
         
@@ -101,6 +117,16 @@ function Registrar() {
                         error: true})
                         window.scrollTo(0, 0);
                         return;
+        }
+
+        //Validar que la carrera principal sea distinta a la carrera secundaria
+        if (carreraPrincipal === carreraSecundaria) {
+            setAlerta({mensaje: 'No puede seleccionar 2 carreras iguales', 
+                        error: true})
+                        window.scrollTo(0, 0);
+                        return;
+        }else{
+            setAlerta({})
         }
 
         try {
@@ -167,7 +193,7 @@ function Registrar() {
                 error: false,
                 });
                 //Limpiar Formulario
-                setIdentidad('');
+                /*setIdentidad('');
                 setPrimerNombre('');
                 setSegundoNombre('');
                 setPrimerApellido('');
@@ -177,7 +203,7 @@ function Registrar() {
                 setTelefono('')
                 setEmail('');
                 document.getElementById('Imagen').value = null;
-                setCentroRegional('');
+                setCentroRegional('');*/
                 window.scrollTo(0, 0);
         
             }catch (error) {
@@ -236,10 +262,7 @@ function Registrar() {
                     type='text'   
                     placeholder='ej: 0801197302222'
                     value={identidad}
-                    onChange={(e) => {
-                        setIdentidad(e.target.value)
-                    }
-                    }
+                    onChange={handleSoloNumeros}
                     />
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Primer Nombre </label>

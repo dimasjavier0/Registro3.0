@@ -57,8 +57,8 @@ const VideoUploader = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-md shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Subir Video</h2>
+    <div className="max-w-md mx-auto border-blue-900 mt-28 p-6 ml-20 bg-white rounded-md shadow-2xl border-2">
+      <h2 className="text-2xl font-lato mb-4 font-bold">Subir Video</h2>
 
       <label className="block mb-4">
         <span className="text-gray-700">Seleccionar Video:</span>
@@ -77,7 +77,7 @@ const VideoUploader = () => {
         </select>
       </label>
 
-      <button onClick={handleUpload} className="bg-blue-500 text-white px-4 py-2 rounded-md">
+      <button onClick={handleUpload} className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
         Subir Video
       </button>
     </div>

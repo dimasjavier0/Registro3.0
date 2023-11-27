@@ -34,8 +34,8 @@ function SubirCsv() {
             // Verificar si los nombres de columna son correctos
             const expectedColumns = ['id', 'nota', 'tipoExamen'];
             const columns = Object.keys(data[0]);
-  
-            if (!expectedColumns.every((col) => columns.includes(col))) {
+
+            if (!expectedColumns.every((col) => columns.includes(col)) || !columns.every((col) => expectedColumns.includes(col))) {
               setError('El archivo CSV no tiene el formato correcto');
               return;
             }

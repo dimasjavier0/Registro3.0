@@ -30,22 +30,21 @@ router.post('/', async (req,res)=>{
 
     /**enviar respuesta */
     res.send(
-      {
-        'msj':'Aspirante Agregado con exito',
-        'respuesta':result
-      }
+      result
+      /*{
+        'msj': result.msj,
+        'respuesta': result.result
+      }*/
     );  
   }else{
     res.send(
-      {
-        'msj':'ERROR al AGREGAR ASPIRANTE',
-        'respuesta':result
-      }
+      result/*{
+        'msj':result.msj,
+        'respuesta':result.result
+        
+      }*/
     );
   };
-
-  
-
 });
 
   /**Crear varios aspirantes */

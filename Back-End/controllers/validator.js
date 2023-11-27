@@ -49,6 +49,67 @@ class Validator {
         return regex.test(celular) && celular.length == 8;
     }
 
+    validarAspirante(aspiranteJson) {
+        var parametrosInvalidos = [];
+        var valido = true;
+    
+        // Validar que sea un objeto JSON y no nulo
+        if (!(aspiranteJson && typeof aspiranteJson === 'object' && !Array.isArray(aspiranteJson))) {
+            parametrosInvalidos.push('Información del aspirante recibida de manera INCORRECTA');
+            valido = false;
+        } else {
+            // Validar identidad
+            if (!aspiranteJson.identidad || !validator.identidad(aspiranteJson.identidad)) {
+                parametrosInvalidos.push('Identidad No Válida');
+                valido = false;
+            }
+        
+            // Validar nombres y apellidos
+            if (!aspiranteJson.p_nombre || !validator.nombre(aspiranteJson.p_nombre) ||
+                !aspiranteJson.s_nombre || !validator.nombre(aspiranteJson.s_nombre) ||
+                !aspiranteJson.p_apellido || !validator.apellido(aspiranteJson.p_apellido) ||
+                !aspiranteJson.s_apellido || !validator.apellido(aspiranteJson.s_apellido)) 
+            {
+                parametrosInvalidos.push('Error al validar Nombres');
+                valido = false;
+            }
+        
+            // Validar carreras
+            if (!aspiranteJson.carrera_P || !validator.carrera(aspiranteJson.carrera_P) ||
+                !aspiranteJson.carrera_S || !validator.carrera(aspiranteJson.carrera_S)) 
+            {
+                parametrosInvalidos.push('Error al Validar Carreras');
+                valido = false;
+            }
+        
+            // Validar celular
+            if (!aspiranteJson.cel || !validator.celular(aspiranteJson.cel.replace("-", ""))) {
+                parametrosInvalidos.push('Celular INVALIDO');
+                valido = false;
+            }
+        
+            // Validar centroRegional y correo
+            if (!aspiranteJson.centroRegional || !validator.centroRegional(aspiranteJson.centroRegional)) {
+                parametrosInvalidos.push('Centro Regional Invalido');
+                valido = false;
+            }
+        
+            if (!aspiranteJson.correoPersonal || !validator.correo(aspiranteJson.correoPersonal)) {
+                parametrosInvalidos.push('Correo Invalido');
+                valido = false;
+            }
+        }
+    
+        // Construir mensaje basado en la validez
+        var mensaje = valido ? 'Validación Exitosa' : 'Errores en la Validación';
+    
+        return {
+            mensaje,
+            result: valido,
+            parametrosInvalidos
+        };
+    }
+    
     
 }
 module.exports = new Validator();

@@ -9,7 +9,10 @@ var router = express.Router(); // en lugar de app usar router.
 
 router.get('/',async (req,res)=>{
     let msj = '';
-    listaCarrerasJson= await carrerasModel.getAllCarreras();
+    
+
+    let listaCarrerasJson= await carrerasModel.getAllCarreras();
+    
     if(listaCarrerasJson){
         msj='correcto';     
     }else{

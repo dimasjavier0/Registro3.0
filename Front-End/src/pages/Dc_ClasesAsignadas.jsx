@@ -39,31 +39,31 @@ function App() {
   };
 
   return (
-    <div className=''>
-      <h1 className='text-4xl text-red-800 font-black mb-4 mt-28 text-center font-lato'>Clases Asignadas</h1>
-      <label>ID del Docente:</label>
-      <input 
-      className='border-2  border-rose-800 mb-20 ml-9 p-4'
-      type="text" value={idDocente} onChange={(e) => setIdDocente(e.target.value)} />
-      <button 
-      className='bg-blue-500 ml-20 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mb-4'
-      onClick={obtenerClasesAsignadas}>Obtener Clases</button>
+      <div className=''>
+        <h1 className='text-4xl shadow-md bg-gray-200 mr-44 p-2 text-indigo-700 font-label font-black mb-10 mt-24  font-lato'>Clases Asignadas</h1>
+        <label className='font-label font-medium'>ID del Docente:</label>
+        <input 
+        className='border-2 border-gray-500  mb-20 ml-9 p-2'
+        type="text" value={idDocente} onChange={(e) => setIdDocente(e.target.value)} />
+        <button 
+        className='bg-blue-500 ml-20 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mb-4'
+        onClick={obtenerClasesAsignadas}>Obtener Clases</button>
 
-<input
-          className="border-2  border-rose-800 mb-20 ml-9 p-4"
+        <input
+          className="border-2  border-gray-500 mb-20 ml-9 p-2"
           type="text"
           placeholder="Ingrese ID de Sección Para Descargar Listado"
           value={idSeccion}
           onChange={(e) => setIdSeccion(e.target.value)}
         />
         <button
-          className="bg-blue-500 ml-20 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mb-4"
+          className="bg-blue-500 block hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mb-4"
           onClick={handleDescargarListado}
         >
         Descargar Listado
         </button>
 
-
+      <div className='max-h-96 overflow-y-scroll  mr-36 mt-6'>
       <table className='min-w-full bg-white border border-gray-300'>
         <thead>
           <tr>
@@ -84,6 +84,7 @@ function App() {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
