@@ -11,6 +11,7 @@ const validarDocenteRouter = require('./routes/ValidarDocente-route');
 const docenteAsignadosRouter = require('./routes/MostrarMatriculados-route'); 
 const ListaEstudianteRoutes = require('./routes/ExportarAlumnos-route');
 const videoRouter = require('./routes/Videos-route');
+const Ingreso = require('./routes/ValidarCredenciales-route');
 const multer = require('multer');
 //var db = require('./conections/database');
 const nodemailer = require('nodemailer');
@@ -54,7 +55,7 @@ const nodemailer = require('nodemailer');
   /**para la Gestion de peticiones de Carreas */
   app.use('/carreras',carreras_router);
     /**para la Gestion de peticiones de Departamentos */
-//app.use('/departamentos',departamentos_router);
+  app.use('/departamentos',departamentos_router);
 /**para la Gestion de peticiones de docentes */
   app.use('/docentes', docentesRouter);
   /**para la Gestion de peticiones de validar existencia de docentes */
@@ -65,6 +66,8 @@ const nodemailer = require('nodemailer');
   app.use('/ap', ListaEstudianteRoutes);  // Ruta para estudiantes
 
   app.use('/api/videos', videoRouter);//Ruta para Videos
+
+  app.use('/', Ingreso);//para el logeo  de docentes y estudiantes
 
 /*
 

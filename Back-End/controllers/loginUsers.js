@@ -1,6 +1,20 @@
-const db = require('../conections/database');
+//const db = require('../conections/database');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const mssql = require('mssql');
+const correo = require('./correo');
+const config = {
+  user: 'Grupo',
+  password: '1234',
+  server: 'localhost',
+  database: 'Registro2',
+  options: {
+    encrypt: false,
+    trustServerCertificate: true,
+    
+  }
+};
+
 
 class UserAndLogin{
   constructor() {};
@@ -14,91 +28,118 @@ class UserAndLogin{
   async crearUsuario(nombreUsuario, correoElectronico, rol) {
     try {
       // Conectar a la base de datos
-      await db.connect();
+     let pool =  await mssql.connect(config);
 
-      const nombreLogin = nombreUsuario.toString();
+      if (typeof nombreUsuario == "number"){
+        nombreUsuario = nombreUsuario.toString();
+      }
 
-      const resultado = await db.query(`SELECT nombre_usuario FROM usuarios WHERE nombre_usuario = '${nombreLogin}'`);
+      const resultado = await pool.query(`SELECT nombre_usuario FROM usuarios WHERE nombre_usuario = '${nombreUsuario}'`);
 
       const passwordUser = this.generarPasswordProvisional(); //La contraseña que se enviara al correo
 
-      if (resultado.length === 0) {
+      if (resultado.length != 0) {
         const passwordHash = await hashPassword(passwordUser);
 
+        var subject = 'Bienvenido a la UNAH';
+        var mensaje;
+
         if (rol === 'docente') {
-          await db.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico, rol)
-                          VALUES('${nombreLogin}', '${passwordHash}', '${correoElectronico}', 'docente')`);
+          await pool.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico, rol)
+                          VALUES('${nombreUsuario}', '${passwordHash}', '${correoElectronico}', 'docente')`);
+          
+          mensaje = `Se ha creado una cuenta para usted con la siguiente informacion:
+              Usuario: ${nombreUsuario}.
+              Contraseña provisional: ${passwordUser}.
+
+            Por favor cambie su contraseña lo mas pronto posible`;
+
+          correo.enviarCorreo(correoElectronico, subject, mensaje);
         } else if (rol === 'estudiante') {
-          await db.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico, rol)
-                          VALUES('${nombreLogin}', '${passwordHash}', '${correoElectronico}', 'estudiante')`);
+          await pool.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico, rol)
+                          VALUES('${nombreUsuario}', '${passwordHash}', '${correoElectronico}', 'estudiante')`);
+          
+          mensaje = `Se ha creado una cuenta para usted con la siguiente informacion:
+              Número de cuenta: ${nombreUsuario}.
+              Contraseña provisional: ${passwordUser}.
+      
+            Por favor cambie su contraseña lo mas pronto posible`;
+
+          correo.enviarCorreo(correoElectronico, subject, mensaje);
         }
       } else {
-        throw new Error(`El usuario ${nombreLogin} ya existe`);
+        throw new Error(`El usuario ${nombreUsuario} ya existe`);
       }
 
-      console.log(passwordUser);
-      db.close();
+      pool.close();
     } catch (err) {
       console.error('Error al crear el usuario:', err);
       throw err;
     }
   }
 
-  /*Metodo para cambiar el password de un login y user en la base de datos*/
+  /*Metodo para cambiar el password de un usuario*/
   async cambiarPassword(nombreUsuario, nuevaPassword) {
     try {
-      const nombreLogin = nombreUsuario.toString();
+      if (typeof nombreUsuario == "number"){
+        nombreUsuario = nombreUsuario.toString();
+      }
 
       // Conectar a la base de datos
-      await db.connect();
+      await pool.connect(config);
 
-      const resultado = await db.query(`SELECT nombre_usuario FROM usuarios WHERE nombre_usuario = '${nombreLogin}'`);
+      const resultado = await pool.query(`SELECT nombre_usuario FROM usuarios WHERE nombre_usuario = '${nombreUsuario}'`);
 
       if (resultado.length > 0) {
         const passwordLogin = await hashPassword(nuevaPassword);
 
-        await db.query(`UPDATE usuarios 
+        await pool.query(`UPDATE usuarios 
                         SET password_hash = '${passwordLogin}'
-                        WHERE nombre_usuario = '${nombreLogin}';`);
+                        WHERE nombre_usuario = '${nombreUsuario}';`);
       } else {
         throw new Error('El usuario no existe');
       }
 
-      db.close();
+      pool.close();
 
     } catch (err) {
       console.error('Error cambiar el password:', err);
       throw err;
     }
   }
-
+//VALIDAR CREDENCIALES
   async verificarCredenciales(nombreUsuario, passwordUser, rol){
     try{
-      const nombreLogin = nombreUsuario.toString();
-      await db.connect();
+      if (typeof nombreUsuario == "number"){
+        nombreUsuario = nombreUsuario.toString();
+      }
 
-      const resultado = await db.query(`SELECT nombre_usuario FROM usuarios 
-                                        WHERE nombre_usuario = '${nombreLogin}' and rol = '${rol}'`);
+      let pool = await mssql.connect(config);
+
+      const resultado = await pool.query(`SELECT nombre_usuario FROM usuarios 
+                                        WHERE nombre_usuario = '${nombreUsuario}' and rol = '${rol}'`);
       
-      if (resultado.length === 0){
+      if (resultado.length == 0){
         throw new Error('El usuario no existe');
       }else {
-        const passwordBase = await db.query(`SELECT password_hash FROM usuarios 
-                                            WHERE nombre_usuario = '${nombreLogin}' and rol = '${rol}'`);
+        const passwordBase = await pool.query(`SELECT password_hash FROM usuarios 
+                                            WHERE nombre_usuario = '${nombreUsuario}' and rol = '${rol}'`);
 
+                                            //const hashedPasswordFromDB = passwordBase[0].password_hash;
         //Verificar la contraseña 
-        bcrypt.compare(passwordUser, passwordBase[0].password_hash, (err, result) => {
+        bcrypt.compare(passwordUser, passwordBase, (err, result) => {
           if (err) {
             throw new Error('Error al comparar las contraseñas:', err);
           }
 
           if (result) {
             console.log('La contraseña es correcta');
+            return true;
           } else {
            throw new Error('La contraseña es incorrecta');
           }
         });
-        db.close();
+        pool.close();
       }
 
     }catch (err){
@@ -112,8 +153,6 @@ async function hashPassword(password) {
   try {
     // Genera un salt (valor aleatorio) para aumentar la seguridad del hash
     const salt = await bcrypt.genSalt(10);
-
-    // Hashea la contraseña con el salt
     const hashedPassword = await bcrypt.hash(password, salt);
 
     return hashedPassword;
@@ -136,3 +175,4 @@ module.exports = {UserAndLogin};
 // };
 
 // ejecutar();
+ 

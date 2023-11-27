@@ -23,9 +23,9 @@ class Correo{
         });
     }
 
-    async enviarCorreo(mail,msjToSend){
+    async enviarCorreo(mail,Subject,msjToSend){
         this.mailOptions.to = mail;
-        this.mailOptions.subject = '<<RESULTADOS UNAH>>';
+        this.mailOptions.subject =Subject;
         this.mailOptions.text = msjToSend;
 
         /** metodo de la conexion para enviar correo */
