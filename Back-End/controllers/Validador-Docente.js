@@ -21,7 +21,12 @@ async function validarDocente(Identidad, numeroEmpleado) {
     const resultadoIdentidad = await pool
       .request()
       .input('Identidad', sql.NVarChar, Identidad)
-      .query('SELECT COUNT(*) AS count FROM personas WHERE numero_identidad = @Identidad');
+      .query(`
+      SELECT COUNT(*) AS count
+      FROM personas AS p
+      JOIN docentes AS d ON p.id_persona = d.id_persona
+      WHERE p.numero_identidad = @Identidad
+  `);
 
     // Verificar si el número de empleado ya existe
     const resultadoNumeroEmpleado = await pool
@@ -29,6 +34,8 @@ async function validarDocente(Identidad, numeroEmpleado) {
       .input('NumeroEmpleado', sql.Int, numeroEmpleado)
       .query('SELECT COUNT(*) AS count FROM docentes WHERE num_empleado = @NumeroEmpleado');
 
+
+    
     return {
       identidadExiste: resultadoIdentidad.recordset[0].count > 0,
       numeroEmpleadoExiste: resultadoNumeroEmpleado.recordset[0].count > 0,
