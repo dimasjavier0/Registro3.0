@@ -22,5 +22,5 @@ console.log("= = = = entro al router = = = = =");
 router.put('/usuarios', usuarios.manejarSolicitudRecuperacion);
 
 
-console.log("X X X salio del router X X X");
+//console.log("X X X salio del router X X X");
 module.exports = router;

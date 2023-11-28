@@ -24,6 +24,8 @@ class DocenteController {
           JOIN secciones s ON asignaturas.id_asignatura = s.id_asignatura
           JOIN docentes d ON s.id_docente = d.num_empleado
           WHERE d.num_empleado = @nombreUsuario
+
+
         `);
 
       return result.recordset;

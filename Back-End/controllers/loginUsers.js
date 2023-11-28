@@ -52,7 +52,11 @@ class UserAndLogin{
                                  Usuario: ${nombreUsuario}
                            Contraseña provisional: ${passwordUser}
 
-                    Por favor cambie su contraseña lo mas pronto posible`;
+
+                       Piense en el medio ambiente antes de imprimir este correo`;
+
+
+
 
           correo.enviarCorreo(correoElectronico, subject, mensaje);
         } else if (rol === 'estudiante') {
@@ -63,7 +67,7 @@ class UserAndLogin{
                             Número de cuenta: ${nombreUsuario}
                             Contraseña provisional: ${passwordUser}
       
-            Por favor cambie su contraseña lo mas pronto posible`;
+            Piense en el medio ambiente antes de imprimir este correo.`;
 
           correo.enviarCorreo(correoElectronico, subject, mensaje);
         }
