@@ -342,20 +342,20 @@ function Registrar() {
                     </select>
 
                     <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Secundaria</label>
-                    <select
-                        className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
-                        value={carreraSecundaria}
-                        onChange={(e) => {
-                            setCarreraSecundaria(e.target.value);
-                        }}
-                    >
-                        <option value='' disabled>-- Seleccione --</option>
-                        {carreras.map((carrera) => (
-                            <option key={carrera.id_carrera} value={carrera.id_carrera}>
-                                {carrera.nombre_carrera}
-                            </option>
-                        ))}
-                    </select>
+<select
+    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
+    value={carreraSecundaria}
+    onChange={(e) => {
+        setCarreraSecundaria(e.target.value);
+    }}
+>
+    <option value='' disabled>-- Seleccione --</option>
+    {carreras.filter(carrera => carrera.id_carrera.toString() !== carreraPrincipal).map((carrera) => (
+        <option key={carrera.id_carrera} value={carrera.id_carrera}>
+            {carrera.nombre_carrera}
+        </option>
+    ))}
+</select>
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Teléfono</label>
                     <input
