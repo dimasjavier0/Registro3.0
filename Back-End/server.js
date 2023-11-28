@@ -1,5 +1,5 @@
 const express = require('express');
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 var cors = require('cors');
 //var Routes = require('./routes');
 var aspirantes_router = require("./routes/aspirantes-route");
@@ -16,7 +16,7 @@ var db = require('./conections/database');
 const nodemailer = require('nodemailer');
 const usuarios_route = require('./routes/usuarios-route');
 const estudianteRoutes = require('./routes/estudiante-route');
-
+const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
 
 
 
@@ -30,13 +30,13 @@ const estudianteRoutes = require('./routes/estudiante-route');
     /* permite peticiones de otros origenes.*/
     app.use(cors()); 
     //app.use(express.static('public')); //busca la direccion que recibe en la carpeta public.
-
+    app.use(express.json({ limit: '50mb' })); // Usar express.json() en lugar de bodyParser.json()
+    app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
     /** Para Recibir Peticiones en formato JSON */
-    app.use(express.json());
+    //app.use(express.json());
     /**Recibir una Peticion POST */
     //app.use(bodyParser.json());
-    app.use(bodyParser.json({ limit: '50mb' }));
     /* con esto tenemos acceso a un nuevo JSON llamado body/
     //app.use(bodyParser.urlencoded({extended:true})); 
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -55,11 +55,18 @@ const estudianteRoutes = require('./routes/estudiante-route');
   /**para la Gestion de peticiones de Carreas */
   app.use('/carreras',carreras_router);
     /**para la Gestion de peticiones de Departamentos */
-app.use('/departamentos',departamentos_router);
+
+  app.use('/departamentos',departamentos_router);
+
+
 /**para la Gestion de peticiones de docentes */
   app.use('/docentes', docentesRouter);
   /**para la Gestion de peticiones de validar existencia de docentes */
   app.use('/docentesvalidar', validarDocenteRouter);
+
+  app.use('/');
+
+  app.use('/login', ValidarCredenciales);
 
   app.use('/api', docenteAsignadosRouter);  // Ruta para docentes
 
@@ -70,6 +77,7 @@ app.use('/departamentos',departamentos_router);
   app.use('/cr7', usuarios_route);//ruta para recuperar contrasenia
   
   app.use('/api/estudiante', estudianteRoutes);
+
 /*
 
 

@@ -1,6 +1,6 @@
 var express = require('express');
 //var aspirantesModel = require('../models/aspirantes-model');
-const { Result } = require('postcss');
+//const { Result } = require('postcss');
 var departamentosModel = require('../models/departamentos-model');
 
 var router = express.Router(); // en lugar de app usar router.
