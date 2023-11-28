@@ -20,7 +20,7 @@ function Administrador() {
             setAlerta({mensaje: 'Existen campos vacios', error: true})
             return;
         }
-        if (usuario === '202311' && contraseña === 'admin') {
+        if (usuario === '202311' && contraseña === 'admin1') {
             navigate('/administracion') 
         } else {
             setAlerta({mensaje: 'Credenciales invalidas', 

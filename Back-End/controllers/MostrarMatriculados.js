@@ -23,8 +23,8 @@ class DocenteController {
           SELECT asignaturas.id_asignatura, asignaturas.nombre_asig, s.id_seccion, s.hora_inicio
           FROM asignaturas
           JOIN secciones s ON asignaturas.id_asignatura = s.id_asignatura
-          JOIN docentes d ON s.id_docente = e.num_empleado
-          WHERE e.num_empleado = @idDocente
+          JOIN docentes d ON s.id_docente = d.num_empleado
+          WHERE d.num_empleado = @idDocente
         `);
 
       return result.recordset;
