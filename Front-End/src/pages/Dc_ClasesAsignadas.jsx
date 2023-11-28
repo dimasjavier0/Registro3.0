@@ -1,15 +1,31 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 
 function App() {
   const [idDocente, setIdDocente] = useState('');
+  const [nombreUsuario, setNombreUsuario] = useState('');
   const [clasesAsignadas, setClasesAsignadas] = useState([]);
   const [idSeccion, setIdSeccion] = useState('');
 
+
+  useEffect(() => {
+    
+    const usuarioGuardado = localStorage.getItem('nombreUsuario');
+    if (usuarioGuardado) {
+        setNombreUsuario(usuarioGuardado);
+    }
+}, []);
+
+useEffect(() => {
+    if (nombreUsuario) {
+        obtenerClasesAsignadas();
+    }
+}, [nombreUsuario]);
+
   const obtenerClasesAsignadas = async () => {
     try {
-      const response = await axios.get(`http://localhost:8888/api/docentes/${idDocente}/clases`);
+      const response = await axios.get(`http://localhost:8888/api/docentes/${nombreUsuario}/clases`);
       setClasesAsignadas(response.data);
     } catch (error) {
       console.error('Error al obtener clases asignadas:', error);
@@ -41,13 +57,10 @@ function App() {
   return (
       <div className=''>
         <h1 className='text-4xl shadow-md bg-gray-200 mr-44 p-2 text-indigo-700 font-label font-black mb-10 mt-24  font-lato'>Clases Asignadas</h1>
-        <label className='font-label font-medium'>ID del Docente:</label>
-        <input 
-        className='border-2 border-gray-500  mb-20 ml-9 p-2'
-        type="text" value={idDocente} onChange={(e) => setIdDocente(e.target.value)} />
+       
         <button 
         className='bg-blue-500 ml-20 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mb-4'
-        onClick={obtenerClasesAsignadas}>Obtener Clases</button>
+        onClick={obtenerClasesAsignadas}>Mostrar Secciones</button>
 
         <input
           className="border-2  border-gray-500 mb-20 ml-9 p-2"
@@ -60,7 +73,7 @@ function App() {
           className="bg-blue-500 block hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mb-4"
           onClick={handleDescargarListado}
         >
-        Descargar Listado
+        Descargar Listado De alumnos
         </button>
 
       <div className='max-h-96 overflow-y-scroll  mr-36 mt-6'>

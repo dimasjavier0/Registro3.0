@@ -131,10 +131,9 @@ export default Docentes;
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useUser } from "../useContext";
+
 
 function Docentes() {
-    const { setUsuario } = useUser();
     const [nombreUsuario, setNombreUsuario] = useState('');
     const [passwordUser, setPasswordUser] = useState('');
     const [rol, setRol] = useState('docente');
@@ -152,11 +151,14 @@ function Docentes() {
                 passwordUser,
                 rol,
             });
-           
-            setUsuario(response.data.nombreUsuario);
+
+            console.log('Guardando nombreUsuario en localStorage:', nombreUsuario);
+
+            localStorage.setItem('nombreUsuario', nombreUsuario);
+
 
             // Maneja la respuesta del servidor aquí
-            console.log(response.data);
+            console.log(response.data)
             setMensaje('Inicio de sesión exitoso para el rol de docente');
             // Puedes redirigir a otra página si es necesario
             navigate('/principalDocente');

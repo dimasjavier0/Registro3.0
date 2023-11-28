@@ -130,6 +130,8 @@ class UserAndLogin{
       await  bcrypt.compare(passwordUser, passwordBase, (err, result) => {
          
         });
+        const token = generateAccessToken();
+        res.json({ token, nombreUsuario: nombreUsuario });
        // pool.close();
       }
 
