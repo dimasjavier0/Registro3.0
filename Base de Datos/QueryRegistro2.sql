@@ -680,3 +680,12 @@ INSERT INTO dias_matricula (id_proceso, indice_inicial, indice_final, dia_comien
 ALTER TABLE Usuarios add rol Nvarchar(30);
 
 ALTER TABLE Usuarios ADD correoElectronico NVARCHAR(100);
+
+CREATE SEQUENCE seq_estudiantes
+    AS INT
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 3000
+    CYCLE;
+

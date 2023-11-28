@@ -57,7 +57,7 @@ router.post('/', async (req,res)=>{
         await db.connect();
         let lista_IdPersonas_Aspirantes = await db.query(`select id_persona from aspirantes`);
         
-        console.log(`aspirantes existentes:`,lista_IdPersonas_Aspirantes);
+        console.log(`aspirantes existentes en la base :`,lista_IdPersonas_Aspirantes);
         
         existenAspirantes(notasRecibidas,lista_IdPersonas_Aspirantes,existentes,inexistentes);
 
@@ -71,16 +71,22 @@ router.post('/', async (req,res)=>{
 
         //let notasValidasToSubmit = [];
 
-
+        await db.close();
         /**subir notas de los aspirantes que si existen */
         for (let notaJSON of existentes){
             /*for (let resultadoJson of resultadosExamenesAdmision){
                 if(notaJSON.id == resultadoJson.id_persona){
                     console.log('\nCOMPARACION:::',resultadoJson.id_tipo_examen,notaJSON.tipoExamen,'\n');
                     if (resultadoJson.id_tipo_examen != notaJSON.tipoExamen ){*/
+                        await db.connect();
                         await db.query(
-                            `exec [dbo].[subir_nota_estudiante] '${notaJSON.id}', ${notaJSON.tipoExamen}, ${notaJSON.nota};`
-                        );/*            
+                        `
+                        EXEC [dbo].[subir_nota_estudiante] @p_identidad = '${notaJSON.id}', @p_tipo_examen = ${notaJSON.tipoExamen}, @p_nota = ${notaJSON.nota};
+                        `
+                        );
+                        await db.close();
+                        /*
+                                    
                     }
                 }
             }*/
@@ -89,7 +95,7 @@ router.post('/', async (req,res)=>{
         
         
 
-        await db.close();
+        
 
         evaluarAspirantes();
         res.send(
@@ -121,6 +127,7 @@ async function evaluarAspirantes(){
         
         console.log(':::LISTA:::',listaAspirantesId_conExamenes);
 
+        /**recorriendo la lista de aspirantes con examen de admision */
         for (let idPersonaJson of listaAspirantesId_conExamenes){
             
             let idPersona_aspirante = idPersonaJson.id_persona;
@@ -263,13 +270,13 @@ async function evaluarAspirantes(){
                 );
                 id = idCarrera[0].carrera_secundaria;
             }
-
+            let r='';
             /**si existe la carrera a la que concurso */
             if(id){
                 /** se manda a llamar el P.A para crear el estudiante con la carreraPrincipal */
-                await db.query(`[dbo].[agregar_estudiante] @numIdentidad = '${id_persona_aprobado}', @id_carrera = ${id}`);
+                r = await db.query(`[dbo].[agregar_estudiante] @numIdentidad = '${id_persona_aprobado}', @id_carrera = ${id}`);
             }
-
+            console.log("////////// resultado de agregar estudiante",r);
             console.log(await db.query(`select * from estudiantes where id_persona = '${id_persona_aprobado}'`));
 
             /**enviar correo de aprobacion */
@@ -282,7 +289,7 @@ async function evaluarAspirantes(){
             let jsonPersona = infoPersonaArray[0];
             
             let email = jsonPersona.correo;
-            
+            console.log("CORREO PERSONA para enviar correo:",email);
         /* let msjPersonalizado =  
                 `Hola muy buenas estimado ${jsonPersona.primer_nombre} ${jsonPersona.primer_apellido}. Por medio del presente le informamos que su puntacion es: \n
                 ${aprobados[id_persona_aprobado].msjsAspirantes}.
@@ -313,7 +320,7 @@ async function evaluarAspirantes(){
                 `Hola muy buenas estimado ${jsonPersona.primer_nombre} ${jsonPersona.primer_apellido}. Es una pena informale que reprobo los examenes de admision. \n
                 ${reprobados[id_persona_reprobada].msjsAspirantes}.
                 ${reprobados[id_persona_reprobada].msjFinalAspirante}`;
-            correo.enviarCorreo(email,msjPersonalizado);
+            correo.enviarCorreo(email,'RESULTADOS EXAMENES UNAH ',msjPersonalizado);
         }
         
         
@@ -324,7 +331,7 @@ async function evaluarAspirantes(){
 
         await db.close();
     }catch (error){
-        console.error(error);
+        console.error("ocurrio un error al evaluar aspirantes",error);
     }
 }
 

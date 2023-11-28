@@ -204,7 +204,7 @@ class Database {
             /**Retorna solo el resultado de la ultima query */
             console.log('query ENVIADA :::::::: ',query);
             //console.log('respuesta query::::',this.lastResultQuery);
-            console.log('recordset::::',this.lastResultQuery.recordset);
+            //console.log('recordset::::',this.lastResultQuery.recordset);
             return this.lastResultQuery.recordset;//mandando solo el resultado
         } catch (error) {
             throw error;
