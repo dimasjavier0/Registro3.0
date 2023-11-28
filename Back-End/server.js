@@ -34,11 +34,11 @@ const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
     /** Para Recibir Peticiones en formato JSON */
-    //app.use(express.json());
+    app.use(express.json());
     /**Recibir una Peticion POST */
-    //app.use(bodyParser.json());
-    /* con esto tenemos acceso a un nuevo JSON llamado body/
-    //app.use(bodyParser.urlencoded({extended:true})); 
+    app.use(bodyParser.json());
+    /* con esto tenemos acceso a un nuevo JSON llamado body*/
+    app.use(bodyParser.urlencoded({extended:true})); 
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
     /**para el manejo de rutas */
     //app.use(Routes);
@@ -64,7 +64,7 @@ const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
   /**para la Gestion de peticiones de validar existencia de docentes */
   app.use('/docentesvalidar', validarDocenteRouter);
 
-  app.use('/');
+  //app.use('/');
 
   app.use('/login', ValidarCredenciales);
 

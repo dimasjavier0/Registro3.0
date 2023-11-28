@@ -19,7 +19,7 @@ console.log("= = = = entro al router = = = = =");
 
 // Cambia la ruta para que coincida con la URL proporcionada
 // Asegúrate de que la URL está correctamente codificada y usa 'olvideContrasena'
-//router.put('/usuarios', usuarios.manejarSolicitudRecuperacion);
+router.put('/usuarios', usuarios.manejarSolicitudRecuperacion);
 
 
 console.log("X X X salio del router X X X");
