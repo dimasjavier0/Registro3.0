@@ -24,8 +24,8 @@ async function subirYGuardarVideo(idSeccion, videoPath) {
 
   const query = `
     UPDATE secciones
-    SET video = @videoPath
-    WHERE idSeccion = @idSeccion;
+    SET ruta_video = @videoPath
+    WHERE id_seccion = @idSeccion;
   `;
 
   request.input('videoPath', mssql.VarChar, videoPath);
