@@ -49,10 +49,14 @@ class UserAndLogin{
                           VALUES('${nombreUsuario}', '${passwordHash}', '${correoElectronico}', 'docente')`);
           
           mensaje = `Se ha creado una cuenta para usted con la siguiente informacion:
-              Usuario: ${nombreUsuario}.
-              Contraseña provisional: ${passwordUser}.
+                                 Usuario: ${nombreUsuario}
+                           Contraseña provisional: ${passwordUser}
 
-            Por favor cambie su contraseña lo mas pronto posible`;
+
+                       Piense en el medio ambiente antes de imprimir este correo`;
+
+
+
 
           correo.enviarCorreo(correoElectronico, subject, mensaje);
         } else if (rol === 'estudiante') {
@@ -60,10 +64,10 @@ class UserAndLogin{
                           VALUES('${nombreUsuario}', '${passwordHash}', '${correoElectronico}', 'estudiante')`);
           
           mensaje = `Se ha creado una cuenta para usted con la siguiente informacion:
-              Número de cuenta: ${nombreUsuario}.
-              Contraseña provisional: ${passwordUser}.
+                            Número de cuenta: ${nombreUsuario}
+                            Contraseña provisional: ${passwordUser}
       
-            Por favor cambie su contraseña lo mas pronto posible`;
+            Piense en el medio ambiente antes de imprimir este correo.`;
 
           correo.enviarCorreo(correoElectronico, subject, mensaje);
         }
@@ -130,6 +134,8 @@ class UserAndLogin{
       await  bcrypt.compare(passwordUser, passwordBase, (err, result) => {
          
         });
+        const token = generateAccessToken();
+        res.json({ token, nombreUsuario: nombreUsuario });
        // pool.close();
       }
 

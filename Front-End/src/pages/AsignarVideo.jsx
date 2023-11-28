@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useUser } from "../useContext";
 const VideoUploader = () => {
 
-  const { nombreUsuario } = useUser();
+  const [nombreUsuario, setNombreUsuario] = useState('');
   const [video, setVideo] = useState(null);
   const [idDocente, setIdDocente] = useState(''); // Asegúrate de tener el idDocente adecuado
   const [asignaturas, setAsignaturas] = useState([]);
   const [idSeccion, setIdSeccion] = useState('');
 
+
+
   useEffect(() => {
     // Obtener la lista de asignaturas al montar el componente
-   
+// Recuperar nombreUsuario del almacenamiento de sesión
+const usuarioGuardado = localStorage.getItem('nombreUsuario');
+if (usuarioGuardado) {
+    setNombreUsuario(usuarioGuardado);
+}
+console.error(nombreUsuario);
     const fetchAsignaturas = async () => {
       try {
          //idDocente = parseInt(nombreUsuario, 6);

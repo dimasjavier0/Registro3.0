@@ -3,9 +3,10 @@ const DocenteController = require('../controllers/MostrarMatriculados');
 
 const router = express.Router();
 
-router.get('/docentes/:idDocente/clases', async (req, res) => {
+router.get('/docentes/:nombreUsuario/clases', async (req, res) => {
   try {
-    const clasesAsignadas = await DocenteController.obtenerClasesAsignadas(req.params.idDocente);
+    const clasesAsignadas = await DocenteController.obtenerClasesAsignadas(req.params.nombreUsuario);
+
     res.json(clasesAsignadas);
   } catch (error) {
     console.error('Error en la solicitud:', error);
