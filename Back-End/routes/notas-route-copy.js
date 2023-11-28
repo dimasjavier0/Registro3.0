@@ -10,6 +10,8 @@ const { primer_apellido } = require('../DTOs/aspiranteDTO');
 var correo = require('../controllers/correo');
 var fm = require('../controllers/fileManager');
 
+const path = require('path');
+
 var router = express.Router(); // en lugar de app usar router.
 //var db = require('../conections/database');
 
@@ -101,11 +103,26 @@ router.post('/', async (req,res)=>{
             "a":resultadoFinal.a
         };
 
+        await enviarResultados(respuesta.resultados[0].aprobados);//se envia un json
+        await enviarResultados(respuesta.resultados[1].reprobados);
 
-        await fm.write('./src/estudiantes.csv', 'Hello, World!');
+        let csv = generarFilasCsvEstudiantes(respuesta.resultados[0].aprobados);
+        //generarFilasCsvEstudiantes(respuesta.resultados[1].reprobados);
 
+        await fm.write('./public/estudiantes.csv', csv);
+
+        // Esto te llevará del directorio actual ('routes') al directorio raíz y luego a 'public'
+        const filePath = path.join(__dirname, '..', 'public', 'estudiantes.csv');
+
+        //res.redirect('http://localhost:8888/public/estudiantes.csv');
+        //res.sendFile('C:\Users\Dell\Documents\GitHub\Registro_3.0\Back-End\public\estudiantes.csv');
+
+        //res.setHeader('Content-Disposition', 'attachment; filename=estudiantes.csv');
+        //res.sendFile(filePath);
+
+        console.log(filePath);
         res.json(
-            respuesta
+            {'msj':'archivo creado con EXito'}
         );
         /**cerrando conexion */
         
@@ -116,8 +133,75 @@ router.post('/', async (req,res)=>{
     }
 });
 
-async function getEstudiantesCsv(content){
+async function enviarResultados(contentJson){
+    try {
+        let observaciones;
+        console.log(contentJson);
+        let mensaje = '';
+        let email;
+        /**recorrer resultados para enviar: */
+        for (resultado of contentJson){
+            let r = Object.values(resultado)[0];
+            console.log(`"""""""""""""RESULATDO`,r);
+            email = r.informacion.correo;
+            
+            observaciones = limpiarObservaciones(r.observaciones);
+
+            /**enviar correo a cada uno */
+            mensaje = 
+            `
+                Hola estimado ${r.informacion.primer_nombre} ${r.informacion.primer_apellido}, por este medio le brindamos los resultados de la UNAH. 
+                ${observaciones}
+            `;
+            console.log(observaciones);
+            correo.enviarCorreo(email,'RESULTADOS UNAH ADMISION',mensaje);
+        }
+    } catch (error) {
+        console.log("ERRO AL ENVIAR CORREOS");
+
+    }
+
+}
+
+function limpiarObservaciones(arrayObservaciones){
+        const seen = {};
+        const uniqueArray = [];
     
+        for (const item of arrayObservaciones) {
+            if (!seen[item]) {
+                uniqueArray.push(item);
+                seen[item] = true;
+            }
+        }
+    
+        return uniqueArray;
+}
+
+function generarFilasCsvEstudiantes(contentJson){
+    try {
+        console.log(contentJson);
+        let filas =`nombre_completo,identidad,carrera_principal,correo_personal,id_centro`;
+        let email;
+        let r;
+        /**recorrer resultados para enviar: */
+        for (resultado of contentJson){
+            r = Object.values(resultado)[0];
+            console.log(`FILA::::`,r);
+            /**enviar correo a cada uno */
+            filas += `\n${generateFilaEstudiante(r.informacion)}`;
+            
+            //correo.enviarCorreo(email,'RESULTADOS UNAH ADMISION',mensaje);
+        }
+        return filas;
+        console.log('FIN::\n',filas);
+    } catch (error) {
+        console.log("ERRO AL GENERAR FILAS para csv");   
+    }
+
+}
+
+function generateFilaEstudiante(p) {
+    return `${p.primer_nombre} ${p.segundo_nombre} ${p.primer_apellido} ${p.segundo_apellido}, ${p.id_persona},${[p.carrerasAprobadas][0]}, ${p.correo},${p.id_centro}`;
 }
 
 /**revisa si el estudiante aprobo para una o ambas carreas, o si reprobo para ambas.
@@ -338,7 +422,7 @@ async function evaluarAspirantes(){
         /* eliminarlos de la tabla resultados_examen_admision y pasarlos a un historial o algo asi de examenes o Eliminarlos permanentemte */
 
     }catch (error){
-        console.error("ocurrio un error al evaluar aspirantes",error);
+        console.error("ocurrio un error al evaluar aspirantes");
     }finally{
         await db.close();
     }
@@ -505,7 +589,7 @@ async function evaluarNotas(notasAspirantesExistentes){
 
     } catch (error) {
         console.log('ocurrio un error al evaluar notas');
-        console.error(error);            
+        //console.error(error);            
         return {
             "msj":"ERROR Al EVALUAR notas",
             "result": null
@@ -529,7 +613,7 @@ async function obtenerTreeNombresExamenes() {
         return examenesJson;
     } catch (error) {
         // Manejar cualquier error que ocurra durante la consulta
-        console.error("Error al obtener nombres de examenes: ", error);
+        console.error("Error al obtener nombres de examenes: ");//, error);
         throw error; // Lanzar el error para que pueda ser manejado por el llamador
     }
 }
@@ -557,21 +641,22 @@ async function evaluarCarrera(idCarrera,notaJson, treeRequisitos){
 
         console.log("requisito = = = = ",requisito);
         if(requisitosJson[notaJson.tipoExamen]){
-            msj = `El estudiante con identidad numero ${notaJson.id}, realizo todos los examenes ${nombresCarreras[idCarrera]}`;
+            //msj = `El estudiante con identidad numero ${notaJson.id}, realizo todos los examenes ${nombresCarreras[idCarrera]}`;
+            msj = `Le informamos que usted, realizo todos los examenes ${nombresCarreras[idCarrera]}`;
         } else{
-            msj = `El estudiante con identidad numero ${notaJson.id}, *NO HIZO* todos los examenes para la carrera ${nombresCarreras[idCarrera]}`;
+            msj = `Le informamos que usted, *NO HIZO* todos los examenes para la carrera ${nombresCarreras[idCarrera]}`;
              status = false;
         }
         resuladosEvaluaciones.push(msj);
         if ( requisitosJson[requisito] < notaJson.nota ){
             console.log('aprobo');
-            msj = `El estudiante con identidad numero ${notaJson.id}, aprobo el examen de ${treeNombresExamenes[notaJson.tipoExamen]} con una calificion de ${notaJson.nota} siendo la nota minima requerida de ${requisitosJson[requisito]} `;//${requisitosJson[notaJson.tipoExamen]}
+            msj = `Le informamos que usted, aprobo el examen de ${treeNombresExamenes[notaJson.tipoExamen]} con una calificion de ${notaJson.nota} siendo la nota minima requerida de ${requisitosJson[requisito]} `;//${requisitosJson[notaJson.tipoExamen]}
             if(status){
                 carreraAprobada[idCarrera] = notaJson.nota;
             }
         }else{
             status = false;
-            msj = `El estudiante con identidad numero ${notaJson.id}, REPROBO el examen de ${treeNombresExamenes[notaJson.tipoExamen]} con una calificion de ${notaJson.nota} siendo la nota minima requerida de ${requisitosJson[requisito]} `;
+            msj = `Le informamos que usted, REPROBO el examen de ${treeNombresExamenes[notaJson.tipoExamen]} con una calificion de ${notaJson.nota} siendo la nota minima requerida de ${requisitosJson[requisito]} `;
             console.log('reprobo');
             if(status){
                 carreraReprobada[idCarrera] = notaJson.nota;

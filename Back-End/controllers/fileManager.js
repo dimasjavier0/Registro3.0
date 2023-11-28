@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 class FileManager {
-    read(fileName, location) {
+    async read(fileName, location) {
         const filePath = path.join(location, fileName);
         return new Promise((resolve, reject) => {
             fs.readFile(filePath, 'utf8', (err, data) => {
@@ -15,8 +15,8 @@ class FileManager {
         });
     }
 
-    write(fileName, content) {
-        return new Promise((resolve, reject) => {
+    async write(fileName, content) {
+        return new Promise( (resolve, reject) => {
             fs.writeFile(fileName, content, 'utf8', (err) => {
                 if (err) {
                     reject(err);
@@ -27,7 +27,7 @@ class FileManager {
         });
     }
 
-    delete(fileName, location) {
+    async delete(fileName, location) {
         const filePath = path.join(location, fileName);
         return new Promise((resolve, reject) => {
             fs.unlink(filePath, (err) => {
