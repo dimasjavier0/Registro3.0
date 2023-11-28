@@ -12,7 +12,7 @@ const config = {
 };
 
 class DepartamentosModel {
-    async getAllCarreras() {
+    async getAllDepartamentos() {
         try {
             const pool = await mssql.connect(config);
             const result = await pool.query('SELECT * FROM departamentos_academicos');

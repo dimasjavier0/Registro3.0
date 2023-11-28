@@ -7,7 +7,7 @@ var router = express.Router(); // en lugar de app usar router.
 
 router.get('/',async (req,res)=>{
     let msj = '';
-    listadepartamentosJson= await departamentosModel.getAllCarreras();
+    listadepartamentosJson= await departamentosModel.getAllDepartamentos();
     if(listadepartamentosJson){
         msj='correcto';     
     }else{

@@ -77,6 +77,7 @@ const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
   app.use('/cr7', usuarios_route);//ruta para recuperar contrasenia
   
   app.use('/api/estudiante', estudianteRoutes);
+  app.use('/estudiantes', estudianteRoutes);
 
 /*
 
