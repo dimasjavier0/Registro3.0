@@ -28,6 +28,17 @@ class CarrerasModel{
             
         }
     }
+
+    async getTreeRequisitosCarreras(){
+        try {
+
+            listaCarreras = db.query(`select * from carreras;`);
+            console.log(listaCarreras);
+
+        } catch (error) {
+            console.log(`Error al obtener requisitos carrera`);   
+        }
+    }
 }
 
 module.exports = new CarrerasModel();

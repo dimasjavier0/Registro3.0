@@ -8,6 +8,7 @@ const { Result } = require('postcss');
 var db = require('../conections/database');
 const { primer_apellido } = require('../DTOs/aspiranteDTO');
 var correo = require('../controllers/correo');
+var fm = require('../controllers/fileManager');
 
 var router = express.Router(); // en lugar de app usar router.
 //var db = require('../conections/database');
@@ -15,18 +16,18 @@ var router = express.Router(); // en lugar de app usar router.
 /**subir una nota a tabla resultados_examen_admision */
 router.post('/', async (req,res)=>{
     try {
-        
+        await db.connect();
         
         let status={
             0:'no se han registrado notas',
             1:'no existen los usuarios ingresados',
             2:'error en los datos ingresados',
-            3:'se han ingresado notas',
+            3:'se han subdo las notas',
             4:'no existen aspirantes'
         }; 
         let msj = status[0];
 
-        let carrerasCodigos = {
+        var carrerasCodigos = {
             "PAA":1,
             "PAM":2,
             "PCN":3,
@@ -56,7 +57,7 @@ router.post('/', async (req,res)=>{
 
         
         /**si el aspirante existe en la base datos des aspirantes*/
-        await db.connect();
+        //await db.connect();
         let lista_IdPersonas_Aspirantes = await db.query(`select id_persona from aspirantes`);
         
         console.log(`aspirantes existentes en la base :`,lista_IdPersonas_Aspirantes);
@@ -73,44 +74,51 @@ router.post('/', async (req,res)=>{
 
         //let notasValidasToSubmit = [];
 
-        await db.close();
-        /**subir notas de los aspirantes que si existen */
+        //await db.close();
+
+        /**se sube la nota de los aspirantes que si existen. */
         for (let notaJSON of existentes){
-            /*for (let resultadoJson of resultadosExamenesAdmision){
-                if(notaJSON.id == resultadoJson.id_persona){
-                    console.log('\nCOMPARACION:::',resultadoJson.id_tipo_examen,notaJSON.tipoExamen,'\n');
-                    if (resultadoJson.id_tipo_examen != notaJSON.tipoExamen ){*/
-                        await db.connect();
-                        await db.query(
-                            `EXEC [dbo].[subir_nota_estudiante] @p_identidad = '${notaJSON.id}', @p_tipo_examen = ${notaJSON.tipoExamen}, @p_nota = ${notaJSON.nota};`
-                        );
-                        await db.close();
-                        /*
-                                    
-                    }
-                }
-            }*/
+            //await db.connect();
+            await db.query(
+                `EXEC [dbo].[subir_nota_estudiante] @p_identidad = '${notaJSON.id}', @p_tipo_examen = ${notaJSON.tipoExamen}, @p_nota = ${notaJSON.nota};`
+            );
+            //await db.close();
         };
 
         
+        let resultadoFinal = await evaluarNotas(existentes);
         
 
-        
+        let respuesta = {
+            'msj': msj[3],
+            'notasIngresadas':existentes,
+            'aspirantesNoExisten':inexistentes,
+            'mensajeFinal':resultadoFinal.msj,
+            'resultados':[
+                {"aprobados":resultadoFinal.aprobados},
+                {"reprobados":resultadoFinal.reprobados}
+            ],
+            "a":resultadoFinal.a
+        };
 
-        evaluarAspirantes();
-        res.send(
-            {
-                'msj': msj[3],
-                'notasIngresadas':existentes,
-                'aspirantesNoExisten':inexistentes
-            }
+
+        await fm.write('./src/estudiantes.csv', 'Hello, World!');
+
+        res.json(
+            respuesta
         );
         /**cerrando conexion */
         
     } catch (error) {
         console.log("::OCURRRIO UN ERROR::",error);
+    }finally{
+        await db.close();
     }
 });
+
+async function getEstudiantesCsv(content){
+    
+}
 
 /**revisa si el estudiante aprobo para una o ambas carreas, o si reprobo para ambas.
  * En cualquier caso manda el correo informando los resultados
@@ -120,7 +128,7 @@ async function evaluarAspirantes(){
         var aprobados = {}, reprobados={};
         //var msjs = [];
 
-        await db.connect();
+        //await db.connect();
         
         /** lista de aspirantes que hicieron examen de admision*/
         let listaAspirantesId_conExamenes = await db.query(`select distinct a.id_persona from aspirantes a inner join resultados_examen_admision rea on a.id_aspirante = rea.id_aspirante;`);
@@ -329,12 +337,13 @@ async function evaluarAspirantes(){
 
         /* eliminarlos de la tabla resultados_examen_admision y pasarlos a un historial o algo asi de examenes o Eliminarlos permanentemte */
 
-        await db.close();
     }catch (error){
         console.error("ocurrio un error al evaluar aspirantes",error);
+    }finally{
+        await db.close();
     }
 }
-
+/**guarda en existentes los aspirantes recibidos de las notas que si se encuentran en la tabla aspirantes */
 function existenAspirantes(arrayNotas,arrayIdAspirantes,existentes,inexistentes){
 
     for (const notaJson of arrayNotas) {
@@ -352,6 +361,281 @@ function existenAspirantes(arrayNotas,arrayIdAspirantes,existentes,inexistentes)
             inexistentes.push(notaJson.id);
         }
     }
+};
+
+async function evaluarNotas(notasAspirantesExistentes){
+    try {
+        
+        
+        var requisitosCarreras = await generarArbolRequisitosCarreras();
+        let status = false;
+        //await db.connect();
+        
+        /**obteniendo toda la informacion de una persona para luego informarle si paso o no */
+        var infoPersonas = [];
+        var estudiantesAprobados = [];
+        var estudiantesReprobados = [];
+        var result = {};
+        var carrerasAprobadas = [];
+
+        var a = [];
+        var r = [];
+        
+
+        for (notaJson of notasAspirantesExistentes){
+            let infoPersona = await db.query(`select * from aspirantes a inner join personas p on p.numero_identidad = a.id_persona where p.numero_identidad = '${notaJson.id}';`);
+            console.log('= = = = = ');
+            console.log(infoPersona[0],notaJson);
+            console.log('= = = = = ');
+            infoPersona = infoPersona[0];
+            
+            
+            /**comprar si paso carreraPrincipal */
+            let resultadoCarreraPrincipal = await evaluarCarrera(infoPersona.carrera_principal,notaJson,requisitosCarreras);
+            /**comprar si paso la carrerra Secundaria */
+            let resultadoCarreraSecundaria = await evaluarCarrera(infoPersona.carrera_secundaria,notaJson,requisitosCarreras);
+
+            
+            /**guardando carreras */
+            let principal;
+            
+
+
+
+
+            infoPersona.carrerasAprobadas = [];
+            
+            /** */
+            
+
+            /** */
+            if(resultadoCarreraPrincipal.status){
+                console.log(`El estudiante ${infoPersona.id_persona} aprobo su Carrera Principal`);
+                //status = true;
+                result = { [infoPersona.numero_identidad]: resultadoCarreraPrincipal };
+                result[infoPersona.id_persona].informacion = infoPersona;
+                
+                infoPersona['carrerasAprobadas'].push(resultadoCarreraPrincipal.carrera);
+
+                estudiantesAprobados.push(result);
+            }else{
+                console.log(`El estudiante ${infoPersona.id_persona} REPROBO su Carrera Principal`);
+                //status = false;
+                result = { [infoPersona.numero_identidad]: resultadoCarreraPrincipal };
+                result[infoPersona.id_persona].informacion = infoPersona;
+                estudiantesReprobados.push(result);
+            }
+            console.log("resultado CARRERA PRINCIPAL==::::==",resultadoCarreraPrincipal);
+            console.log(result.observaciones);
+
+            
+
+            /**comprar si paso la carrerra Secundaria */
+            
+            if(resultadoCarreraSecundaria.status){
+                console.log(`El estudiante ${infoPersona.id_persona} aprobo su Carrera Principal`);
+                //status = true;
+                result = { [infoPersona.numero_identidad]: resultadoCarreraSecundaria };
+                result[infoPersona.id_persona].informacion = infoPersona;
+                infoPersona['carrerasAprobadas'].push(resultadoCarreraSecundaria.carrera);
+                estudiantesAprobados.push(result);
+            }else{
+                console.log(`El estudiante ${infoPersona.id_persona} REPROBO su Carrera Principal`);
+                //status = false;
+                result = { [infoPersona.numero_identidad]: resultadoCarreraSecundaria };
+                result[infoPersona.id_persona].informacion = infoPersona;
+                estudiantesReprobados.push(result);
+            }
+            console.log("resultado carrera Secundaria ==::::==",resultadoCarreraSecundaria);
+
+
+
+
+
+
+
+
+            let info ='';
+            if(resultadoCarreraPrincipal.status){
+                principal =  resultadoCarreraPrincipal.carrera;
+                info = resultadoCarreraPrincipal.observaciones;
+            }else{
+                if(resultadoCarreraSecundaria.status){
+                    principal = resultadoCarreraSecundaria.carrera;
+                    info = resultadoCarreraSecundaria.observaciones;
+                }
+            }
+
+            if(principal){
+                a.push({
+                    [infoPersona.id_persona]:infoPersona,
+                    'carreraPrincipal':principal,
+                    'informacion': info
+                });
+            }else{
+                r.push({
+                    [infoPersona.id_persona]:infoPersona,
+                    'carreraPrincipal':principal,
+                    'informacion': info
+                })
+            }
+            
+
+            
+            
+            
+        }
+        console.log(":::::::: APROBADOS Y REPROBADOS FINALES = = = =");
+        console.log('aprobados - - - : ', estudiantesAprobados)
+        console.log('reprobados - - - : ', estudiantesReprobados)
+        console.log("= = = = = APROBADOS Y REPROBADOS FINALES :::::",a);
+        //await db.close();
+        //for (infoP of infoPersonas){}
+
+        let respuestaFinalRouter = {};
+
+        return {
+            "msj":"Se evaluaron los examenes",
+            "aprobados": estudiantesAprobados,
+            "reprobados": estudiantesReprobados,
+            "a":a,
+            "r":r
+        };
+        
+
+    } catch (error) {
+        console.log('ocurrio un error al evaluar notas');
+        console.error(error);            
+        return {
+            "msj":"ERROR Al EVALUAR notas",
+            "result": null
+        };
+    }
+
+}
+
+async function obtenerTreeNombresExamenes() {
+    try {
+        // Ejecutar la consulta y esperar los resultados
+        let resultados = await db.query('SELECT id_tipo_examen, nombre_examen FROM tipos_examen_admision');
+
+        // Procesar los resultados para crear el JSON deseado
+        let examenesJson = {};
+        resultados.forEach(row => {
+            examenesJson[row.id_tipo_examen] = row.nombre_examen;
+        });
+
+        console.log(examenesJson);
+        return examenesJson;
+    } catch (error) {
+        // Manejar cualquier error que ocurra durante la consulta
+        console.error("Error al obtener nombres de examenes: ", error);
+        throw error; // Lanzar el error para que pueda ser manejado por el llamador
+    }
+}
+
+
+async function evaluarCarrera(idCarrera,notaJson, treeRequisitos){
+    console.log('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
+    console.log(idCarrera,notaJson,treeRequisitos);
+    let treeNombresExamenes = await obtenerTreeNombresExamenes();
+    
+    console.log(`- - - - - - - - - - - -notaJson.tipoExamen::: ${notaJson.tipoExamen} - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - `);
+    let requisitosJson = treeRequisitos[idCarrera];
+    let status = true;
+    let msj = '';
+    let resuladosEvaluaciones = [];
+    let carreraAprobada = {};
+    let carreraReprobada = {};
+    //let examenesAprobados = {};
+
+    console.log("requisitosJson = = = = = = = = = = - - - - - -",requisitosJson);
+    
+    
+    /**recorrer los requisitos segun la carrera */
+    for (let requisito in requisitosJson){
+
+        console.log("requisito = = = = ",requisito);
+        if(requisitosJson[notaJson.tipoExamen]){
+            msj = `El estudiante con identidad numero ${notaJson.id}, realizo todos los examenes ${nombresCarreras[idCarrera]}`;
+        } else{
+            msj = `El estudiante con identidad numero ${notaJson.id}, *NO HIZO* todos los examenes para la carrera ${nombresCarreras[idCarrera]}`;
+             status = false;
+        }
+        resuladosEvaluaciones.push(msj);
+        if ( requisitosJson[requisito] < notaJson.nota ){
+            console.log('aprobo');
+            msj = `El estudiante con identidad numero ${notaJson.id}, aprobo el examen de ${treeNombresExamenes[notaJson.tipoExamen]} con una calificion de ${notaJson.nota} siendo la nota minima requerida de ${requisitosJson[requisito]} `;//${requisitosJson[notaJson.tipoExamen]}
+            if(status){
+                carreraAprobada[idCarrera] = notaJson.nota;
+            }
+        }else{
+            status = false;
+            msj = `El estudiante con identidad numero ${notaJson.id}, REPROBO el examen de ${treeNombresExamenes[notaJson.tipoExamen]} con una calificion de ${notaJson.nota} siendo la nota minima requerida de ${requisitosJson[requisito]} `;
+            console.log('reprobo');
+            if(status){
+                carreraReprobada[idCarrera] = notaJson.nota;
+            }
+        }
+        resuladosEvaluaciones.push(msj);
+        console.log("COMPARACION DE CARRERA ", requisitosJson[notaJson.tipoExamen], notaJson.nota)
+
+
+    }
+
+    /**comprobar si tiene todos los requisitos */
+    /**comprobar si aprobo el requisito */
+    console.log('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
+    console.log('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
+    console.log('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
+    
+    console.log(resuladosEvaluaciones);
+    
+    console.log('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
+    console.log('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
+    console.log('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
+    
+
+    return {
+        'carrera':idCarrera,
+        "status":status,
+        "observaciones":resuladosEvaluaciones
+    };
+}
+
+var nombresCarreras = {};
+
+async function generarArbolRequisitosCarreras(){
+    //await db.connect();
+    var listaCarrerasJson = await db.query(`select * from carreras;`);
+    
+    console.log(listaCarrerasJson);
+
+    var treeRequisitos = {};
+
+
+    for (let id_carreraJson of listaCarrerasJson){
+        console.log(id_carreraJson);
+        nombresCarreras[id_carreraJson.id_carrera] = id_carreraJson.nombre_carrera; 
+        treeRequisitos[id_carreraJson.id_carrera] =  extractRequisitos(
+            await db.query(`select id_tipo_examen, puntaje_minimo_examen from requisitos_carreras where id_carrera = ${id_carreraJson.id_carrera};`)
+        );
+    }
+
+    console.log('treeRequisitosCarreras',treeRequisitos);
+    //console.log(listaRequisitosCarreras)
+    //await db.close();
+    return treeRequisitos;
+}
+
+function extractRequisitos(jsonTipoExamen){
+    //console.log('??????????? jsonTipoExamen::',jsonTipoExamen);
+    let requisitos = {};
+    for (requisitoJson of jsonTipoExamen ){
+        requisitos[requisitoJson.id_tipo_examen] = requisitoJson.puntaje_minimo_examen ;
+    }
+    console.log(requisitos);
+    return requisitos;
 };
 
 
