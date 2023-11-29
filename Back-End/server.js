@@ -17,7 +17,7 @@ const nodemailer = require('nodemailer');
 const usuarios_route = require('./routes/usuarios-route');
 const estudianteRoutes = require('./routes/estudiante-route');
 const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
-
+const fotosRoutes = require('./routes/fotos-routes');
 
 
 /**configuraciones */
@@ -78,8 +78,12 @@ const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
   app.use('/cr7', usuarios_route);//ruta para recuperar contrasenia
   
   app.use('/api/estudiante', estudianteRoutes);
-  app.use('/estudiantes', estudianteRoutes);
 
+  // Ruta para el perfil de los estudiantes
+  app.use('/estudiantes', estudianteRoutes);
+  
+  // Rutas para guaradar las fotos del perfil de los estudiantes
+  app.use('/fotos', fotosRoutes);
 /*
 
 

@@ -15,14 +15,32 @@ function PerfilEstudiante() {
             .catch(error => console.error(error));
     }, [numeroCuenta]);
 
-    const onDrop = (acceptedFiles) => {
-        // Limitar la cantidad de fotos a un máximo de 3
-        const nuevasFotos = [...fotos, ...acceptedFiles.slice(0, 3 - fotos.length)];
-        setFotos(nuevasFotos);
-    };
-
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        
+        onDrop: (acceptedFiles) => {
+          // Limitar la cantidad de fotos a un máximo de 3
+            const nuevasFotos = [...fotos, ...acceptedFiles.slice(0, 3 - fotos.length)];
+            setFotos(nuevasFotos);
+            },
+        });
+        
+        const handleUpload = async () => {
+            const formData = new FormData();
+            formData.append('id_estudiante', numeroCuenta);
+        
+            for (let i = 0; i < fotos.length; i++) {
+            formData.append('fotos', fotos[i]);
+            }
+        
+            try {
+            const response = await axios.post('http://localhost:8888/fotos/upload', formData);
+            console.log(response.data);
+            setFotos([])
+            } catch (error) {
+            console.error('Error al subir las fotos:', error);
+            }
+        };
+        
     return (
         <>
         <div className='grid grid-cols-3' >
@@ -76,7 +94,7 @@ function PerfilEstudiante() {
                 )}
 
                 
-
+            {/* Reservado Para la descripcion de los usuarios y demas detalles */}
             <form >
                     
             </form>
@@ -84,38 +102,40 @@ function PerfilEstudiante() {
             </div>
         </div>
 
+        {/* Bloque de Fotos */}
+        <div className="max-w-2xl mx-auto mt-8 p-4 bg-white rounded shadow-md ml-20">
+        <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">Fotos</h2>
+            <div
+            {...getRootProps()}
+            className={`border border-dashed border-gray-300 p-4 ${
+                isDragActive ? 'bg-gray-200' : ''
+            }`}
+            >
+            <input {...getInputProps()} />
 
-        <div className="max-w-2xl mx-auto mt-8 p-4 bg-white rounded shadow-md">
-    {/* Fotos */}
+            <p className="text-gray-500">
+                <i className="fas fa-solid fa-arrow-up-from-bracket fa-xl ml-2 mr-4"></i>
+                Puedes arrastrar y soltar aquí, o haz clic para seleccionar tus fotos
+            </p>
+            </div>
+            <div className="mt-4">
+            {fotos.map((foto, index) => (
+                <img
+                key={index}
+                src={URL.createObjectURL(foto)}
+                alt={`Foto ${index + 1}`}
+                className="w-20 h-20 object-cover rounded-full inline-block mr-2"
+                />
+            ))}
+            </div>
+            <button 
+            className='bg-yellow-600 text-white py-2 px-4 rounded-lg hover:bg-yellow-700 font-medium w-full uppercase mb-9 font-label shadow-lg shadow-yellow-300/70'
+            onClick={handleUpload}>Subir Fotos
+            </button>
+        </div>
+        </div>
     
-    <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">Fotos</h2>
-        <div
-        {...getRootProps()}
-        className={`border border-dashed border-gray-300 p-4 ${
-            isDragActive ? 'bg-gray-200' : ''
-        }`}
-        >
-        <input {...getInputProps()} 
-        />
-
-        <p className="text-gray-500">
-        <i className="fas fa-solid fa-arrow-up-from-bracket fa-xl ml-2 mr-4"></i>
-            Puedes arrastrar y soltar aquí, o haz clic para seleccionar tus fotos
-        </p>
-        </div>
-        <div className="mt-4">
-        {fotos.map((foto) => (
-            <img
-            key={foto.name}
-            src={URL.createObjectURL(foto)}
-            alt={foto.name}
-            className="w-20 h-20 object-cover rounded-full inline-block mr-2"
-            />
-        ))}
-        </div>
-    </div>
-    </div>
         </>
     )
 }

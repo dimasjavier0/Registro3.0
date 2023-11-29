@@ -16,7 +16,7 @@ function HeaderDocente() {
                 <div>
                 <h1 className='text-4xl ml-8 
                 font-black text-center text-white mt-10'>Área personal <br />
-                <h1>docente</h1>
+                <p>docente</p>
                 </h1>
                 <img className=' w-44 h-44 ml-20 mb-10 mt-2' src="/img/vista-docente.png" alt="Seguridad" /> 
                 <nav className=''>
