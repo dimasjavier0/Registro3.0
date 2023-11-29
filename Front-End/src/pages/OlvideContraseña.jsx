@@ -7,7 +7,6 @@ import axios from 'axios';
 function OlvideContraseña() {
   const [email, setEmail] = useState('');
   const [alerta, setAlerta] = useState({});
-  const [respuestaServidor, setRespuestaServidor] = useState(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -27,7 +26,7 @@ function OlvideContraseña() {
     const respuesta = await axios.put(url, data);
 
     
-    const mensajePersonalizado = `Se ha enviado un correo al correo: ${email}. Con mensaje: ${respuesta}`;
+    const mensajePersonalizado = `Se ha enviado un correo al correo: ${email}. Con mensaje: ${respuesta.data.mensaje}`;
 
     setAlerta({
       mensaje: mensajePersonalizado,
@@ -68,22 +67,6 @@ function OlvideContraseña() {
             <div className='bg-white p-8 rounded-xl shadow-lg border w-10/12 ml-10'>
                 <h2 className='text-indigo-600 mb-6 text-3xl text-center font-black font-label uppercase '>Recupera Tu Cuenta <br /><span className='text-black'>UNAH</span></h2>
 
-                {respuestaServidor && (
-            <div>
-              {respuestaServidor.result ? (
-                <p>
-                  Se ha enviado un correo al correo: {email}. Con mensaje:{' '}
-                  {respuestaServidor.mensaje}
-                </p>
-              ) : (
-                <p>
-                  Hubo un problema al procesar la solicitud. Por favor,
-                  inténtalo de nuevo.
-                </p>
-              )}
-            </div>
-          )}
-
                 {mensaje && <AlertaError 
                     alerta={alerta}
                 />}
@@ -116,14 +99,8 @@ function OlvideContraseña() {
                         </button>
                         </Link>
                         
-                    </div>
-                    
-                        
-                </form> 
-                    
-                
-
-                
+                    </div>        
+                </form>       
             </div>
             </div>         
         </>

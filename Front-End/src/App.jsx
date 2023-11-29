@@ -17,6 +17,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import LayoutEstudiante from './layout/LayoutEstudiante';
 import LayoutDocente from './layout/LayoutDocente';
 import SubirVideoFormulario from './pages/AsignarVideo';
+import LayoutSolicitudes from './layout/LayoutSolicitudes';
 
 
 function App() {
@@ -48,6 +49,10 @@ function App() {
 
         <Route path='/principalEstudiante' element={<LayoutEstudiante/>}>
             <Route path='perfilEstudiante/:numeroCuenta' element={<PerfilEstudiante/>} /> 
+        </Route>
+
+        <Route path='/principalSolicitudes' element={<LayoutSolicitudes/>}>
+            
         </Route>
 
         <Route path='/principalDocente' element={<LayoutDocente/>}>
