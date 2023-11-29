@@ -18,6 +18,7 @@ const usuarios_route = require('./routes/usuarios-route');
 const estudianteRoutes = require('./routes/estudiante-route');
 const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
 const fotosRoutes = require('./routes/fotos-routes');
+const logEstudiantes = require('./routes/logEstudiantes-route');
 
 
 /**configuraciones */
@@ -84,6 +85,10 @@ const fotosRoutes = require('./routes/fotos-routes');
   
   // Rutas para guaradar las fotos del perfil de los estudiantes
   app.use('/fotos', fotosRoutes);
+
+  // Ruta para logearse como estudiante
+  app.use('/estudianteLog', logEstudiantes);
+
 /*
 
 

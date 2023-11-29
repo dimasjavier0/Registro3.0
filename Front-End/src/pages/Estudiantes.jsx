@@ -2,6 +2,7 @@ import React from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import { useState } from 'react';
 import AlertaError from '../components/AlertaError';
+import axios from 'axios';
 
 
 function Estudiantes() {
@@ -13,21 +14,29 @@ function Estudiantes() {
     const [contraseña, setContraseña] = useState('');
 
 
-    function handleSubmit(e) {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        if ([usuario,contraseña].includes('')) {
-            setAlerta({mensaje: 'Existen campos vacios', error: true})
-            return;
-        }
-        if (usuario === '20232023111' && contraseña === 'admin') {
-            navigate('/principalEstudiante') 
-        } else {
-            setAlerta({mensaje: 'Credenciales invalidas', 
-            error: true})
-            return;
-        }
-    };
+    
+        try {
+            const response = await axios.post('http://localhost:8888/estudianteLog/logES', {
+                nombre_usuario: usuario,
+                password: contraseña,
+            });
+            const data = response.data;
+
+            if (data.success) {
+                console.log('Inicio de sesión exitoso');
+                navigate('/principalEstudiante') 
+                } else {
+                console.log('Error en inicio de sesión:', data.message);
+                setAlerta({ mensaje:  data.message,
+                            error: true });
+                return;
+                }
+            } catch (error) {
+                console.error('Error de red:', error);
+            }
+        };
     const {mensaje}= alerta
 
     return (
