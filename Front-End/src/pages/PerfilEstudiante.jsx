@@ -2,18 +2,29 @@ import React, { useState,useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useUserContext } from '../components/UserContext';
 
 function PerfilEstudiante() {
 
     const [fotos, setFotos] = useState([]);
     const [estudiante, setEstudiante] = useState(null);
+    const { user } = useUserContext();
     const { numeroCuenta } = useParams();
 
     useEffect(() => {
-        axios.get(`http://localhost:8888/api/estudiante/${numeroCuenta}`)
-            .then(response => setEstudiante(response.data))
-            .catch(error => console.error(error));
-    }, [numeroCuenta]);
+        const obtenerEstudiante = async () => {
+            try {
+                if (user) {
+                    const response = await axios.get(`http://localhost:8888/api/estudiante/${user.user_id}`);
+                    setEstudiante(response.data);
+                }
+            } catch (error) {
+                console.error('Error al obtener el estudiante:', error);
+            }
+        };
+
+        obtenerEstudiante();
+    }, [user]);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         

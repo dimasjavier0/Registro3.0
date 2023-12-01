@@ -3,11 +3,13 @@ import { Link,useNavigate } from 'react-router-dom'
 import { useState } from 'react';
 import AlertaError from '../components/AlertaError';
 import axios from 'axios';
+import { useUserContext } from '../components/UserContext';
 
 
 function Estudiantes() {
 
     const navigate = useNavigate();
+    const { setUserContext } = useUserContext();
     
     const [alerta, setAlerta] = useState({});
     const [usuario, setUsuario] = useState('');
@@ -26,6 +28,7 @@ function Estudiantes() {
 
             if (data.success) {
                 console.log('Inicio de sesión exitoso');
+                setUserContext({ user_id: data.user_id });
                 navigate('/principalEstudiante') 
                 } else {
                 console.log('Error en inicio de sesión:', data.message);

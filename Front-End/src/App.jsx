@@ -18,13 +18,14 @@ import LayoutEstudiante from './layout/LayoutEstudiante';
 import LayoutDocente from './layout/LayoutDocente';
 import SubirVideoFormulario from './pages/AsignarVideo';
 import LayoutSolicitudes from './layout/LayoutSolicitudes';
+import { UserContextProvider } from './components/UserContext';
 
 
 function App() {
   
 
   return (
-    
+    <UserContextProvider>
         <BrowserRouter>
       <Routes>
 
@@ -48,7 +49,7 @@ function App() {
         </Route>
 
         <Route path='/principalEstudiante' element={<LayoutEstudiante/>}>
-            <Route path='perfilEstudiante/:numeroCuenta' element={<PerfilEstudiante/>} /> 
+            <Route path='perfilEstudiante/:id_usuario' element={<PerfilEstudiante/>} /> 
         </Route>
 
         <Route path='/principalSolicitudes' element={<LayoutSolicitudes/>}>
@@ -63,7 +64,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
-    
+    </UserContextProvider>
     
   )
 }
