@@ -19,7 +19,12 @@ const estudianteRoutes = require('./routes/estudiante-route');
 const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
 const fotosRoutes = require('./routes/fotos-routes');
 const logEstudiantes = require('./routes/logEstudiantes-route');
-
+const contactoRoutes = require('./routes/contactoRoutes');
+const solicitudContactoRoutes = require('./routes/solicitudContactoRoutes');
+const grupoRoutes = require('./routes/grupoRoutes');
+const miembroGrupoRoutes = require('./routes/miembroGrupoRoutes');
+const mensajeGrupoRoutes = require('./routes/mensajeGrupoRoutes');
+const mensajePersonalRoutes = require('./routes/mensajePersonalRoutes');
 
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
@@ -44,7 +49,12 @@ const logEstudiantes = require('./routes/logEstudiantes-route');
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
     /**para el manejo de rutas */
     //app.use(Routes);
-
+    app.use('/api/contactos', contactoRoutes);
+    app.use('/api/solicitudes-contacto', solicitudContactoRoutes);
+    app.use('/api/grupos', grupoRoutes);
+    app.use('/api/miembros-grupo', miembroGrupoRoutes);
+    app.use('/api/mensajes-grupo', mensajeGrupoRoutes);
+    app.use('/api/mensajes-personales', mensajePersonalRoutes);
 
 /**Recibir Peticiones */
 
