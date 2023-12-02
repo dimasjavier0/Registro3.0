@@ -16,5 +16,26 @@ CREATE TABLE docentes (
     FOREIGN KEY (id_centro) REFERENCES centros_regionales(id_centro)
 );
 
+--Cambios en la tabla usuarios y creacion de la tabla roles
+CREATE TABLE roles(
+	id_rol INT PRIMARY KEY,
+	nombre NVARCHAR(70)
+)
+
+ALTER TABLE usuarios
+ALTER COLUMN rol INT;
+
+ALTER TABLE usuario
+ADD CONSTRAINT FK_usuario_rol
+FOREIGN KEY (rol) REFERENCES roles(id_rol);
+
+INSERT INTO roles
+VALUES
+	(1, 'administrador'),
+	(2, 'estudiante'),
+	(3, 'docente'),
+	(4, 'coordinador'),
+	(5, 'jefeDep')
+
 INSERT INTO usuarios (nombre_usuario, password_hash, correoElectronico)
 VALUES ('20181030913', '$2b$12$A9NoXVOx0Wr1luys8Mb9me/crCyo8TA4jSPIhyUAnt7ZhckXQt/Yi', 'papardosmith1917@gmail.com');
