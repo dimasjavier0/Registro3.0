@@ -24,7 +24,7 @@ async function validarDocente(Identidad, numeroEmpleado) {
       .query(`
       SELECT COUNT(*) AS count
       FROM personas AS p
-      JOIN docentes AS d ON p.id_persona = d.id_persona
+      JOIN docentes AS d ON p.numero_identidad = d.id_persona
       WHERE p.numero_identidad = @Identidad
   `);
 
