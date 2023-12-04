@@ -1,20 +1,20 @@
 const Sequelize = require('sequelize');
-const db = require('../conections/database'); 
+var db = require('../conections/database');
 
-const Contacto = db.define('Contactos', {
-    id_contacto: {
+const Grupo = db.define('Grupos', {
+    id_grupo: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    estudiante_id: {
+    nombre_grupo: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    contacto_id: {
+    creador_id: {
         type: Sequelize.STRING,
         allowNull: false
     }
 });
 
-module.exports = Contacto;
+module.exports = Grupo;

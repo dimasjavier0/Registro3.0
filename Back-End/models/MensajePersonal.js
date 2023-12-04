@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('../conections/database'); 
+var db = require('../conections/database');
 
 const MensajePersonal = db.define('MensajesPersonales', {
     id_mensaje: {

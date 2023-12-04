@@ -1,15 +1,17 @@
-const MensajeGrupo = require('../models/Modelos_para_chats/MensajeGrupo');
+const db = require('../conections/database');
 
-const enviarMensajeGrupo = async (idGrupo, remitenteId, texto) => {
-    try {
-        return await MensajeGrupo.create({
-            id_grupo: idGrupo,
-            remitente_id: remitenteId,
-            texto: texto
-        });
-    } catch (error) {
-        throw error;
-    }
-};
+async function enviarMensajeGrupo(grupoId, remitenteId, texto) {
+    await db.connect();
+    const result = await db.query(`INSERT INTO MensajesGrupo (id_grupo, remitente_id, texto) VALUES ('${grupoId}', '${remitenteId}', '${texto}')`);
+    await db.close();
+    return result;
+}
 
-module.exports = { enviarMensajeGrupo };
+async function obtenerMensajesGrupo(grupoId) {
+    await db.connect();
+    const result = await db.query(`SELECT * FROM MensajesGrupo WHERE id_grupo = '${grupoId}'`);
+    await db.close();
+    return result;
+}
+
+module.exports = { enviarMensajeGrupo, obtenerMensajesGrupo };

@@ -1,5 +1,5 @@
 const express = require('express');
-const { agregarMiembro } = require('../controllers/miembroGrupoController');
+const { agregarMiembro } = require('../controllers/miembroGrupo');
 const router = express.Router();
 
 router.post('/agregar', async (req, res) => {

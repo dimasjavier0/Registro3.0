@@ -1,15 +1,17 @@
-const MensajePersonal = require('../models/Modelos_para_chats/MensajePersonal');
+const db = require('../conections/database');
 
-const enviarMensajePersonal = async (remitenteId, destinatarioId, texto) => {
-    try {
-        return await MensajePersonal.create({
-            remitente_id: remitenteId,
-            destinatario_id: destinatarioId,
-            texto: texto
-        });
-    } catch (error) {
-        throw error;
-    }
-};
+async function enviarMensajePersonal(senderId, receiverId, texto) {
+    await db.connect();
+    const result = await db.query(`INSERT INTO Messages (senderId, receiverId, text) VALUES ('${senderId}', '${receiverId}', '${texto}')`);
+    await db.close();
+    return result;
+}
 
-module.exports = { enviarMensajePersonal };
+async function obtenerMensajesPersonales(usuarioId) {
+    await db.connect();
+    const result = await db.query(`SELECT * FROM Messages WHERE senderId = '${usuarioId}' OR receiverId = '${usuarioId}'`);
+    await db.close();
+    return result;
+}
+
+module.exports = { enviarMensajePersonal, obtenerMensajesPersonales };

@@ -1,19 +1,17 @@
-const Contacto = require('../models/Modelos_para_chats/Contacto');
+const db = require('../conections/database');
 
-const agregarContacto = async (estudianteId, contactoId) => {
-    try {
-        return await Contacto.create({ estudiante_id: estudianteId, contacto_id: contactoId });
-    } catch (error) {
-        throw error;
-    }
-};
+async function agregarContacto(estudianteId, contactoId) {
+    await db.connect();
+    const result = await db.query(`INSERT INTO Contactos (estudiante_id, contacto_id) VALUES ('${estudianteId}', '${contactoId}')`);
+    await db.close();
+    return result;
+}
 
-const obtenerContactos = async (estudianteId) => {
-    try {
-        return await Contacto.findAll({ where: { estudiante_id: estudianteId } });
-    } catch (error) {
-        throw error;
-    }
-};
+async function obtenerContactos(estudianteId) {
+    await db.connect();
+    const result = await db.query(`SELECT * FROM Contactos WHERE estudiante_id = '${estudianteId}'`);
+    await db.close();
+    return result;
+}
 
 module.exports = { agregarContacto, obtenerContactos };

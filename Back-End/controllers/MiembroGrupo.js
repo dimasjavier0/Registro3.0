@@ -1,11 +1,17 @@
-const MiembroGrupo = require('../models/Modelos_para_chats/MiembroGrupo');
+const db = require('../conections/database');
 
-const agregarMiembro = async (idGrupo, miembroId) => {
-    try {
-        return await MiembroGrupo.create({ id_grupo: idGrupo, miembro_id: miembroId });
-    } catch (error) {
-        throw error;
-    }
-};
+async function agregarMiembroGrupo(grupoId, miembroId) {
+    await db.connect();
+    const result = await db.query(`INSERT INTO MiembrosGrupo (id_grupo, miembro_id) VALUES ('${grupoId}', '${miembroId}')`);
+    await db.close();
+    return result;
+}
 
-module.exports = { agregarMiembro };
+async function obtenerMiembrosGrupo(grupoId) {
+    await db.connect();
+    const result = await db.query(`SELECT * FROM MiembrosGrupo WHERE id_grupo = '${grupoId}'`);
+    await db.close();
+    return result;
+}
+
+module.exports = { agregarMiembroGrupo, obtenerMiembrosGrupo };

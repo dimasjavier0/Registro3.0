@@ -1,24 +1,20 @@
 const Sequelize = require('sequelize');
 const db = require('../conections/database');
 
-const SolicitudContacto = db.define('SolicitudesContacto', {
-    id_solicitud: {
+const Contacto = db.define('Contactos', {
+    id_contacto: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    solicitante_id: {
+    estudiante_id: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    solicitado_id: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    estado: {
+    contacto_id: {
         type: Sequelize.STRING,
         allowNull: false
     }
 });
 
-module.exports = SolicitudContacto;
+module.exports = Contacto;
