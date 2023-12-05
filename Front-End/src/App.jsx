@@ -19,6 +19,9 @@ import LayoutDocente from './layout/LayoutDocente';
 import SubirVideoFormulario from './pages/AsignarVideo';
 import LayoutSolicitudes from './layout/LayoutSolicitudes';
 import { UserContextProvider } from './components/UserContext';
+import CambioCarrera from './pages/CambioCarrera';
+import PagoReposicion from './pages/PagoReposicion';
+import CambioCentro from './pages/CambioCentro';
 
 
 function App() {
@@ -38,7 +41,7 @@ function App() {
         </Route>
         
         <Route > 
-            <Route path='/olvideContraseña' element={<OlvideContraseña/>} /> 
+            <Route path='/olvideContraseña' element={<OlvideContraseña/>} />
         </Route>
 
         <Route path='/administracion' element={<LayoutAdmin/>}>
@@ -53,7 +56,9 @@ function App() {
         </Route>
 
         <Route path='/principalSolicitudes' element={<LayoutSolicitudes/>}>
-            
+            <Route path='cambioCarrera' element={<CambioCarrera/>} />
+            <Route path='cambioCentro' element={<CambioCentro/>} />
+            <Route path='pagoReposicion' element={<PagoReposicion/>} />
         </Route>
 
         <Route path='/principalDocente' element={<LayoutDocente/>}>

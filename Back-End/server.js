@@ -19,6 +19,7 @@ const estudianteRoutes = require('./routes/estudiante-route');
 const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
 const fotosRoutes = require('./routes/fotos-routes');
 const logEstudiantes = require('./routes/logEstudiantes-route');
+const centrosRoute = require('./routes/centro-route');
 const contactosRoute = require('./routes/contactosRoute');
 const solicitudContactoRoutes = require('./routes/solicitudContactoRoutes');
 const grupoRoutes = require('./routes/grupoRoutes');
@@ -100,6 +101,9 @@ const historialAcademicoController = require('./controllers/historialAcademicoCo
 
   // Ruta para logearse como estudiante
   app.use('/estudianteLog', logEstudiantes);
+
+  // Ruta para los centros regionales
+  app.use('/centros', centrosRoute);
 
 /*
 
