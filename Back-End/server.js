@@ -25,6 +25,7 @@ const grupoRoutes = require('./routes/grupoRoutes');
 const miembroGrupoRoutes = require('./routes/miembrosGrupoRoute');
 const mensajeGrupoRoutes = require('./routes/mensajeGrupoRoutes');
 const mensajePersonalRoutes = require('./routes/mensajePersonalRoutes');
+const historialAcademicoController = require('./controllers/historialAcademicoController');
 
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
@@ -56,6 +57,7 @@ const mensajePersonalRoutes = require('./routes/mensajePersonalRoutes');
     app.use('/api/mensajes-grupo', mensajeGrupoRoutes);
     app.use('/api/mensajes-personales', mensajePersonalRoutes);
 
+    app.get('/api/historial-academico/:numCuenta', historialAcademicoController.generarPDF);
 /**Recibir Peticiones */
 
   /** Gestion de rutas mediante router para aspirantes */

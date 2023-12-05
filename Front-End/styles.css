@@ -1,0 +1,13 @@
+.body {
+    background-color: #0054a6; /* Azul de la UNAH */
+    color: white;
+  }
+  
+  .header {
+    background-color: #ffcc00; /* Amarillo de la UNAH */
+  }
+  
+  .button {
+    background-color: #00468c; /* Otro tono de azul */
+    color: white;
+  }
