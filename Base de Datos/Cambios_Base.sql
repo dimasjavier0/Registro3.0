@@ -37,5 +37,14 @@ VALUES
 	(4, 'coordinador'),
 	(5, 'jefeDep')
 
+--Para que el estudiante pueda ver sus notas despues de que se le haya enviado el correo
+ALTER TABLE secciones
+ADD ingreso_notas BIT DEFAULT 0;
+
+UPDATE estado_calificacion
+SET estado = 'No Se Presento'
+WHERE id_estado_calificacion = 4
+
+
 INSERT INTO usuarios (nombre_usuario, password_hash, correoElectronico)
 VALUES ('20181030913', '$2b$12$A9NoXVOx0Wr1luys8Mb9me/crCyo8TA4jSPIhyUAnt7ZhckXQt/Yi', 'papardosmith1917@gmail.com');

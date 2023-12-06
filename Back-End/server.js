@@ -27,6 +27,8 @@ const miembroGrupoRoutes = require('./routes/miembrosGrupoRoute');
 const mensajeGrupoRoutes = require('./routes/mensajeGrupoRoutes');
 const mensajePersonalRoutes = require('./routes/mensajePersonalRoutes');
 const historialAcademicoController = require('./controllers/historialAcademicoController');
+const notasEstudiante = require('./routes/estudianteNotas');
+const activarRevision = require('./routes/activarRevision');
 
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
@@ -104,6 +106,12 @@ const historialAcademicoController = require('./controllers/historialAcademicoCo
 
   // Ruta para los centros regionales
   app.use('/centros', centrosRoute);
+
+  //Ruta para que el docente ingrese notas
+  app.use('/docenteNotas', notasEstudiante);
+
+  //Ruta para que el administrador active el proceso de ingreso de notas
+  app.use('/activarIngresoNotas', activarRevision);
 
 /*
 
