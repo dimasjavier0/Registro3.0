@@ -22,6 +22,8 @@ import { UserContextProvider } from './components/UserContext';
 import CambioCarrera from './pages/CambioCarrera';
 import PagoReposicion from './pages/PagoReposicion';
 import CambioCentro from './pages/CambioCentro';
+import LayoutMatricula from './layout/LayoutMatricula';
+import Matricula from './pages/Matricula';
 
 
 function App() {
@@ -59,6 +61,10 @@ function App() {
             <Route path='cambioCarrera' element={<CambioCarrera/>} />
             <Route path='cambioCentro' element={<CambioCentro/>} />
             <Route path='pagoReposicion' element={<PagoReposicion/>} />
+        </Route>
+
+        <Route path='/principalMatricula' element={<LayoutMatricula/>}>
+            <Route path='matricula' element={<Matricula/>} /> 
         </Route>
 
         <Route path='/principalDocente' element={<LayoutDocente/>}>
