@@ -41,7 +41,7 @@ return (
 
                 <Link to='#'>
                     <button className='transition bg-gray-100 block mt-7 ml-8 text-orange-900 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
-                        Cancelaciones excepcionales
+                        Cancelacion excepcional
                     </button>
                 </Link>
             </nav>
