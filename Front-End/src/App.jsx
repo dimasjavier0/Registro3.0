@@ -22,7 +22,7 @@ import { UserContextProvider } from './components/UserContext';
 import CambioCarrera from './pages/CambioCarrera';
 import PagoReposicion from './pages/PagoReposicion';
 import CambioCentro from './pages/CambioCentro';
-
+import ActivarMatricula from './pages/ActivarMatricula';
 
 function App() {
   
@@ -38,6 +38,7 @@ function App() {
             <Route path='/registrar' element={<Registrar/>} />
             <Route path='/docentes' element={<Docentes/>} /> 
             <Route path='/Administrador' element={<Administrador/>} /> 
+            <Route path='/Matricula' element={<ActivarMatricula/>} /> 
         </Route>
         
         <Route > 

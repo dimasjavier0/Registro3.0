@@ -27,6 +27,8 @@ const miembroGrupoRoutes = require('./routes/miembrosGrupoRoute');
 const mensajeGrupoRoutes = require('./routes/mensajeGrupoRoutes');
 const mensajePersonalRoutes = require('./routes/mensajePersonalRoutes');
 const historialAcademicoController = require('./controllers/historialAcademicoController');
+const activarMatriculaRouter = require('./routes/matriculaRouter');
+
 
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
@@ -104,6 +106,8 @@ const historialAcademicoController = require('./controllers/historialAcademicoCo
 
   // Ruta para los centros regionales
   app.use('/centros', centrosRoute);
+  //
+  app.use(activarMatriculaRouter);
 
 /*
 
