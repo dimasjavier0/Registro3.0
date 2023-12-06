@@ -22,6 +22,8 @@ import { UserContextProvider } from './components/UserContext';
 import CambioCarrera from './pages/CambioCarrera';
 import PagoReposicion from './pages/PagoReposicion';
 import CambioCentro from './pages/CambioCentro';
+import LayoutMatricula from './layout/LayoutMatricula';
+import Matricula from './pages/Matricula';
 import ActivarMatricula from './pages/ActivarMatricula';
 
 function App() {
@@ -56,6 +58,10 @@ function App() {
             <Route path='perfilEstudiante/:id_usuario' element={<PerfilEstudiante/>} /> 
         </Route>
 
+        <Route path='/principalMatricula' element={<LayoutMatricula/>}>
+            <Route path='matricula' element={<Matricula/>} /> 
+        </Route>
+
         <Route path='/principalSolicitudes' element={<LayoutSolicitudes/>}>
             <Route path='cambioCarrera' element={<CambioCarrera/>} />
             <Route path='cambioCentro' element={<CambioCentro/>} />
@@ -66,7 +72,6 @@ function App() {
             <Route path='clasesAsignadas' element={<Dc_ClasesAsignadas/>} /> 
             <Route path='videosporasignatura' element={<SubirVideoFormulario/>} />
         </Route>
-
 
       </Routes>
     </BrowserRouter>
