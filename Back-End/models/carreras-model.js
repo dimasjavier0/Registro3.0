@@ -39,6 +39,29 @@ class CarrerasModel{
             console.log(`Error al obtener requisitos carrera`);   
         }
     }
+
+    /**retorna un arreglo con los ids de las carreras que estan registradas en la base de datos.
+     * en otro caso retorna null.
+     */
+    async getCarrerasIdsArray(){
+        try{
+            
+            let arrayCarreras = [];
+            await db.connect();
+            let listaCarrerasId = await db.query(`select id_carrera from carreras;`);
+            await db.close();
+
+            //console.log('resultado query::',listaCarrerasId);
+
+            listaCarrerasId.forEach((carreraJson)=>{
+                arrayCarreras.push(carreraJson.id_carrera);
+            });
+            return arrayCarreras;
+        }catch (error){
+            console.log(error);
+            return null;
+        }
+    }
 }
 
 module.exports = new CarrerasModel();
