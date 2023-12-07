@@ -1,20 +1,37 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useUserContext } from '../components/UserContext';
 
 function HeaderEstudiantes() {
-    const { user } = useUserContext();
+    const navigate = useNavigate();
+    const { user,clearUserContext } = useUserContext();
+
+    
+    const userId = user ? user.user_id : null;
+
+    const handleCerrarSesion = () => {
+        const confirmar = window.confirm('¿Estás seguro de cerrar sesión?');
+        if (confirmar) {
+            clearUserContext();
+            navigate('/');
+        }
+    };
 
     return (
         <div className='h-full flex fixed'>
             <aside className=' bg-yellow-400'>
-                    <div className=' mt-5'>
-                    <Link
+                    <div className=' mt-5 ml-36'>
+                    <button
+                    className='transition bg-gray-100 text-orange-900 ml-8 font-bold text-lg ease-in-out shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'
+                    onClick={handleCerrarSesion}>Cerrar Sesión</button>
+
+                    {/* <Link
                     to='/' 
-                    className=" ml-72 ">
+                    className=" ml-48 ">
                     <i className="text-white fa-regular fa-share-from-square fa-rotate-180 fa-2xl"></i>
-                    </Link>
+                    </Link> */}
                     </div>
+
                 <div className=' mr-16'>
                 <div>
                 <h1 className='text-4xl ml-8 
@@ -23,13 +40,13 @@ function HeaderEstudiantes() {
                 </h1>
                 <img className=' w-44 h-40 ml-20 mb-8 mt-10' src="/img/vista-estudiante.png" alt="Seguridad" /> 
                 <nav className=''>
-                    <Link to={`/principalEstudiante/perfilEstudiante/${user.user_id}`}>
+                    <Link to={`/principalEstudiante/perfilEstudiante/${userId}`}>
                         <button className='transition bg-gray-100 text-orange-900 ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
                             Perfil
                         </button>
-                    </Link>
+                    </Link> 
 
-                    <Link to='#'>
+                    <Link to='/principalMatricula'>
                         <button className='transition bg-gray-100 block mt-7 ml-8 text-orange-900 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
                             Matricula
                         </button>

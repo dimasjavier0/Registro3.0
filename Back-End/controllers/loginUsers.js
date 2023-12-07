@@ -111,38 +111,35 @@ class UserAndLogin{
       throw err;
     }
   }
-//VALIDAR CREDENCIALES
-  async verificarCredenciales(nombreUsuario, passwordUser, rol){
-    try{
-      if (typeof nombreUsuario == "number"){
+
+  //VALIDAR CREDENCIALES
+  async verificarCredenciales(nombreUsuario, passwordUser, rol) {
+    try {
+      if (typeof nombreUsuario === "number") {
         nombreUsuario = nombreUsuario.toString();
       }
 
       let pool = await mssql.connect(config);
+     const resultado = await pool.query(`SELECT nombre_usuario, password_hash FROM usuarios 
+      WHERE nombre_usuario = '${nombreUsuario}' and rol = '${rol}'`);
 
-      const resultado = await pool.query(`SELECT nombre_usuario FROM usuarios 
-                                        WHERE nombre_usuario = '${nombreUsuario}' and rol = '${rol}'`);
-      
-      if (resultado.length == 0){
-        throw new Error('El usuario no existe');
-      }else {
-        const passwordBase = await pool.query(`SELECT password_hash FROM usuarios 
-                                            WHERE nombre_usuario = '${nombreUsuario}' and rol = '${rol}'`);
+     if (resultado.recordset.length == 0) {
+       throw new Error('El usuario no existe o el rol es incorrecto');
+     }
 
-                                            //const hashedPasswordFromDB = passwordBase[0].password_hash;
-        //Verificar la contraseña 
-      await  bcrypt.compare(passwordUser, passwordBase, (err, result) => {
-         
-        });
-        const token = generateAccessToken();
-        res.json({ token, nombreUsuario: nombreUsuario });
-       // pool.close();
-      }
+     const usuario = resultado.recordset[0];
+     const esPasswordCorrecto = await bcrypt.compare(passwordUser, usuario.password_hash);
 
-    }catch (err){
-      
-    }
-  }
+     if (!esPasswordCorrecto) {
+       throw new Error('Contraseña incorrecta');
+     }
+
+   } catch (err) {
+     throw new Error('Error en la autenticación: ${err.message}');
+   } finally {
+    pool.close();
+   }
+ }
 }
 
 // Función para hashear una contraseña
@@ -159,17 +156,4 @@ async function hashPassword(password) {
 };
 
 module.exports = {UserAndLogin};
-// const userLogin = new UserAndLogin();
-
-// function ejecutar(){
-//   try {
-//     //userLogin.crearUsuario(2020234, 'mi@gmail.com', 'docente');
-//     userLogin.verificarCredenciales(2020234, 'mi1234', 'docente');
-//     //userLogin.cambiarPassword(2020234, 'mi1234')
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// ejecutar();
  

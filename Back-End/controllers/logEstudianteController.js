@@ -30,7 +30,7 @@ const loginUser = async (req, res) => {
     if (result.recordset.length > 0) {
         const { id_usuario, rol } = result.recordset[0];
 
-        if (rol === 'estudiante') {
+        if (rol === 2) {
         res.json({ success: true, message: 'Inicio de sesión exitoso', user_id: id_usuario });
         } else {
         res.json({ success: false, message: 'Usuario no autorizado' });
