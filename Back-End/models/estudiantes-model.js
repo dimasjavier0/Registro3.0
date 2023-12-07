@@ -128,6 +128,19 @@ class EstudiantesModel{
             throw err.message;
         } 
     }
+
+
+    async existeEstudianteByNumeroCuenta(numCuenta){
+        await db.connect();
+        let existe = await db.query(`select count (*) resultado from estudiantes where num_cuenta = '${numCuenta}';`);
+        existe = existe[0].resultado;
+        await db.close();
+        if(existe>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 
 module.exports = new EstudiantesModel();

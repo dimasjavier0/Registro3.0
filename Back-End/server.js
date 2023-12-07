@@ -23,6 +23,7 @@ const logEstudiantes = require('./routes/logEstudiantes-route');
 const centrosRoute = require('./routes/centro-route');
 const contactosRoute = require('./routes/contactosRoute');
 
+const solicitudesRoute = require('./routes/solitudesRoute');
 
 
 
@@ -71,6 +72,7 @@ const activarMatriculaRouter = require('./routes/matriculaRouter');
     
     //CODIGO DE PAVEL QUE NO FUNCIONA::
     app.use('/api/contactos', contactoRoutes);
+
 
     app.use('/api/solicitudes-contacto', solicitudContactoRoutes);
     app.use('/api/grupos', grupoRoutes);
@@ -123,7 +125,8 @@ const activarMatriculaRouter = require('./routes/matriculaRouter');
   // Ruta para logearse como estudiante
   app.use('/estudianteLog', logEstudiantes);
 
-
+  /**Ruta para las solicitudes de los estudiantes. */
+  app.use('/solicitudes',solicitudesRoute);
   // Ruta para los centros regionales
   app.use('/centros', centrosRoute);
   //
