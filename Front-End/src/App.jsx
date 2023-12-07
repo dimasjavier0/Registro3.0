@@ -25,6 +25,7 @@ import CambioCentro from './pages/CambioCentro';
 import LayoutMatricula from './layout/LayoutMatricula';
 import Matricula from './pages/Matricula';
 import ActivarMatricula from './pages/ActivarMatricula';
+import NotasDocente from './pages/NotasDocente';
 
 function App() {
   
@@ -71,6 +72,7 @@ function App() {
         <Route path='/principalDocente' element={<LayoutDocente/>}>
             <Route path='clasesAsignadas' element={<Dc_ClasesAsignadas/>} /> 
             <Route path='videosporasignatura' element={<SubirVideoFormulario/>} />
+            <Route path='subirNotas' element={<NotasDocente/>} />
         </Route>
 
       </Routes>
