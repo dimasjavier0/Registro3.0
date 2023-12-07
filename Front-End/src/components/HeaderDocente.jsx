@@ -31,6 +31,12 @@ function HeaderDocente() {
                         Listado Estudiantes
                         </button>
                     </Link>
+
+                    <Link to='/principalDocente/subirNotas'>
+                        <button className='transition bg-white text-gray-600 block mt-7 ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
+                        Ingresar Notas
+                        </button>
+                    </Link>
                 </nav>
                 </div>
                 </div>
