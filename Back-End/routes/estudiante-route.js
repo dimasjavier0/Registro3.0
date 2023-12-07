@@ -8,7 +8,12 @@ const router = express.Router();
 
 router.get('/:id_usuario', estudianteController.getEstudianteByNumeroCuenta);
 
+
 /**RF 7: completado, implementar con Frontend */
 router.post('/',estudiantesModel.createEstudiantes);
+
+/** */
+router.post('/',estudiantesModel.createEstudiantes);
+
 
 module.exports = router;

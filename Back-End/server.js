@@ -19,14 +19,24 @@ const estudianteRoutes = require('./routes/estudiante-route');
 const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
 const fotosRoutes = require('./routes/fotos-routes');
 const logEstudiantes = require('./routes/logEstudiantes-route');
+
 const centrosRoute = require('./routes/centro-route');
 const contactosRoute = require('./routes/contactosRoute');
+
+
+
+
+const contactoRoutes = require('./routes/contactosRoute');
+
 const solicitudContactoRoutes = require('./routes/solicitudContactoRoutes');
 const grupoRoutes = require('./routes/grupoRoutes');
 const miembroGrupoRoutes = require('./routes/miembrosGrupoRoute');
 const mensajeGrupoRoutes = require('./routes/mensajeGrupoRoutes');
 const mensajePersonalRoutes = require('./routes/mensajePersonalRoutes');
 const historialAcademicoController = require('./controllers/historialAcademicoController');
+
+
+
 
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
@@ -38,7 +48,7 @@ const historialAcademicoController = require('./controllers/historialAcademicoCo
     /* permite peticiones de otros origenes.*/
     app.use(cors()); 
     
-    app.use(express.static('public')); //busca la direccion que recibe en la carpeta public.
+    //app.use(express.static('public')); //busca la direccion que recibe en la carpeta public.
     app.use(express.json({ limit: '50mb' })); // Usar express.json() en lugar de bodyParser.json()
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
@@ -51,12 +61,21 @@ const historialAcademicoController = require('./controllers/historialAcademicoCo
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
     /**para el manejo de rutas */
     //app.use(Routes);
+
     app.use('/api/contactos', contactosRoute);
+
+    
+    
+    
+    //CODIGO DE PAVEL QUE NO FUNCIONA::
+    app.use('/api/contactos', contactoRoutes);
+
     app.use('/api/solicitudes-contacto', solicitudContactoRoutes);
     app.use('/api/grupos', grupoRoutes);
     app.use('/api/miembros-grupo', miembroGrupoRoutes);
     app.use('/api/mensajes-grupo', mensajeGrupoRoutes);
     app.use('/api/mensajes-personales', mensajePersonalRoutes);
+    
 
     app.get('/api/historial-academico/:numCuenta', historialAcademicoController.generarPDF);
 /**Recibir Peticiones */
@@ -102,13 +121,13 @@ const historialAcademicoController = require('./controllers/historialAcademicoCo
   // Ruta para logearse como estudiante
   app.use('/estudianteLog', logEstudiantes);
 
+
   // Ruta para los centros regionales
   app.use('/centros', centrosRoute);
 
-/*
 
 
-  /** */
+  
   
 
 app.get('/', (req, res) => {
@@ -196,20 +215,6 @@ app.post('/aspirantes', async (req,res)=>{ //funcion asincrona
     
     console.log(aspirante.imagen);
 
-    /** Limpiar campos del aspirante antes de enviar a la base de datos */
-
-    /* Mandar a guardar aspirante en la base de datos/
-    var resultQuery = await db.query(
-      `exec [dbo].[agregar_aspirante] '${aspirante.identidad}', '${aspirante.p_nombre}', '${aspirante.s_nombre}', '${aspirante.p_apellido}', '${aspirante.s_apellido}'
-      ,'${aspirante.cel}',  '${aspirante.correoPersonal}',${aspirante.carreraPrincipal},${aspirante.carreraSecundaria}, 
-      ${aspirante.centroRegional},${aspirante.estado};`
-    );
-
-    
-
-
-    /** ver respuesta de db */
-    //console.log(result);
     await db.close();
 
     /** se recibe los requisitos del aspirante */
