@@ -36,6 +36,9 @@ const mensajeGrupoRoutes = require('./routes/mensajeGrupoRoutes');
 const mensajePersonalRoutes = require('./routes/mensajePersonalRoutes');
 const historialAcademicoController = require('./controllers/historialAcademicoController');
 const activarMatriculaRouter = require('./routes/matriculaRouter');
+const activarPlanificacion = require('./routes/activarPlanAcademica');
+const seccionesJefeDep = require('./routes/jefeDep-route');
+
 
 
 
@@ -132,6 +135,11 @@ const activarMatriculaRouter = require('./routes/matriculaRouter');
   //
   app.use(activarMatriculaRouter);
 
+  //Ruta para activar el proceso de planificacion academica
+  app.use('/activarPlanificacion',activarPlanificacion);
+
+  //Ruta para que el jefe de departamento cree secciones
+  app.use('/planificacionAcademica', seccionesJefeDep);
 
 
   
