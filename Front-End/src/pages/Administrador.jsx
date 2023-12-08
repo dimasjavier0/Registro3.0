@@ -77,7 +77,7 @@ function Administrador() {
                 </div>
             </div>  
             <div className=''>
-            <img src='/img/UNAH-ESTUDIANTES.png' alt="" />
+            <img className='mx-auto my-auto' src='/img/UNAH-ESTUDIANTES.png' alt="" />
             </div>    
         </>
     )

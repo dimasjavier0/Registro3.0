@@ -20,14 +20,14 @@ function Header({seleccionOpcion,setSeleccionOpcion}) {
     };
 
 return (
-    <header className="bg-white  p-3 border-2 border-black border-opacity-20 shadow-2xl  rounded-t-none  rounded-b-xl w-full fixed">
+    <header className="bg-white header-principal  p-3 border-2 border-black border-opacity-20 shadow-2xl  rounded-t-none  rounded-b-xl w-full fixed">
         <div className=" flex justify-between ">
 
             <div className='flex '>
 
-                <img className='transition ease-in-out delay-50 hover:scale-150  duration-250 w-9 h-12 ml-8' 
+                <img className='transition ease-in-out delay-50 hover:scale-150  duration-250 w-9 h-12 ml-8 ' 
                 src="/img/UNAH-escudo.png" 
-                alt="Logo-Puma" />
+                alt="Escudo-unah" />
             
                 <Link to='/'>
                 <button  className=" color-texto font-bold font-label text-2xl hover:bg-gray-400  py-3 px-4 rounded ml-3" 
@@ -51,33 +51,30 @@ return (
 
             
 
-            <div className={`absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg w-44 p-2 mr-20  transition-all duration-300 ${opciones ? 'opacity-100' : 'opacity-0'} transform origin-top`}>
+                <div className={`absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg w-52 p-2 mr-20 transition-all duration-300 ${opciones ? 'opacity-100' : 'opacity-0'} transform origin-top`}>
                 
-                <ul className="py-2  flex flex-col ">
-                    <li className="flex items-center">
-                    <Link to='/estudiantes' className="flex items-center px-4 py-2 text-gray-800 hover:bg-gray-200"   
-                    onClick={() => handleOpcionClick('Estudiante')}>
-                    <i className="fas fa-light fa-user-pen mr-5"></i> Estudiante
-                    </Link>
-                    </li>
+                <ul className="py-2 flex flex-col">
 
-                    <li className="flex items-center mr-3">
-                    <Link to='/docentes' className="flex items-center px-4 py-2  text-gray-800 hover:bg-gray-200"  
-                    onClick={() => handleOpcionClick('Docente')}>
-                    <i className="fas fa-solid fa-person-chalkboard fa-lg mr-4"></i> Docente
+                <li className="flex items-center">
+                    <Link to='/estudiantes' className="flex items-center flex-grow px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => handleOpcionClick('Estudiante')}>
+                        <i className="fas fa-light fa-user-pen mr-5"></i> Estudiante
                     </Link>
-                    </li>
+                </li>
 
-                    <li className="flex items-center mr-3">
-                    <Link to='/Administrador' className="flex items-center px-4 py-2  text-gray-800 hover:bg-gray-200"  
-                    onClick={() => handleOpcionClick('Administrador')}>
-                    <i className="fas fa-light fa-user-gear mr-4"></i> Administrador
+                <li className="flex items-center">
+                    <Link to='/docentes' className="flex items-center flex-grow px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => handleOpcionClick('Docente')}>
+                        <i className="fas fa-solid fa-person-chalkboard fa-lg mr-4"></i> Docente
                     </Link>
-                    </li>
+                </li>
 
+                <li className="flex items-center">
+                    <Link to='/Administrador' className="flex items-center flex-grow px-5 py-2 text-gray-800 hover:bg-gray-200" onClick={() => handleOpcionClick('Administrador')}>
+                        <i className="fas fa-light fa-user-gear mr-4"></i> Administrador
+                    </Link>
+                </li>
+                
                 </ul>
-
-            </div>
+                </div>
             </div>
         </div>
     </header>
