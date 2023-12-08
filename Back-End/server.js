@@ -19,16 +19,8 @@ const estudianteRoutes = require('./routes/estudiante-route');
 const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
 const fotosRoutes = require('./routes/fotos-routes');
 const logEstudiantes = require('./routes/logEstudiantes-route');
-
 const centrosRoute = require('./routes/centro-route');
 const contactosRoute = require('./routes/contactosRoute');
-
-const solicitudesRoute = require('./routes/solitudesRoute');
-
-
-
-const contactoRoutes = require('./routes/contactosRoute');
-
 const solicitudContactoRoutes = require('./routes/solicitudContactoRoutes');
 const grupoRoutes = require('./routes/grupoRoutes');
 const miembroGrupoRoutes = require('./routes/miembrosGrupoRoute');
@@ -36,13 +28,7 @@ const mensajeGrupoRoutes = require('./routes/mensajeGrupoRoutes');
 const mensajePersonalRoutes = require('./routes/mensajePersonalRoutes');
 const historialAcademicoController = require('./controllers/historialAcademicoController');
 const activarMatriculaRouter = require('./routes/matriculaRouter');
-const activarPlanificacion = require('./routes/activarPlanAcademica');
-const seccionesJefeDep = require('./routes/jefeDep-route');
-
-
-
-
-
+const matriculaRouter = require('./routes/fechaMatriculas');
 
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
@@ -67,22 +53,12 @@ const seccionesJefeDep = require('./routes/jefeDep-route');
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
     /**para el manejo de rutas */
     //app.use(Routes);
-
     app.use('/api/contactos', contactosRoute);
-
-    
-    
-    
-    //CODIGO DE PAVEL QUE NO FUNCIONA::
-    app.use('/api/contactos', contactoRoutes);
-
-
     app.use('/api/solicitudes-contacto', solicitudContactoRoutes);
     app.use('/api/grupos', grupoRoutes);
     app.use('/api/miembros-grupo', miembroGrupoRoutes);
     app.use('/api/mensajes-grupo', mensajeGrupoRoutes);
     app.use('/api/mensajes-personales', mensajePersonalRoutes);
-    
 
     app.get('/api/historial-academico/:numCuenta', historialAcademicoController.generarPDF);
 /**Recibir Peticiones */
@@ -128,21 +104,17 @@ const seccionesJefeDep = require('./routes/jefeDep-route');
   // Ruta para logearse como estudiante
   app.use('/estudianteLog', logEstudiantes);
 
-  /**Ruta para las solicitudes de los estudiantes. */
-  app.use('/solicitudes',solicitudesRoute);
   // Ruta para los centros regionales
   app.use('/centros', centrosRoute);
   //
   app.use(activarMatriculaRouter);
+  // desoues junto las rutas coño, este verifica que sea el indice en la fecha correcta
+  app.use('/matricula', matriculaRouter);
 
-  //Ruta para activar el proceso de planificacion academica
-  app.use('/activarPlanificacion',activarPlanificacion);
-
-  //Ruta para que el jefe de departamento cree secciones
-  app.use('/planificacionAcademica', seccionesJefeDep);
+/*
 
 
-  
+  /** */
   
 
 app.get('/', (req, res) => {
@@ -230,6 +202,20 @@ app.post('/aspirantes', async (req,res)=>{ //funcion asincrona
     
     console.log(aspirante.imagen);
 
+    /** Limpiar campos del aspirante antes de enviar a la base de datos */
+
+    /* Mandar a guardar aspirante en la base de datos/
+    var resultQuery = await db.query(
+      `exec [dbo].[agregar_aspirante] '${aspirante.identidad}', '${aspirante.p_nombre}', '${aspirante.s_nombre}', '${aspirante.p_apellido}', '${aspirante.s_apellido}'
+      ,'${aspirante.cel}',  '${aspirante.correoPersonal}',${aspirante.carreraPrincipal},${aspirante.carreraSecundaria}, 
+      ${aspirante.centroRegional},${aspirante.estado};`
+    );
+
+    
+
+
+    /** ver respuesta de db */
+    //console.log(result);
     await db.close();
 
     /** se recibe los requisitos del aspirante */
