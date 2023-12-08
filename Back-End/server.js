@@ -54,7 +54,7 @@ const seccionesJefeDep = require('./routes/jefeDep-route');
     /* permite peticiones de otros origenes.*/
     app.use(cors()); 
     
-    //app.use(express.static('public')); //busca la direccion que recibe en la carpeta public.
+    app.use(express.static('public')); //busca la direccion que recibe en la carpeta public.
     app.use(express.json({ limit: '50mb' })); // Usar express.json() en lugar de bodyParser.json()
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 

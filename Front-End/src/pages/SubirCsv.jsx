@@ -68,6 +68,7 @@ function SubirCsv() {
       if (response.status === 200) {
         alert('Datos CSV enviados con éxito.');
         handleLimpiarTb();
+        handleDescargarListado();
       } else {
         alert('Error al enviar los datos CSV.');
         return;
@@ -76,6 +77,26 @@ function SubirCsv() {
       console.error('Error al realizar la petición:', error);
       alert('Error al enviar los datos CSV.');
       return;
+    }
+  };
+
+  const handleDescargarListado = async () => {
+    try {
+      /*const response = await axios.get(`http://localhost:8888/estudiantes.csv`, {
+        responseType: 'csv', // Indica que la respuesta es un archivo binario
+      });
+      */
+      const url = 'http://localhost:8888/estudiantes.csv';//window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      //link.setAttribute('download', `estudiantes_seccion_${idSeccion}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+    } catch (error) {
+      console.error('Error al descargar estudiantes matriculados:', error);
+      // Manejo del error
     }
   };
 

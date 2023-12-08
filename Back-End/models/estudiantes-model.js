@@ -57,7 +57,7 @@ class EstudiantesModel{
 
                             infoEstudiante = infoEstudiante[0];
                             msjToSend = `Hola muy Buenas estimado ${infoEstudiante.nombre} nos complace enviarle su correo Institucional ${infoEstudiante.correoInstitucional}, junto su numero de cuenta ${infoEstudiante.numeroCuenta}.
-                            Favor obtener su contraseña en la pagina de inicio de sesion, medidante el boton olvide mi crontraseña para tener acceso al portal web.`;
+                            Favor obtener su contraseña en la pagina de inicio de sesion, mediante el boton olvide mi crontraseña para tener acceso al portal web.`;
                             
                             correo.enviarCorreo(infoEstudiante.correoPersonal,'CREDENCIALES REGISTRO UNAH',msjToSend);
                             estudiantesAgregados.push(estudiante);

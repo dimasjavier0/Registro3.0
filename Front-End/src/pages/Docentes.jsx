@@ -136,37 +136,36 @@ import axios from 'axios';
 function Docentes() {
     const [nombreUsuario, setNombreUsuario] = useState('');
     const [passwordUser, setPasswordUser] = useState('');
-    const [rol, setRol] = useState('docente');
+    const [rol, setRol] = useState('3');
     const [mensaje, setMensaje] = useState('');
    
 
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
-        e.preventDefault();
-
-        try {
-            const response = await axios.post('http://localhost:8888/login', {
-                nombreUsuario,
-                passwordUser,
-                rol,
-            });
-
-            console.log('Guardando nombreUsuario en localStorage:', nombreUsuario);
-
-            localStorage.setItem('nombreUsuario', nombreUsuario);
-
-
-            // Maneja la respuesta del servidor aquí
-            console.log(response.data)
-            setMensaje('Inicio de sesión exitoso para el rol de docente');
-            // Puedes redirigir a otra página si es necesario
-            navigate('/principalDocente');
-        } catch (error) {
-            console.error('Error en la autenticación:', error.message);
-            setMensaje('Error en la autenticación');
-        }
-    };
+      e.preventDefault();
+  
+      try {
+          const response = await axios.post('http://localhost:8888/login', {
+              nombreUsuario,
+              passwordUser,
+              rol,
+          });
+  
+          if (response.data) {
+              console.log('Guardando nombreUsuario en localStorage:', nombreUsuario);
+              localStorage.setItem('nombreUsuario', nombreUsuario);
+              setMensaje('Inicio de sesión exitoso para el rol de docente');
+              navigate('/principalDocente');
+          } else {
+              throw new Error('Inicio de sesión fallido');
+          }
+  
+      } catch (error) {
+          console.error('Error en la autenticación:', error.message);
+          setMensaje('Error en la autenticación');
+      }
+  };
 
     return (
         <>

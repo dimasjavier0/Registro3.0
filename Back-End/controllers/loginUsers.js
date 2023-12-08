@@ -1,4 +1,4 @@
-//const db = require('../conections/database');
+const bd = require('../conections/database');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const mssql = require('mssql');
@@ -44,9 +44,9 @@ class UserAndLogin{
         var subject = 'Bienvenido a la UNAH';
         var mensaje;
 
-        if (rol === 'docente') {
+        if (rol === '3') {
           await pool.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico, rol)
-                          VALUES('${nombreUsuario}', '${passwordHash}', '${correoElectronico}', 'docente')`);
+                          VALUES('${nombreUsuario}', '${passwordHash}', '${correoElectronico}', '3')`);
           
           mensaje = `Se ha creado una cuenta para usted con la siguiente informacion:
                                  Usuario: ${nombreUsuario}
@@ -119,15 +119,18 @@ class UserAndLogin{
         nombreUsuario = nombreUsuario.toString();
       }
 
-      let pool = await mssql.connect(config);
-     const resultado = await pool.query(`SELECT nombre_usuario, password_hash FROM usuarios 
-      WHERE nombre_usuario = '${nombreUsuario}' and rol = '${rol}'`);
+      //let pool = await mssql.connect(config);
+      await bd.connect();
+     const resultado = await bd.query(`SELECT nombre_usuario, password_hash FROM usuarios 
+      WHERE nombre_usuario = '${nombreUsuario}' and rol = ${rol}`);
 
-     if (resultado.recordset.length == 0) {
+      
+
+     if (resultado[0].nombre_Usuario) {
        throw new Error('El usuario no existe o el rol es incorrecto');
      }
 
-     const usuario = resultado.recordset[0];
+     const usuario = resultado[0];
      const esPasswordCorrecto = await bcrypt.compare(passwordUser, usuario.password_hash);
 
      if (!esPasswordCorrecto) {
@@ -135,9 +138,9 @@ class UserAndLogin{
      }
 
    } catch (err) {
-     throw new Error('Error en la autenticación: ${err.message}');
+     throw new Error(`Error en la autenticación: ${err.message}`);
    } finally {
-    pool.close();
+      bd.close();
    }
  }
 }

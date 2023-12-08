@@ -108,8 +108,9 @@ router.post('/', async (req,res)=>{
         await enviarResultados(respuesta.resultados[1].reprobados);
         */
 
+       console.log('RESPUESTA APROBADOS:::',respuesta.resultados[0].aprobados);
 
-        let csv = generarFilasCsvEstudiantes(respuesta.resultados[0].aprobados);
+        let csv = await generarFilasCsvEstudiantes(respuesta.resultados[0].aprobados);
         //generarFilasCsvEstudiantes(respuesta.resultados[1].reprobados);
 
         await fm.write('./public/estudiantes.csv', csv);
@@ -117,8 +118,9 @@ router.post('/', async (req,res)=>{
         // Esto te llevará del directorio actual ('routes') al directorio raíz y luego a 'public'
         const filePath = path.join(__dirname, '..', 'public', 'estudiantes.csv');
 
-        //res.redirect('http://localhost:8888/public/estudiantes.csv');
-        //res.sendFile('C:\Users\Dell\Documents\GitHub\Registro_3.0\Back-End\public\estudiantes.csv');
+
+        res.redirect('http://localhost:8888/estudiantes.csv');
+        //res.sendFile('http://localhost:8888/estudiantes.csv');
 
         //res.setHeader('Content-Disposition', 'attachment; filename=estudiantes.csv');
         //res.sendFile(filePath);
@@ -193,12 +195,13 @@ function generarFilasCsvEstudiantes(contentJson){
             /**enviar correo a cada uno */
             filas += `\n${generateFilaEstudiante(r.informacion)}`;
             
-            //correo.enviarCorreo(email,'RESULTADOS UNAH ADMISION',mensaje);
+            //correo.enviarCorreo(email,'RESULTADOS UNAH ADMISION',r.informacion);
         }
-        return filas;
         console.log('FIN::\n',filas);
+        return filas;
     } catch (error) {
         console.log("ERRO AL GENERAR FILAS para csv");   
+        console.log(error);
     }
 
 }
