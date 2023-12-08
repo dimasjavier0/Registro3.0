@@ -38,8 +38,7 @@ const historialAcademicoController = require('./controllers/historialAcademicoCo
 const activarMatriculaRouter = require('./routes/matriculaRouter');
 const activarPlanificacion = require('./routes/activarPlanAcademica');
 const seccionesJefeDep = require('./routes/jefeDep-route');
-
-
+const notasEstudiante = require('./routes/estudianteNotas')
 
 
 
@@ -140,6 +139,9 @@ const seccionesJefeDep = require('./routes/jefeDep-route');
 
   //Ruta para que el jefe de departamento cree secciones
   app.use('/planificacionAcademica', seccionesJefeDep);
+
+  //Ruta para que el docente ingrese las notas de los estudiantes
+  app.use('/docenteNotas', notasEstudiante);
 
 
   
