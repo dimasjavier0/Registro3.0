@@ -263,6 +263,35 @@ class JefeDep {
             throw error;
         }
     }
+
+    async aumentarCupos(idSeccion, nuevosCupos){
+        try {
+            await db.connect();
+
+            let cuposActuales = await db.query(`SELECT cupos_maximos
+            FROM secciones s
+            INNER JOIN Asignaturas_PAC asigP ON s.id_asignatura = asigP.id_asignatura_pac
+            WHERE id_seccion = ${idSeccion}`);
+
+            if(cuposActuales.length > 0){
+                if(nuevosCupos > cuposActuales[0].cupos_maximos){
+                    await db.query(`UPDATE secciones
+                    SET cupos_maximos = ${nuevosCupos}
+                    WHERE id_seccion = ${idSeccion}`);
+
+                    return {estado: true};
+                }else{
+                    return {estado: false, mensaje: 'Tiene que aumentar los cupos de la sección'};
+                }
+            }
+
+            return {estado: false, mensaje: 'La sección no existe o no pertenece al departamento'};;
+        } catch (error) {
+            throw error;
+        } finally {
+            await db.close();
+        }      
+    }
 }
 
 function validarFormatoHora(hora) {
