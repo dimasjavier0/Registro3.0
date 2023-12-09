@@ -1,68 +1,82 @@
 const db = require('../conections/database');
 const correo = require('../controllers/correo');
+const moment = require('moment');
 
 class ControllerNotes{
     constructor(){}
 
     //Metodo para que el admin active el proceso de ingreso de notas
-    async activarProcesoEvaluacion(){
-        try {
+    async activarProcesoEvaluacion(fechaInicio, fechaFin, idPeriodo){
+        try{
+            fechaInicio = moment(fechaInicio, 'DD-MM-YYYY').format('YYYY-MM-DD');
+            fechaFin = moment(fechaFin, 'DD-MM-YYYY').format('YYYY-MM-DD');
+
+            if(fechaInicio > fechaFin){
+                return {estado: false, mensaje: 'La fecha de inicio es posterior a la fecha final'};
+            }
+
+            //Verificar que el periodo este activo
             await db.connect();
 
-            let verificarProceso = await db.query(`SELECT pap.id_periodo
-            FROM Procesos_academicos pa
-            INNER JOIN Procesos_academicos_periodo pap ON  pa.id_PAC = pap.id_proceso_academico
-            WHERE (GETDATE() BETWEEN pa.fecha_inicio AND pa.fecha_fin) AND estado = 1 AND pa.tipo_proceso = 2;`);
+            let verificarPeriodo = await db.query(`SELECT id_periodo
+            FROM periodos_academicos pa
+            WHERE (GETDATE() BETWEEN pa.fecha_inicio AND pa.fecha_fin) AND id_periodo = ${idPeriodo}`);
 
-            if(verificarProceso.length == 0){
-                let resultado = await db.query(`EXEC dbo.ActivarRevision`);
+            if(verificarPeriodo.length > 0){
+                //Verificar que el periodo solo tenga un proceso de evaluacion activo
+                let verificarProceso = await db.query(`SELECT pap.id_periodo
+                FROM Procesos_academicos pa
+                INNER JOIN Procesos_academicos_periodo pap ON  pap.id_proceso = pa.id_proceso
+                WHERE estado = 1 AND pa.tipo_proceso = 3 AND (GETDATE() BETWEEN pap.fecha_inicio AND pap.fecha_fin)`);
 
-                if(resultado[0].ErrorNumber != null){
-                    return {estado: false,
-                        mensaje: resultado[0].ErrorMessage};
+                if(verificarProceso.length == 0){
+                    let resultado = await db.query(`EXEC dbo.ActivarRevision @fecha_inicio = '${fechaInicio}', 
+                    @fecha_fin = '${fechaFin}', @idPeriodo = ${idPeriodo}`);
+    
+                    if(resultado[0].ErrorNumber != null){
+                        return {estado: false,
+                            mensaje: resultado[0].ErrorMessage};
+                    }else{
+                        return {estado: true,
+                            mensaje: 'Proceso de ingreso de notas activado correctamente'};
+                    }
                 }else{
-                    return {estado: true,
-                        mensaje: 'Proceso de ingreso de notas activado correctamente'};
+                    return {estado: false, mensaje: 'El proceso de ingreso de notas ya esta activo'};
                 }
             }
 
             await db.close();
-            return {estado: false,
-                mensaje: 'El proceso de ingreso de notas ya esta activo'};
-        } catch (error) {
+            return {estado: false, mensaje: 'No eligio un periodo en curso'};
+        }catch(error){
             throw error;
         }
     }
-
+    
     //Metodo para verificar si el proceso de evaluacion esta activo
     async verificarProcesoEvaluacion(idDocente){
         try {
             await db.connect();
-
-            const resultado = await db.query(`SELECT pa.id_periodo
-            FROM periodos_academicos pa
-            INNER JOIN Procesos_academicos_periodo pap ON pa.id_periodo = pap.id_periodo
-            INNER JOIN Procesos_academicos pro ON pap.id_proceso_academico = pro.id_PAC
-            WHERE (GETDATE() BETWEEN pa.fecha_inicio AND pa.fecha_fin) AND pro.tipo_proceso = 2 AND estado = 1
-                AND (GETDATE() BETWEEN pro.fecha_inicio AND pro.fecha_fin)`);
+            //Verificar si el proceso esta activo
+            const resultado = await db.query(`SELECT pap.id_periodo
+            FROM Procesos_academicos pa
+            INNER JOIN Procesos_academicos_periodo pap ON  pap.id_proceso = pa.id_proceso
+            WHERE estado = 1 AND pa.tipo_proceso = 3 AND (GETDATE() BETWEEN pap.fecha_inicio AND pap.fecha_fin)`);
             
             await db.close();
-
+            
             if(resultado.length > 0){
                 let resultadoMod = await this.seccionesPeriodo(idDocente, resultado[0].id_periodo);
-                if(resultado.length >= 1){
-                    let result = await this.seccionesPeriodo(idDocente, resultado[1].id_periodo);
-
-                    if(result.length > 0){
-                        resultadoMod.push(...result);
+                if(resultadoMod.estado){
+                    return resultadoMod;
+                }else{
+                    if(resultado.length >= 1){
+                        let resultadoMod1 = await this.seccionesPeriodo(idDocente, resultado[1].id_periodo);
+                        return resultadoMod1;
                     }
                 }
-                return {
-                    estado: true,
-                    periodos: resultadoMod};
             }
 
-            return {estado: false};
+            return {estado: false, mensaje: 'El proceso de ingreso de notas no esta activo'};
         } catch (error) {
             throw error;
         }
@@ -72,18 +86,51 @@ class ControllerNotes{
         try{
             await db.connect();
 
-            let secciones = await db.query(`SELECT s.id_seccion, s.hora_inicio, asig.id_asignatura, asig.nombre_asig
-            FROM secciones s INNER JOIN asignaturas asig ON s.id_asignatura = asig.id_asignatura
-            INNER JOIN Asignaturas_PAC ap ON ap.id_asignatura_carrera = asig.id_asignatura
-            INNER JOIN periodos_academicos pa ON ap.id_periodo = pa.id_periodo
-            INNER JOIN docentes d ON d.num_empleado = s.id_docente
-            WHERE s.id_docente = ${id_docente} AND pa.id_periodo = ${id_periodo}`);
+            //Verificar si el departamento del docente y el periodo son ambos semestrales
+            let tipoPerido = await db.query(`SELECT descripcion FROM periodos_academicos
+            WHERE id_periodo = ${id_periodo}`);
 
-            return secciones;
+            let tipoDep = await db.query(`SELECT tipo_dep FROM docentes d
+            INNER JOIN departamentos_academicos da ON d.id_dep_academico = da.id_dep_academico
+            WHERE num_empleado = ${id_docente}`);
+
+            if(tipoPerido.length > 0 && tipoDep.length > 0){
+                if(tipoPerido[0].descripcion.includes('Semestre') && tipoDep[0].tipo_dep == 'SM   '){
+                    let secciones1 = await this.secciones(id_docente, id_periodo);
+                    console.log('secciones1', secciones1)
+                    return secciones1;
+                }else {if(!tipoPerido[0].descripcion.includes('Semestre') && tipoDep[0].tipo_dep == 'TM   '){
+                    let secciones1 = await this.secciones(id_docente, id_periodo);
+                    console.log('secciones1', secciones1)
+                    return secciones1;
+                } }
+            }
+
+            return {estado: false, mensaje: 'El periodo académico y el docente no coinciden'};
         }catch(error){
             throw error;
         }finally{
             await db.close()
+        }
+    }
+
+    async secciones(id_docente, id_periodo){
+        try {
+            await db.connect();
+
+            let secciones = await db.query(`SELECT s.id_seccion, s.hora_inicio, asig.id_asignatura, asig.nombre_asig, s.id_docente
+            FROM secciones s INNER JOIN Asignaturas_PAC ap ON s.id_asignatura = ap.id_asignatura_pac
+            INNER JOIN asignaturas asig ON asig.id_asignatura = ap.id_asignatura_carrera
+            INNER JOIN periodos_academicos pa ON ap.id_periodo = pa.id_periodo
+            WHERE s.id_docente = ${id_docente} AND pa.id_periodo = ${id_periodo}`);
+
+            if(secciones.length >0){
+                return {estado: true, mensaje: secciones};
+            }
+            return {estado: false, mensaje: 'El docente no tiene secciones asignadas'};
+
+        } catch (error) {
+            throw error;
         }
     }
 
