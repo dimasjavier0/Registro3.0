@@ -24,9 +24,8 @@ import PagoReposicion from './pages/PagoReposicion';
 import CambioCentro from './pages/CambioCentro';
 import LayoutMatricula from './layout/LayoutMatricula';
 import Matricula from './pages/Matricula';
-import ActivarMatricula from './pages/ActivarMatricula';
 import NotasDocente from './pages/NotasDocente';
-
+import ActivarMatricula from './pages/ActivarMatricula';
 function App() {
   
 
@@ -41,7 +40,7 @@ function App() {
             <Route path='/registrar' element={<Registrar/>} />
             <Route path='/docentes' element={<Docentes/>} /> 
             <Route path='/Administrador' element={<Administrador/>} /> 
-            <Route path='/Matricula' element={<ActivarMatricula/>} /> 
+             
         </Route>
         
         <Route > 
@@ -53,6 +52,7 @@ function App() {
               <Route path='nuevoDocente' element={<RegistrarDocentes/>} />
               <Route path='SubirCsv' element={<SubirCsv/>} />
               <Route path='estAdmitidos' element={<EstAdmitidosCsv/>} />
+              <Route path='activarmatricula' element={<ActivarMatricula/>} />
         </Route>
 
         <Route path='/principalEstudiante' element={<LayoutEstudiante/>}>
