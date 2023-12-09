@@ -68,68 +68,13 @@ async function esElegibleParaMatricula(indiceAcademico, fechaActual) {
 }
 
 
-/*async function esElegibleParaMatricula(indiceAcademico, fechaActual) {
-    try {
-        const result = await sql.query`
-            SELECT * FROM dias_matricula 
-            WHERE (indice_inicial IS NULL OR indice_inicial <= ${indiceAcademico}) 
-              AND (indice_final IS NULL OR indice_final >= ${indiceAcademico})`;
 
-        console.log("Rangos de matrícula encontrados:", result.recordset);
-
-        if (result.recordset.length > 0) {
-            for (let rango of result.recordset) {
-                let inicio = new Date(rango.dia_comienzo_matricula);
-                let fin = new Date(rango.dia_final_matricula);
-                fin.setHours(23, 59, 59, 999); // Ajustar la hora final del día
-
-                console.log("Evaluando rango:", inicio, fin, "para índice:", indiceAcademico);
-
-                if (fechaActual >= inicio && fechaActual <= fin) {
-                    if ((rango.indice_inicial === null || indiceAcademico >= rango.indice_inicial) &&
-                        (rango.indice_final === null || indiceAcademico <= rango.indice_final)) {
-                        console.log("Estudiante elegible para matricularse en este rango");
-                        return true;
-                    }
-                }
-            }
-        }
-        console.log("Estudiante no elegible para matricularse");
-        return false;
-    } catch (err) {
-        console.error('Error al verificar la elegibilidad para la matrícula:', err);
-        throw err;
-    }
-}
-*/
 // Función para registrar la matrícula (hipotética)
 async function registrarMatricula(idEstudiante, idProcesoMatricula) {
     // ... (implementación de la función)
 }
 
-// Ruta para manejar la matrícula de un estudiante
-/*router.post('/matricular-estudiante', async (req, res) => {
-    try {
-        console.log("Cuerpo de la solicitud recibido:", req.body); // Para depuración
-        const { numCuenta, idProcesoMatricula } = req.body;
-        const fechaActual = new Date();
 
-        const indiceAcademico = await obtenerIndiceAcademico(numCuenta);
-        const esElegible = await esElegibleParaMatricula(indiceAcademico, fechaActual);
-        console.log("Número de cuenta recibido en la ruta:", numCuenta); // Para depuración
-        console.log("Fecha actual:", fechaActual);
-
-        if (esElegible) {
-            await registrarMatricula(numCuenta, idProcesoMatricula);
-            res.status(200).send('Matrícula realizada con éxito');
-        } else {
-            res.status(400).send('El estudiante no es elegible para matricularse en esta fecha');
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error al realizar la matrícula');
-    }
-});*/
 router.post('/matricular-estudiante', async (req, res) => {
     try {
         console.log("Cuerpo de la solicitud recibido:", req.body); // Para depuración

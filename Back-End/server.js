@@ -31,8 +31,12 @@ const activarMatriculaRouter = require('./routes/matriculaRouter');
 const matriculaRouter = require('./routes/fechaMatriculas');
 const ingresoNotas = require('./routes/estudianteNotas');
 const activarIngresoNotas = require('./routes/activarRevision');
+<<<<<<< Updated upstream
 const activarPlanificacion = require('./routes/activarPlanAcademica');
 const planificacionAcademica = require('./routes/jefeDep-route');
+=======
+const estudiantesNotesRouter = require('./routes/estudianteNotas');
+>>>>>>> Stashed changes
 
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
@@ -117,6 +121,7 @@ const planificacionAcademica = require('./routes/jefeDep-route');
 
   //Ruta para activar el ingreso de notas
   app.use('/activarIngresoNotas', activarIngresoNotas);
+<<<<<<< Updated upstream
 
   //Ruta para todo el proceso de ingreso de notas del docente
   app.use('/docenteNotas', ingresoNotas);
@@ -129,7 +134,13 @@ const planificacionAcademica = require('./routes/jefeDep-route');
 
 
 /*
+=======
+>>>>>>> Stashed changes
 
+  //Ruta para todo el proceso de ingreso de notas del docente
+  app.use('/docenteNotas', ingresoNotas);
+  //rutas faltantes
+  app.use('/', estudiantesNotesRouter);
 
   /** */
   

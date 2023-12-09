@@ -16,7 +16,7 @@ router.post('/activar-matricula', async (req, res) => {
     try {
         //const { id_PAC, descripcion } = req.body;
         await sql.connect(dbConfig);
-        await sql.query`EXEC ActivarMatriculaFF`;
+        await sql.query`EXEC ActivarMatriculaA`;
         res.status(200).send('Proceso de matrícula activado con éxito');
     } catch (err) {
         console.error(err);

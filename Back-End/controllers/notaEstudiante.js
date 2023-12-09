@@ -1,7 +1,6 @@
 const db = require('../conections/database');
 const correo = require('../controllers/correo');
 
-
 class ControllerNotes{
     constructor(){}
 
