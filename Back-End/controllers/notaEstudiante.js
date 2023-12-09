@@ -48,7 +48,6 @@ class ControllerNotes{
             await db.close();
             return {estado: false, mensaje: 'No eligio un periodo en curso'};
         }catch(error){
-            console.log(error);
             throw error;
         }
     }
@@ -61,17 +60,19 @@ class ControllerNotes{
             const resultado = await db.query(`SELECT pap.id_periodo
             FROM Procesos_academicos pa
             INNER JOIN Procesos_academicos_periodo pap ON  pap.id_proceso = pa.id_proceso
-            WHERE estado = 1 AND pa.tipo_proceso = 3 AND (GETDATE() BETWEEN pap.fecha_inicio AND pap.fecha_fin))`);
+            WHERE estado = 1 AND pa.tipo_proceso = 3 AND (GETDATE() BETWEEN pap.fecha_inicio AND pap.fecha_fin)`);
             
             await db.close();
-
+            
             if(resultado.length > 0){
                 let resultadoMod = await this.seccionesPeriodo(idDocente, resultado[0].id_periodo);
                 if(resultadoMod.estado){
                     return resultadoMod;
                 }else{
-                    let resultadoMod1 = await this.seccionesPeriodo(idDocente, resultado[1].id_periodo);
-                    return resultadoMod1;
+                    if(resultado.length >= 1){
+                        let resultadoMod1 = await this.seccionesPeriodo(idDocente, resultado[1].id_periodo);
+                        return resultadoMod1;
+                    }
                 }
             }
 
@@ -93,34 +94,43 @@ class ControllerNotes{
             INNER JOIN departamentos_academicos da ON d.id_dep_academico = da.id_dep_academico
             WHERE num_empleado = ${id_docente}`);
 
-            if(tipoPerido.length > 0 && tipoDep > 0){
-                if(tipoPerido[0].descripcion.includes(Semestre) && tipoDep[0].tipo_dep == 'SM'){
-                    let secciones = await db.query(`SELECT s.id_seccion, s.hora_inicio, asig.id_asignatura, asig.nombre_asig, s.id_docente
-                    FROM secciones s INNER JOIN Asignaturas_PAC ap ON s.id_asignatura = ap.id_asignatura_pac
-                    INNER JOIN asignaturas asig ON asig.id_asignatura = ap.id_asignatura_carrera
-                    INNER JOIN periodos_academicos pa ON ap.id_periodo = pa.id_periodo
-                    WHERE id_docente = 202020 AND pa.id_periodo = 3
-                    WHERE s.id_docente = ${id_docente} AND pa.id_periodo = ${id_periodo}`);
-
-                    return {estado: true, mensaje: secciones};
-                }else if(!tipoPerido[0].descripcion.includes(Semestre) && tipoDep[0].tipo_dep == 'TM'){
-                    let secciones1 = await db.query(`SELECT s.id_seccion, s.hora_inicio, asig.id_asignatura, asig.nombre_asig, s.id_docente
-                    FROM secciones s INNER JOIN Asignaturas_PAC ap ON s.id_asignatura = ap.id_asignatura_pac
-                    INNER JOIN asignaturas asig ON asig.id_asignatura = ap.id_asignatura_carrera
-                    INNER JOIN periodos_academicos pa ON ap.id_periodo = pa.id_periodo
-                    WHERE id_docente = 202020 AND pa.id_periodo = 3
-                    WHERE s.id_docente = ${id_docente} AND pa.id_periodo = ${id_periodo}`);
-
-                    return {estado: true, mensaje: secciones1};
-                }
-                return {estado: false, mensaje: 'El periodo académico y el docente no coinciden'};
+            if(tipoPerido.length > 0 && tipoDep.length > 0){
+                if(tipoPerido[0].descripcion.includes('Semestre') && tipoDep[0].tipo_dep == 'SM   '){
+                    let secciones1 = await this.secciones(id_docente, id_periodo);
+                    console.log('secciones1', secciones1)
+                    return secciones1;
+                }else {if(!tipoPerido[0].descripcion.includes('Semestre') && tipoDep[0].tipo_dep == 'TM   '){
+                    let secciones1 = await this.secciones(id_docente, id_periodo);
+                    console.log('secciones1', secciones1)
+                    return secciones1;
+                } }
             }
 
-            return {estado: false, mensaje: 'El periodo académico y el docente no coinciden'};;
+            return {estado: false, mensaje: 'El periodo académico y el docente no coinciden'};
         }catch(error){
             throw error;
         }finally{
             await db.close()
+        }
+    }
+
+    async secciones(id_docente, id_periodo){
+        try {
+            await db.connect();
+
+            let secciones = await db.query(`SELECT s.id_seccion, s.hora_inicio, asig.id_asignatura, asig.nombre_asig, s.id_docente
+            FROM secciones s INNER JOIN Asignaturas_PAC ap ON s.id_asignatura = ap.id_asignatura_pac
+            INNER JOIN asignaturas asig ON asig.id_asignatura = ap.id_asignatura_carrera
+            INNER JOIN periodos_academicos pa ON ap.id_periodo = pa.id_periodo
+            WHERE s.id_docente = ${id_docente} AND pa.id_periodo = ${id_periodo}`);
+
+            if(secciones.length >0){
+                return {estado: true, mensaje: secciones};
+            }
+            return {estado: false, mensaje: 'El docente no tiene secciones asignadas'};
+
+        } catch (error) {
+            throw error;
         }
     }
 

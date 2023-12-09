@@ -23,11 +23,11 @@ router.get('/observaciones', async (req, res) =>{
 //La primera ruta, verificar que el proceso de ingresar notas este activo y obtener las secciones del docente
 router.get('/:idDocente', async (req, res) =>{
     try {
-        //Verificar que el proceso este activo FALTA
+        //Verificar que el proceso este activo
         let valido = await validarNota.verificarProcesoEvaluacion(req.params.idDocente);
 
         if(valido.estado){
-            if (valido.periodos != 0) {
+            if (valido.mensaje != 0) {
                 res.json(valido);
             } else{
                 res.status(400).send('No tiene secciones asignadas');
