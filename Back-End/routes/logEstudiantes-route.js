@@ -3,7 +3,7 @@ const router = express.Router();
 const logEstudianteController = require('../controllers/logEstudianteController');
 
 
-router.post('/logES', logEstudianteController.loginUser);
+router.post('/logES', logEstudianteController.login);
 
 module.exports = router;
 

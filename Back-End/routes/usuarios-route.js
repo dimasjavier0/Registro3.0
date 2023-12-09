@@ -14,7 +14,7 @@ const usuarios = require('../controllers/usuarios');
 /* no hay clase, se importa la funcion*/
 //const correoRecuperacion = require('../controllers/CorreoRecuperacion');
 
-console.log("= = = = entro al router = = = = =");
+//console.log("= = = = entro al router = = = = =");
 //correo.enviarCorreo('papardosmith1917@gmail.com','Hola Pavel, la clase correo si Funciona');
 
 // Cambia la ruta para que coincida con la URL proporcionada

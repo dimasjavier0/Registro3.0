@@ -25,21 +25,23 @@ function Estudiantes() {
                 password: contraseña,
             });
             const data = response.data;
-
+            console.log('respuesta Recibida:',data);
             if (data.success) {
+                localStorage.setItem("sesion",JSON.stringify(data.sesion));
                 console.log('Inicio de sesión exitoso');
                 setUserContext({ user_id: data.user_id });
                 navigate('/principalEstudiante') 
-                } else {
+                
+            } else {
                 console.log('Error en inicio de sesión:', data.message);
                 setAlerta({ mensaje:  data.message,
                             error: true });
                 return;
-                }
-            } catch (error) {
-                console.error('Error de red:', error);
             }
-        };
+        } catch (error) {
+            console.error('Error de red:', error);
+        }
+    };
     const {mensaje}= alerta
 
     return (

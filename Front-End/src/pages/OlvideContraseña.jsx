@@ -52,7 +52,7 @@ function OlvideContraseña() {
             <div>
                 <div className='text-center'>
                 <h1 className='text-indigo-600 text-center font-black text-6xl  ml-12 '>
-                    Recupera Tu Acceso
+                    Obten Tu Acceso
                 </h1>
                 <p className='mt-2  text-6xl font-black text-center '>
                     Y No Pierdas Tu 
@@ -74,7 +74,7 @@ function OlvideContraseña() {
                 onSubmit={handleSubmit}
                 >
 
-                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >E-Mail</label>
+                    <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Ingrese su numero de Cuenta</label>
                     <input
                     className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
                     type='email'   

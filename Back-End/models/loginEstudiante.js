@@ -2,7 +2,7 @@ const bd = require('../conections/database');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const mssql = require('mssql');
-const correo = require('./correo');
+const correo = require('../controllers/correo');
 const config = {
   user: 'Grupo',
   password: '1234',
@@ -29,24 +29,24 @@ class UserAndLogin{
     try {
       console.log('creando Usuario: ',nombreUsuario);
       // Conectar a la base de datos
-     let pool =  await mssql.connect(config);
+      await bd.connect();
 
       if (typeof nombreUsuario == "number"){
         nombreUsuario = nombreUsuario.toString();
       }
 
-      const resultado = await pool.query(`SELECT nombre_usuario FROM usuarios WHERE nombre_usuario = '${nombreUsuario}'`);
-
+      const resultado = await bd.query(`SELECT count (*) contador FROM usuarios WHERE nombre_usuario = '${nombreUsuario}'`);
+      
       const passwordUser = this.generarPasswordProvisional(); //La contraseña que se enviara al correo
       console.log('resultado',resultado);
-      if (resultado.length != 0) {
+      if (resultado[0].contador == 0) {
         const passwordHash = await hashPassword(passwordUser);
 
         var subject = 'Bienvenido a la UNAH';
         var mensaje;
 
-        if (rol === '3') {
-          await pool.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico, rol)
+        if (rol == '3') {
+          await bd.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico, rol)
                           VALUES('${nombreUsuario}', '${passwordHash}', '${correoElectronico}', '3')`);
           
           mensaje = `Se ha creado una cuenta para usted con la siguiente informacion:
@@ -58,9 +58,10 @@ class UserAndLogin{
 
 
           correo.enviarCorreo(correoElectronico, subject, mensaje);
-        } else if (rol === 'estudiante') {
-          await pool.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico, rol)
-                          VALUES('${nombreUsuario}', '${passwordHash}', '${correoElectronico}', 'estudiante')`);
+        } else if (rol == '2') {
+
+          await bd.query(`INSERT INTO usuarios(nombre_usuario, password_hash, correoElectronico, rol)
+                          VALUES('${nombreUsuario}', '${passwordHash}', '${correoElectronico}', 2)`);
           
           mensaje = `Se ha creado una cuenta para usted con la siguiente informacion:
                             Número de cuenta: ${nombreUsuario}
@@ -75,7 +76,7 @@ class UserAndLogin{
         throw new Error(`El usuario ${nombreUsuario} ya existe`);
       }
 
-      pool.close();
+      bd.close();
     } catch (err) {
       console.error('Error al crear el usuario:', err);
       //throw err;
@@ -121,12 +122,12 @@ class UserAndLogin{
 
       //let pool = await mssql.connect(config);
       await bd.connect();
-      const resultado = await bd.query(`select nombre_usuario, password_hash FROM usuarios 
+     const resultado = await bd.query(`SELECT nombre_usuario, password_hash FROM usuarios 
       WHERE nombre_usuario = '${nombreUsuario}' and rol = ${rol}`);
 
-      console.log('resultado',resultado[0]["nombre_usuario"]);
+      
 
-     if (!resultado[0]["nombre_usuario"]) {
+     if (resultado[0].nombre_Usuario) {
        throw new Error('El usuario no existe o el rol es incorrecto');
      }
 
@@ -135,17 +136,7 @@ class UserAndLogin{
 
      if (!esPasswordCorrecto) {
        throw new Error('Contraseña incorrecta');
-      }
-      let infoLogin= await bd.query(
-        `SELECT e.id_persona identidad, e.num_cuenta numeroCuenta, u.correoElectronico FROM usuarios u 
-        inner join estudiantes e on e.num_cuenta = u.nombre_usuario  
-        inner join personas p on p.numero_identidad = e.id_persona
-        WHERE nombre_usuario= '${usuario["nombre_usuario"]}';`
-      );
-      console.log(infoLogin);
-      let sesion ={"status":true, "numeroCuenta":infoLogin[0]["numeroCuenta"],"identidad":infoLogin[0]["identidad"]}; 
-      console.log('Credenciales Correctas:',sesion);
-      return sesion;
+     }
 
    } catch (err) {
      throw new Error(`Error en la autenticación: ${err.message}`);

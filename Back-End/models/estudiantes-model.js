@@ -3,7 +3,9 @@ const validator = require('../controllers/validator');
 const carrerasModel = require('./carreras-model');
 const correo = require('../controllers/correo');
 const personasModel = require('./personas-model');
+const {UserAndLogin} = require('./loginEstudiante');
 
+const userLogin = new UserAndLogin();
 
 class EstudiantesModel{
     constructor(){
@@ -43,9 +45,9 @@ class EstudiantesModel{
                         if(await personasModel.existePersona(identidad)){//si la persona existe, ya que no se puede agregar un estudiante que no este en el sistema previamente.
                             
                             await db.connect();
-                            await db.query(
-                                `[dbo].[agregar_estudiante] @numIdentidad ='${identidad}', @id_carrera = ${carreraEstudiante};`
-                            );
+                            //await db.query(
+                            //    `[dbo].[agregar_estudiante] @numIdentidad ='${identidad}', @id_carrera = ${carreraEstudiante};`
+                            //);
                             
                             /**Solicitando informacion para enviarle un correo de notificacion al estudiante que se agrego. */
                             infoEstudiante = await db.query(
@@ -54,13 +56,15 @@ class EstudiantesModel{
                                 from  estudiantes e inner join personas p on p.numero_identidad = e.id_persona
                                 where p.numero_identidad = '${identidad}';`
                             );
-                            await db.close();
-
                             infoEstudiante = infoEstudiante[0];
-                            msjToSend = `Hola muy Buenas estimado ${infoEstudiante.nombre} nos complace enviarle su correo Institucional ${infoEstudiante.correoInstitucional}, junto su numero de cuenta ${infoEstudiante.numeroCuenta}.
-                            Favor obtener su contraseña en la pagina de inicio de sesion, mediante el boton olvide mi crontraseña para tener acceso al portal web.`;
+                            await db.close();
                             
-                            correo.enviarCorreo(infoEstudiante.correoPersonal,'CREDENCIALES REGISTRO UNAH',msjToSend);
+                            /**crear usuario */
+                            await userLogin.crearUsuario(infoEstudiante.numeroCuenta,infoEstudiante.correoPersonal, 2);
+
+                            //msjToSend = `Hola muy Buenas estimado ${infoEstudiante.nombre} nos complace enviarle su correo Institucional ${infoEstudiante.correoInstitucional}, junto su numero de cuenta ${infoEstudiante.numeroCuenta}.\nFavor obtener su contraseña en la pagina de inicio de sesion, mediante el boton olvide mi contraseña para tener acceso al portal web.`;
+                            
+                            //correo.enviarCorreo(infoEstudiante.correoPersonal,'CREDENCIALES REGISTRO UNAH',msjToSend);
                             estudiantesAgregados.push(estudiante);
 
                         }else{
@@ -93,6 +97,7 @@ class EstudiantesModel{
             }
     }
 
+    
     
     async getEstudiantesFromCSV(){
 
