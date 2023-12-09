@@ -82,6 +82,26 @@ router.get('/aulas/:num_empleado', async (req, res) =>{
    }
 });
 
+//Ruta para aumentar los cupos de una seccion
+router.put('/aumentarCupos/:idSeccion', async (req, res) =>{
+    try {
+        const {idSeccion} = req.params;
+        const {nuevosCupos} = req.body;
+
+        let resultado = await jefeDep.aumentarCupos(idSeccion, nuevosCupos);
+
+        if(resultado.estado){
+            res.send(`Se aumentaron los cupos de la seccion`);
+        }else{
+            res.status(400).send(resultado.mensaje);
+        }
+
+    } catch (error) {
+        res.status(500).json(
+            {mensaje: error.message});
+    }
+});
+
 router.post('/crearSeccion/:num_empleado', async (req, res) =>{
     try{
         const {num_empleado} = req.params;
@@ -106,5 +126,26 @@ router.post('/crearSeccion/:num_empleado', async (req, res) =>{
             {mensaje: error.message});
     }
 });
+
+//Ruta para cancelar una seccion
+router.put('/cancelarSeccion/:num_empleado', async (req, res) =>{
+    try{
+        const {num_empleado} = req.params;
+        const seccionCancelada = req.body; 
+
+        //Con estos datos cancelar la seccion
+        let resultado = await jefeDep.cancelarSeccion(num_empleado, seccionCancelada.idSeccion, seccionCancelada.justificacion);
+
+        if(resultado){
+            res.send('Sección eliminada');
+        }else{
+            res.status(400).send('La sección no pertenece al departamento');
+        }
+    }catch(error){
+        res.status(500).json(
+            {mensaje: error.message});
+    }
+});
+
 
 module.exports = router;

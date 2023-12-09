@@ -1,5 +1,5 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser'); 
 var cors = require('cors');
 //var Routes = require('./routes');
 var aspirantes_router = require("./routes/aspirantes-route");
@@ -29,6 +29,10 @@ const mensajePersonalRoutes = require('./routes/mensajePersonalRoutes');
 const historialAcademicoController = require('./controllers/historialAcademicoController');
 const activarMatriculaRouter = require('./routes/matriculaRouter');
 const matriculaRouter = require('./routes/fechaMatriculas');
+const ingresoNotas = require('./routes/estudianteNotas');
+const activarIngresoNotas = require('./routes/activarRevision');
+const activarPlanificacion = require('./routes/activarPlanAcademica');
+const planificacionAcademica = require('./routes/jefeDep-route');
 
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
@@ -110,6 +114,19 @@ const matriculaRouter = require('./routes/fechaMatriculas');
   app.use(activarMatriculaRouter);
   // desoues junto las rutas coño, este verifica que sea el indice en la fecha correcta
   app.use('/matricula', matriculaRouter);
+
+  //Ruta para activar el ingreso de notas
+  app.use('/activarIngresoNotas', activarIngresoNotas);
+
+  //Ruta para todo el proceso de ingreso de notas del docente
+  app.use('/docenteNotas', ingresoNotas);
+
+  //Ruta para activar la planificacion academica 
+  app.use('/activarPlanificacion', activarPlanificacion);
+
+  //Ruta para todo el proceso de crear secciones
+  app.use('/planificacionAcademica', planificacionAcademica)
+
 
 /*
 

@@ -1,3 +1,22 @@
+--tablas para el modulo de jefe dep
+CREATE TABLE secciones_canceladas(
+	id_cancelar_seccion INT PRIMARY KEY IDENTITY(1,1),
+	id_asignatura INT,
+	id_jefeDep INT,
+	justificacion NVARCHAR(200) NOT NULL,
+	fecha DATE DEFAULT GETDATE(),
+	FOREIGN KEY (id_asignatura) REFERENCES asignaturas(id_asignatura),
+	FOREIGN KEY (id_jefeDep) REFERENCES jefes_departamentos(id_jefe)
+);
+
+CREATE TABLE matriculas_listaEspera(
+	id_listaEspera INT PRIMARY KEY IDENTITY(1,1),
+	id_estudiante NVARCHAR(11),
+	id_seccion INT,
+	FOREIGN KEY (id_estudiante) REFERENCES estudiantes(num_cuenta),
+	FOREIGN KEY (id_seccion) REFERENCES secciones(id_seccion)
+);
+
 --Cambios para crear secciones
 ALTER TABLE carreras
 ADD tipo_carrera nchar(5);

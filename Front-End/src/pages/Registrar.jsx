@@ -235,7 +235,7 @@ function Registrar() {
         
         <div className='grid grid-cols-2 justify-center mt-28 mb-40' >
             <div>
-                <div className='text-left'>
+                <div className='text-left centrarF-registro'>
                 <h1 className='text-indigo-600 text-center font-black text-5xl  ml-12 '>
                     Proceso de Admisión
                 </h1>
@@ -248,7 +248,7 @@ function Registrar() {
                 </div>
 
                 <div className='ml-40 mt-14 '>
-                    <img className={mostrarImagen ? 'imagen-visible ' : 'imagen-oculta'}
+                    <img className={mostrarImagen ? 'imagen-visible centrar-puma ' : 'imagen-oculta centrar-puma'}
                     src="/img/Puma-UNAH.png"
                     alt="Imagen"
                     />
@@ -342,20 +342,20 @@ function Registrar() {
                     </select>
 
                     <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Carrera Secundaria</label>
-<select
-    className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
-    value={carreraSecundaria}
-    onChange={(e) => {
-        setCarreraSecundaria(e.target.value);
-    }}
->
-    <option value='' disabled>-- Seleccione --</option>
-    {carreras.filter(carrera => carrera.id_carrera.toString() !== carreraPrincipal).map((carrera) => (
-        <option key={carrera.id_carrera} value={carrera.id_carrera}>
-            {carrera.nombre_carrera}
-        </option>
-    ))}
-</select>
+                    <select
+                        className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label'
+                        value={carreraSecundaria}
+                        onChange={(e) => {
+                            setCarreraSecundaria(e.target.value);
+                        }}
+                    >
+                        <option value='' disabled>-- Seleccione --</option>
+                        {carreras.filter(carrera => carrera.id_carrera.toString() !== carreraPrincipal).map((carrera) => (
+                            <option key={carrera.id_carrera} value={carrera.id_carrera}>
+                                {carrera.nombre_carrera}
+                            </option>
+                        ))}
+                    </select>
 
                     <label className='block uppercase mb-2 font-bold  text-gray-700 text-base font-label' >Teléfono</label>
                     <input

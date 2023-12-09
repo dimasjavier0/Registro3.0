@@ -30,3 +30,46 @@
     background-size: 100% 100% ;
     background-repeat: no-repeat; 
 }
+
+@media (min-width: 1920px) {
+    .pt-principalcentro {
+        margin-top: 27vh; 
+        margin-bottom: 27vh;
+    }
+    .pd-footer{ 
+        margin-bottom: 5vh;
+    }
+    p{
+        font-size: 1.5rem;
+    }
+    .header-principal {
+        padding: 1.5rem; 
+    }
+    .imagen{
+        
+        width: 12rem;
+        height: 14rem;
+    }
+    .fa-facebook-f {
+        font-size: 2rem; 
+    }
+    .fa-twitter {
+        font-size: 2rem; 
+    }
+    .fa-instagram {
+        font-size: 2rem; 
+    }
+    .fa-linkedin-in {
+        font-size: 2rem; 
+    }
+    .centrar-puma{
+        margin: 0 auto;
+    }
+    .centrarF-registro{
+        text-align: center;
+    }
+}
+
+
+
+

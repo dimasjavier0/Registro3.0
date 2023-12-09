@@ -198,7 +198,7 @@ function Docentes() {
                 </div>
             </div>
             <div className='imagenn'>
-                <img src='/img/UNAH-DOCENTES.png' alt="UNAH-DOCENTES" />
+                <img className='mx-auto my-auto' src='/img/UNAH-DOCENTES.png' alt="UNAH-DOCENTES" />
             </div>
         </>
     )
