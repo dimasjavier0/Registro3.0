@@ -104,4 +104,6 @@ router.post('/:idseccion', async (req, res) =>{
 
 //Para modificar la nota de un estudiante
 
+
+
 module.exports = router;
