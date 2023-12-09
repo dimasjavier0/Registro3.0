@@ -28,7 +28,7 @@ const mensajeGrupoRoutes = require('./routes/mensajeGrupoRoutes');
 const mensajePersonalRoutes = require('./routes/mensajePersonalRoutes');
 const historialAcademicoController = require('./controllers/historialAcademicoController');
 const activarMatriculaRouter = require('./routes/matriculaRouter');
-
+const matriculaRouter = require('./routes/fechaMatriculas');
 
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
@@ -108,6 +108,8 @@ const activarMatriculaRouter = require('./routes/matriculaRouter');
   app.use('/centros', centrosRoute);
   //
   app.use(activarMatriculaRouter);
+  // desoues junto las rutas coño, este verifica que sea el indice en la fecha correcta
+  app.use('/matricula', matriculaRouter);
 
 /*
 
