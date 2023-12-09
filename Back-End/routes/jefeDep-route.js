@@ -127,5 +127,25 @@ router.post('/crearSeccion/:num_empleado', async (req, res) =>{
     }
 });
 
+//Ruta para cancelar una seccion
+router.put('/cancelarSeccion/:num_empleado', async (req, res) =>{
+    try{
+        const {num_empleado} = req.params;
+        const seccionCancelada = req.body; 
+
+        //Con estos datos cancelar la seccion
+        let resultado = await jefeDep.cancelarSeccion(num_empleado, seccionCancelada.idSeccion, seccionCancelada.justificacion);
+
+        if(resultado){
+            res.send('Sección eliminada');
+        }else{
+            res.status(400).send('La sección no pertenece al departamento');
+        }
+    }catch(error){
+        res.status(500).json(
+            {mensaje: error.message});
+    }
+});
+
 
 module.exports = router;

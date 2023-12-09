@@ -292,6 +292,41 @@ class JefeDep {
             await db.close();
         }      
     }
+
+    async cancelarSeccion(num_empleado, idSeccion, justificacion){
+        try {
+            await db.connect();
+            //Verificar que la seccion pertenezca al departamento academico
+            let resultado = await db.query(`SELECT jf.id_jefe, asig.id_asignatura
+            FROM secciones s
+            INNER JOIN Asignaturas_PAC asigP ON s.id_asignatura = asigP.id_asignatura_pac
+            INNER JOIN asignaturas asig ON asigP.id_asignatura_carrera = asig.id_asignatura
+            INNER JOIN jefes_departamentos jf ON asig.id_dep_academico = jf.id_departamentoAcademico
+            WHERE jf.id_docente = ${num_empleado} AND id_seccion = ${idSeccion}`);
+
+            if(resultado.length > 0){
+                //Borrar la seccion en la tabla secciones y las tablas relacionadas
+                await db.query(`DELETE FROM Dias_asignatura
+                WHERE id_seccion = ${idSeccion}`);
+
+                await db.query(`DELETE FROM matricula_estudiantes
+                WHERE id_seccion = ${idSeccion}`);
+
+                await db.query(`DELETE FROM secciones
+                WHERE id_seccion = ${idSeccion}`);
+
+                //hacer el insert en la tabla secciones_canceladas
+                await db.query(`INSERT INTO secciones_canceladas(id_asignatura, id_jefeDep, justificacion)
+                VALUES(${resultado[0].id_asignatura},${resultado[0].id_jefe}, '${justificacion}')`);
+
+                return true;
+            }
+
+            return false;
+        } catch (error) {
+            throw error;
+        }finally{ await db.close();}
+    }
 }
 
 function validarFormatoHora(hora) {
