@@ -103,8 +103,11 @@ router.post('/', async (req,res)=>{
             "a":resultadoFinal.a
         };
 
+        /* mientras se hacen las pruebas, no enviar correos xD.
         await enviarResultados(respuesta.resultados[0].aprobados);//se envia un json
         await enviarResultados(respuesta.resultados[1].reprobados);
+        */
+
 
         let csv = generarFilasCsvEstudiantes(respuesta.resultados[0].aprobados);
         //generarFilasCsvEstudiantes(respuesta.resultados[1].reprobados);
@@ -502,6 +505,10 @@ async function evaluarNotas(notasAspirantesExistentes){
                 infoPersona['carrerasAprobadas'].push(resultadoCarreraPrincipal.carrera);
 
                 estudiantesAprobados.push(result);
+
+
+                continue;
+
             }else{
                 console.log(`El estudiante ${infoPersona.id_persona} REPROBO su Carrera Principal`);
                 //status = false;
@@ -514,7 +521,7 @@ async function evaluarNotas(notasAspirantesExistentes){
 
             
 
-            /**comprar si paso la carrerra Secundaria */
+            /**comparar si paso la carrerra Secundaria, solo en caso que no halla pasado el primer examen. */
             
             if(resultadoCarreraSecundaria.status){
                 console.log(`El estudiante ${infoPersona.id_persona} aprobo su Carrera Principal`);

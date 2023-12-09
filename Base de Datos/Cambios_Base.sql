@@ -1,3 +1,20 @@
+--Cambios para crear secciones
+ALTER TABLE carreras
+ADD tipo_carrera nchar(5);
+
+ALTER TABLE departamentos_academicos
+ADD tipo_dep nchar(5); --Para saber si ese departamento imparte clases semestrales o trimestrales
+
+ALTER TABLE Asignaturas_PAC
+DROP COLUMN id_asignatura_carrera;
+
+--FK a la tabla asignaturas
+ALTER TABLE secciones
+DROP CONSTRAINT FK__secciones__id_as__02C769E9
+
+ALTER TABLE secciones
+ADD cod_seccion NCHAR(4);
+
 ALTER TABLE usuarios
 ADD correoElectronico NVARCHAR(255);
 

@@ -28,7 +28,7 @@ class Validator {
     // Valida un nombre de carrera (solo letras, espacios y números)
     carrera(carrera) {
         const regex = /\d/ // /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]+$/;
-        return regex.test(carrera) && carrera.length <= 50;
+        return regex.test(carrera);// && carrera.length <= 50;
     }
 
     // Valida un correo electrónico
