@@ -17,7 +17,7 @@ class EstudiantesModel{
                         
             var carrerasValidas = await carrerasModel.getCarrerasIdsArray();
             
-            //console.log('carrerasValidas::',carrerasValidas);
+            console.log('carrerasValidas::',carrerasValidas);
             var estudiantesNoValidos = [];
             var estudiantesAgregados = [];
 
@@ -29,15 +29,16 @@ class EstudiantesModel{
             for(let estudiante of estudiantes){
                 let identidad = estudiante[0];
                 let carreraEstudiante = estudiante[1];
-
+                console.log('Carrera RECIBIDA',carreraEstudiante);
                 let infoEstudiante; //para enviar correo
                 let msjToSend;
 
                 /**validando si existe el campo identidad y si es valida */
+                identidad = identidad.trim();
                 if (identidad && validator.identidad(identidad)){
                     
                     /**validando que existe la carrera */
-                    if(carrerasValidas.includes(carreraEstudiante) && validator.carrera(carreraEstudiante)){
+                    if(carrerasValidas.includes(parseInt(carreraEstudiante, 10)) && validator.carrera(carreraEstudiante)){
                         
                         if(await personasModel.existePersona(identidad)){//si la persona existe, ya que no se puede agregar un estudiante que no este en el sistema previamente.
                             

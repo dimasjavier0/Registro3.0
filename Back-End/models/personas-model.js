@@ -6,22 +6,25 @@ class personasModel{
     }
     
     /**funcion que valida si una persona existe(return true) o no(false).  */
-    async existePersona(idPersona){
+    async existePersona(idPersona) {
+        let existe = false; // Asumimos inicialmente que la persona no existe
         try {
             await db.connect();
-            let exist = await db.query(`select count(*) cantidad from personas p where p.numero_identidad = '${idPersona}';`);
-            exist = exist[0].cantidad;
-            //console.log('EXIST::',exist);
-            if(exist && exist>0){
-                return true;
-            }else{
-                return false;
-            } 
-          } finally {
+            let resultado = await db.query(`SELECT COUNT(*) cantidad FROM personas p WHERE p.numero_identidad = '${idPersona}';`);
+            let cantidad = resultado[0].cantidad;
+            console.log('EXIST::', cantidad);
+            if (cantidad > 0) {
+                existe = true; // Cambiamos a true si encontramos la persona
+            }
+        } catch (error) {
+            console.error('Error al verificar la existencia de la persona:', error);
+            // Puedes manejar el error como consideres apropiado aquí
+        } finally {
             await db.close();
-            return false;
-          }
+        }
+        return existe; // Devolvemos el resultado fuera del bloque finally
     }
+    
 }
 
 module.exports = new personasModel();
