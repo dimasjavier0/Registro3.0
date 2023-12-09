@@ -7,17 +7,11 @@ class PlanificacionAcademica{
     //Metodo para activar la planificacion academica segun el tipo de periodo semestral o trimestral
     async activarPlanificacion(fechaInicio, fechaFin, tipo_periodo){
         try{
+            fechaInicio = moment(fechaInicio, 'DD-MM-YYYY').format('YYYY-MM-DD');
+            fechaFin = moment(fechaFin, 'DD-MM-YYYY').format('YYYY-MM-DD');
+
             if(fechaInicio > fechaFin){
-                return {estado: false,
-                    mensaje: 'La fecha de inicio es posterior a la fecha final'};
-            }
-
-            if(moment(fechaInicio, 'DD-MM-YYYY', true).isValid()){
-                fechaInicio = moment(fechaInicio, 'DD-MM-YYYY').format('YYYY-MM-DD');
-            }
-
-            if(moment(fechaFin, 'DD-MM-YYYY', true).isValid()){
-                fechaFin = moment(fechaFin, 'DD-MM-YYYY').format('YYYY-MM-DD');
+                return {estado: false, mensaje: 'La fecha de inicio es posterior a la fecha final'};
             }
 
             await db.connect();
@@ -43,9 +37,7 @@ class PlanificacionAcademica{
             }
 
             await db.close();
-            return {estado: false,
-                mensaje: 'El proceso de planificación académica ya esta activo'};
-
+            return {estado: false, mensaje: 'El proceso de planificación académica ya esta activo'};
         }catch(error){
             throw error;
         }

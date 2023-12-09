@@ -17,6 +17,65 @@ CREATE TABLE matriculas_listaEspera(
 	FOREIGN KEY (id_seccion) REFERENCES secciones(id_seccion)
 );
 
+--tablas para la evaluacion del docente
+CREATE TABLE cuestionarios(
+	id_cuestionario INT PRIMARY KEY,
+	pregunta1 NVARCHAR(200),
+	pregunta2 NVARCHAR(200),
+	pregunta3 NVARCHAR(200),
+	pregunta4 NVARCHAR(200),
+	pregunta5 NVARCHAR(200),
+	pregunta6 NVARCHAR(200)
+ );
+
+ INSERT INTO cuestionarios
+ VALUES(1, 'El docente muestra dominio de técnicas pedagógicas para el proceso enseñanza-aprendizaje a nivel universitario',
+ 'El docente proporciona herramientas para facilitar el aprendizaje de los contenidos de esta asignatura',
+ 'El docente trata de forma cordial y respuetuosa a los estudiantes en todo momento',
+ 'El docente imparte la clase con puntualidad y segun lo programado',
+ '¿Que cualidades personales y profesionales identifica usted en el docente?',
+ '¿En qué aspectos del desempeño puede mejorar el docente?')
+
+ CREATE TABLE observaciones_docentes(
+	id_observacion INT PRIMARY KEY,
+	descripcion NVARCHAR(100)
+ )
+
+ INSERT INTO observaciones_docentes
+ VALUES
+ (1, 'Excelente'),
+ (2, 'Muy bueno'),
+ (3, 'Bueno'),
+ (4, 'Deficiente')
+
+ CREATE TABLE respuestas(
+	id_respuestas INT PRIMARY KEY IDENTITY(1,1),
+	id_cuestionario INT,
+	respuesta1 INT,
+	respuesta2 INT,
+	respuesta3 INT,
+	respuesta4 INT,
+	respuesta5 NVARCHAR(200),
+	respuesta6 NVARCHAR(200)
+	FOREIGN KEY (id_cuestionario) REFERENCES cuestionarios(id_cuestionario),
+	FOREIGN KEY (respuesta1) REFERENCES observaciones_docentes(id_observacion),
+	FOREIGN KEY (respuesta2) REFERENCES observaciones_docentes(id_observacion),
+	FOREIGN KEY (respuesta3) REFERENCES observaciones_docentes(id_observacion),
+	FOREIGN KEY (respuesta4) REFERENCES observaciones_docentes(id_observacion)
+ );
+
+ CREATE TABLE evaluaciones_docentes(
+	id_evaluacion INT PRIMARY KEY IDENTITY(1,1),
+	id_docente INT,
+	id_respuestas INT,
+	id_seccion INT, 
+	id_estudiante NVARCHAR(11),
+	FOREIGN KEY (id_docente) REFERENCES docentes(num_empleado),
+	FOREIGN KEY (id_respuestas) REFERENCES respuestas(id_respuestas),
+	FOREIGN KEY (id_seccion) REFERENCES secciones(id_seccion),
+	FOREIGN KEY (id_estudiante) REFERENCES estudiantes(num_cuenta)
+ )
+
 --Cambios para crear secciones
 ALTER TABLE carreras
 ADD tipo_carrera nchar(5);

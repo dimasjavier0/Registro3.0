@@ -264,6 +264,7 @@ class JefeDep {
         }
     }
 
+    //metodo para aumentar los cupos de una seccion
     async aumentarCupos(idSeccion, nuevosCupos){
         try {
             await db.connect();
@@ -293,6 +294,7 @@ class JefeDep {
         }      
     }
 
+    //Metodo para cancelar una seccion
     async cancelarSeccion(num_empleado, idSeccion, justificacion){
         try {
             await db.connect();
@@ -327,6 +329,72 @@ class JefeDep {
             throw error;
         }finally{ await db.close();}
     }
+
+    //metodo para ver las secciones del periodo
+    async seccionesPAC(num_empleado){
+        try {
+            const verificarPeriodo = await this.verificarProceso(num_empleado);
+
+            if(verificarPeriodo.estado){
+                const periodoActual = verificarPeriodo.mensaje;
+
+                const secciones = await db.query(`SELECT id_seccion, cod_seccion, asig.nombre_asig, s.id_docente, hora_inicio, hora_fin
+                FROM secciones s
+                INNER JOIN Asignaturas_PAC asigP ON s.id_asignatura = asigP.id_asignatura_pac
+                INNER JOIN asignaturas asig ON asigP.id_asignatura_carrera = asig.id_asignatura
+                INNER JOIN jefes_departamentos jf ON asig.id_dep_academico = jf.id_departamentoAcademico
+                WHERE jf.id_docente = ${num_empleado} AND asigP.id_periodo = ${periodoActual}`);
+
+                await db.close();
+                if(secciones.length > 0){
+                    return {estado: true, mensaje: secciones};
+                }else{
+                    return {estado: false, mensaje: 'No existen secciones'};
+                }
+            }
+
+            return {estado: false, mensaje: 'No existen secciones'};
+        } catch (error) {
+            throw  error;
+        }
+    }
+
+    //Metodo para ver las lista de espera de una seccion
+    async verListaEspera(num_empleado, idSeccion){
+        try {
+            let secciones = await this.seccionesPAC(num_empleado);
+            
+            if(secciones.estado){
+                const seccionesArray = Object.values(secciones.mensaje);
+                const seccionEncontrada = seccionesArray.find(seccion => seccion.id_seccion == idSeccion);
+                
+                if (seccionEncontrada == undefined) {
+                    return { estado: false, mensaje: `La sección no pertenece al departamento`};
+                }else{
+                    await db.connect();
+
+                    let listaEspera = await db.query(`SELECT num_cuenta, primer_nombre+' '+segundo_nombre+' '+primer_apellido AS nombre
+                    FROM matriculas_listaEspera list 
+                    INNER JOIN estudiantes st ON list.id_estudiante = st.num_cuenta
+                    INNER JOIN personas p ON st.id_persona = p.numero_identidad
+                    WHERE id_seccion = ${idSeccion}`);
+
+                    await db.close();
+
+                    if(listaEspera.length > 0){
+                        return { estado: true, mensaje: listaEspera};
+                    }else{
+                        return {estado: false, mensaje: 'No hay estudiantes en lista de espera'};
+                    }
+                }
+            }
+
+            return {estado: false, mensaje: 'No hay secciones'};
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }
 
 function validarFormatoHora(hora) {
