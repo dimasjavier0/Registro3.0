@@ -22,6 +22,7 @@ function RegistrarDocentes() {
     
     const [alerta, setAlerta] = useState({});
     const [departamentos, setDepartamentos] = useState([]);
+    const [centros, setCentros] = useState([]);
 
     const correoRegex = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -46,6 +47,16 @@ function RegistrarDocentes() {
             console.error('Error al obtener departamentos:', error);
         }
     };
+
+    const obtenerCentros = async () => {
+      try {
+          const response = await axios.get('http://localhost:8888/centros');
+          setCentros(response.data);
+      } catch (error) {
+          console.error('Error al obtener la lista de centros:', error);
+      }
+  };
+  obtenerCentros();
 
     // Llamada a la función para obtener las carreras
     obtenerDepartamentos();
@@ -292,10 +303,12 @@ function RegistrarDocentes() {
                     }
                     }
                     >
-                    <option value='' disabled > -- Seleccione-- </option>
-                    <option value={1}>UNAH-CU</option>
-                    <option value={2}>UNAH-VS</option>
-                    <option value={3}>UNAH-CURC</option>
+                    <option value='' disabled>-- Seleccione --</option>
+                    {centros.map((centro) => (
+                        <option key={centro.id_centro} value={centro.id_centro}>
+                            {centro.nombre_centro}
+                        </option>
+                    ))}
                     </select>
 
                     <label className='block uppercase mb-2 font-bold text-gray-700 text-base font-label'>Departamento</label>
