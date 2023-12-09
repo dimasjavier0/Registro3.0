@@ -26,6 +26,8 @@ import LayoutMatricula from './layout/LayoutMatricula';
 import Matricula from './pages/Matricula';
 import ActivarMatricula from './pages/ActivarMatricula';
 import NotasDocente from './pages/NotasDocente';
+import Coordinador from './pages/Coordinador';
+import JefeDepartamento from './pages/JefeDepartamento';
 
 function App() {
   
@@ -42,6 +44,8 @@ function App() {
             <Route path='/docentes' element={<Docentes/>} /> 
             <Route path='/Administrador' element={<Administrador/>} /> 
             <Route path='/Matricula' element={<ActivarMatricula/>} /> 
+            <Route path='/coordinador' element={<Coordinador/>} /> 
+            <Route path='/jefeDpto' element={<JefeDepartamento/>} /> 
         </Route>
         
         <Route > 

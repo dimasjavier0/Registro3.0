@@ -68,6 +68,18 @@ return (
                 </li>
 
                 <li className="flex items-center">
+                    <Link to='/coordinador' className="flex items-center flex-grow px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => handleOpcionClick('Coordinador')}>
+                        <i className="fas fa-solid fa-person-chalkboard fa-lg mr-4"></i> Coordinador
+                    </Link>
+                </li>
+
+                <li className="flex items-center">
+                    <Link to='/jefeDpto' className="flex items-center flex-grow px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={() => handleOpcionClick('JefeDepartamento')}>
+                        <i className="fas fa-solid fa-person-chalkboard fa-lg mr-4"></i> Jefe de departamento
+                    </Link>
+                </li>
+
+                <li className="flex items-center">
                     <Link to='/Administrador' className="flex items-center flex-grow px-5 py-2 text-gray-800 hover:bg-gray-200" onClick={() => handleOpcionClick('Administrador')}>
                         <i className="fas fa-light fa-user-gear mr-4"></i> Administrador
                     </Link>
