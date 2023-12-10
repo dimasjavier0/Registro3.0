@@ -26,6 +26,7 @@ import LayoutMatricula from './layout/LayoutMatricula';
 import Matricula from './pages/Matricula';
 import NotasDocente from './pages/NotasDocente';
 import ActivarMatricula from './pages/ActivarMatricula';
+import Chat  from './chat/chat';
 function App() {
   
 
@@ -57,6 +58,7 @@ function App() {
 
         <Route path='/principalEstudiante' element={<LayoutEstudiante/>}>
             <Route path='perfilEstudiante/:id_usuario' element={<PerfilEstudiante/>} /> 
+            <Route path='mensajeria' element={<Chat/>} /> 
         </Route>
 
         <Route path='/principalMatricula' element={<LayoutMatricula/>}>
