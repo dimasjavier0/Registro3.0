@@ -1,3 +1,7 @@
+--Agregar el proceso academico para la PLanificacion academica
+INSERT INTO Procesos_academicos(tipo_proceso, descripcion)
+VALUES(4, 'Proceso de Planificacion Academica')
+
 --tablas para el modulo de jefe dep
 CREATE TABLE secciones_canceladas(
 	id_cancelar_seccion INT PRIMARY KEY IDENTITY(1,1),

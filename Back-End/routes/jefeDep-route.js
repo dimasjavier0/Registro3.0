@@ -28,7 +28,7 @@ router.get('/:num_empleado', async(req, res) =>{
             res.status(400).json(resultado);}
 
     } catch (error) {
-        res.status(500).json(error);}
+        res.status(500).send(error.message);}
 });
 
 //Ruta para recuperar las asignaturas del departamento

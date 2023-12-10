@@ -27,7 +27,7 @@ class ControllerNotes{
                 let verificarProceso = await db.query(`SELECT pap.id_periodo
                 FROM Procesos_academicos pa
                 INNER JOIN Procesos_academicos_periodo pap ON  pap.id_proceso = pa.id_proceso
-                WHERE estado = 1 AND pa.tipo_proceso = 3 AND (GETDATE() BETWEEN pap.fecha_inicio AND pap.fecha_fin)`);
+                WHERE estado = 1 AND pa.tipo_proceso = 3 AND id_periodo = ${idPeriodo}`);
 
                 if(verificarProceso.length == 0){
                     let resultado = await db.query(`EXEC dbo.ActivarRevision @fecha_inicio = '${fechaInicio}', 
@@ -57,65 +57,43 @@ class ControllerNotes{
         try {
             await db.connect();
             //Verificar si el proceso esta activo
-            const resultado = await db.query(`SELECT pap.id_periodo
+            const resultado = await db.query(`SELECT pap.id_periodo, pac.descripcion
             FROM Procesos_academicos pa
             INNER JOIN Procesos_academicos_periodo pap ON  pap.id_proceso = pa.id_proceso
-            WHERE estado = 1 AND pa.tipo_proceso = 3 AND (GETDATE() BETWEEN pap.fecha_inicio AND pap.fecha_fin)`);
-            
-            await db.close();
+            INNER JOIN periodos_academicos pac ON pap.id_periodo = pac.id_periodo
+            WHERE estado = 1 AND pa.tipo_proceso = 3 AND (GETDATE() BETWEEN pac.fecha_inicio AND pac.fecha_fin)`);
             
             if(resultado.length > 0){
-                let resultadoMod = await this.seccionesPeriodo(idDocente, resultado[0].id_periodo);
-                if(resultadoMod.estado){
-                    return resultadoMod;
+                let tipoDep = await db.query(`SELECT tipo_dep FROM docentes d
+                INNER JOIN departamentos_academicos da ON d.id_dep_academico = da.id_dep_academico
+                WHERE num_empleado = ${idDocente}`);
+
+                const objetosFiltradosSemestral = resultado.filter(objeto => objeto.descripcion.includes('Semestre') && tipoDep[0].tipo_dep == 'SM   ');
+                console.log(objetosFiltradosSemestral, typeof objetosFiltradosSemestral)
+                if(objetosFiltradosSemestral.length > 0){
+                    let resultadoMod = await this.seccionesPeriodo(idDocente, objetosFiltradosSemestral[0].id_periodo);
+                    if(resultadoMod.estado){
+                        return resultadoMod;}
                 }else{
-                    if(resultado.length >= 1){
-                        let resultadoMod1 = await this.seccionesPeriodo(idDocente, resultado[1].id_periodo);
-                        return resultadoMod1;
+                    const objetosFiltradosTrimestral = resultado.filter(objeto => objeto.descripcion.includes('Periodo') && tipoDep[0].tipo_dep == 'TM   ');
+                    console.log(objetosFiltradosTrimestral, typeof objetosFiltradosTrimestral)
+
+                    if(objetosFiltradosTrimestral.length > 0){
+                        let resultadoMod = await this.seccionesPeriodo(idDocente, objetosFiltradosTrimestral[0].id_periodo);
+                        return resultadoMod;
                     }
                 }
             }
 
             return {estado: false, mensaje: 'El proceso de ingreso de notas no esta activo'};
         } catch (error) {
+            console.log(error.message)
             throw error;
-        }
+        }finally{await db.close();}
     }
 
     async seccionesPeriodo(id_docente, id_periodo){
         try{
-            await db.connect();
-
-            //Verificar si el departamento del docente y el periodo son ambos semestrales
-            let tipoPerido = await db.query(`SELECT descripcion FROM periodos_academicos
-            WHERE id_periodo = ${id_periodo}`);
-
-            let tipoDep = await db.query(`SELECT tipo_dep FROM docentes d
-            INNER JOIN departamentos_academicos da ON d.id_dep_academico = da.id_dep_academico
-            WHERE num_empleado = ${id_docente}`);
-
-            if(tipoPerido.length > 0 && tipoDep.length > 0){
-                if(tipoPerido[0].descripcion.includes('Semestre') && tipoDep[0].tipo_dep == 'SM   '){
-                    let secciones1 = await this.secciones(id_docente, id_periodo);
-                    console.log('secciones1', secciones1)
-                    return secciones1;
-                }else {if(!tipoPerido[0].descripcion.includes('Semestre') && tipoDep[0].tipo_dep == 'TM   '){
-                    let secciones1 = await this.secciones(id_docente, id_periodo);
-                    console.log('secciones1', secciones1)
-                    return secciones1;
-                } }
-            }
-
-            return {estado: false, mensaje: 'El periodo académico y el docente no coinciden'};
-        }catch(error){
-            throw error;
-        }finally{
-            await db.close()
-        }
-    }
-
-    async secciones(id_docente, id_periodo){
-        try {
             await db.connect();
 
             let secciones = await db.query(`SELECT s.id_seccion, s.hora_inicio, asig.id_asignatura, asig.nombre_asig, s.id_docente
@@ -124,13 +102,15 @@ class ControllerNotes{
             INNER JOIN periodos_academicos pa ON ap.id_periodo = pa.id_periodo
             WHERE s.id_docente = ${id_docente} AND pa.id_periodo = ${id_periodo}`);
 
-            if(secciones.length >0){
+            if(secciones.length > 0){
                 return {estado: true, mensaje: secciones};
             }
             return {estado: false, mensaje: 'El docente no tiene secciones asignadas'};
-
-        } catch (error) {
+        }catch(error){
+            console.log(error.message)
             throw error;
+        }finally{
+            await db.close()
         }
     }
 

@@ -9,34 +9,39 @@ class JefeDep {
     async verificarProceso(num_empleado) {
         try {
             await db.connect();
+            //verificar si el proceso esta activo
+            let procesoActivo = await db.query(`SELECT pap.id_periodo, pac.descripcion
+            FROM Procesos_academicos pa
+            INNER JOIN Procesos_academicos_periodo pap ON  pap.id_proceso = pa.id_proceso
+            INNER JOIN periodos_academicos pac ON pap.id_periodo = pac.id_periodo
+            WHERE estado = 1 AND pa.tipo_proceso = 4 AND (GETDATE() BETWEEN pac.fecha_inicio AND pac.fecha_fin)`);
 
-            let periodoActivo = await db.query(`SELECT pac.id_periodo, pac.tipo_periodo
-            FROM Procesos_academicos_periodo pap 
-            INNER JOIN Procesos_academicos pa ON pap.id_proceso_academico = pa.id_PAC
-            INNER JOIN periodos_academicos pac ON pac.id_periodo = pap.id_periodo
-            WHERE ((GETDATE() BETWEEN pa.fecha_inicio AND pa.fecha_fin) OR estado = 1) AND pa.tipo_proceso = 3`);
-
-            if (periodoActivo.length > 0) {
+            if (procesoActivo.length > 0) {
                 let tipoDep = await db.query(`SELECT da.tipo_dep
                 FROM departamentos_academicos da
                 INNER JOIN jefes_departamentos jf ON da.id_dep_academico = jf.id_departamentoAcademico
                 WHERE jf.id_docente = ${num_empleado}`);
 
-                const objetosFiltrados = periodoActivo.filter(objeto => objeto.tipo_periodo == tipoDep[0].tipo_dep);
+                const objetosFiltradosSemestral = procesoActivo.filter(objeto => objeto.descripcion.includes('Semestre') && tipoDep[0].tipo_dep == 'SM   ');
 
-                if (objetosFiltrados.length > 0) {
-                    return { estado: true, mensaje: objetosFiltrados[0].id_periodo};
+                if (objetosFiltradosSemestral.length > 0) {
+                    return {estado: true, mensaje: objetosFiltradosSemestral[0].id_periodo};
+                }else{
+                    const objetosFiltradosTimestral = procesoActivo.filter(objeto => objeto.descripcion.includes('Periodo') && tipoDep[0].tipo_dep == 'TM   ');
+
+                    if(objetosFiltradosTimestral.length > 0){
+                        return {estado: true, mensaje: objetosFiltradosTimestral[0].id_periodo};
+                    }
                 }
             }
 
-            await db.close();
             return {
                 estado: false,
                 mensaje: 'El proceso de planificación académica no esta activo'
             };
         } catch (error) {
             throw error;
-        }
+        }finally{await db.close();}
     }
 
     //Metodo para recuperar las asignaturas del departamento
@@ -345,7 +350,7 @@ class JefeDep {
                 INNER JOIN jefes_departamentos jf ON asig.id_dep_academico = jf.id_departamentoAcademico
                 WHERE jf.id_docente = ${num_empleado} AND asigP.id_periodo = ${periodoActual}`);
 
-                await db.close();
+                
                 if(secciones.length > 0){
                     return {estado: true, mensaje: secciones};
                 }else{
@@ -356,7 +361,7 @@ class JefeDep {
             return {estado: false, mensaje: 'No existen secciones'};
         } catch (error) {
             throw  error;
-        }
+        }finally{await db.close();}
     }
 
     //Metodo para ver las lista de espera de una seccion
@@ -379,8 +384,6 @@ class JefeDep {
                     INNER JOIN personas p ON st.id_persona = p.numero_identidad
                     WHERE id_seccion = ${idSeccion}`);
 
-                    await db.close();
-
                     if(listaEspera.length > 0){
                         return { estado: true, mensaje: listaEspera};
                     }else{
@@ -392,7 +395,7 @@ class JefeDep {
             return {estado: false, mensaje: 'No hay secciones'};
         } catch (error) {
             throw error;
-        }
+        }finally{await db.close();}
     }
 
 }

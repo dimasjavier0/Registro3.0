@@ -6,9 +6,9 @@ const router = express.Router();
 
 router.post('/', async (req, res) =>{
     try {
-        const {fechaInicio, fechaFin, tipoPeriodo} = req.body;
+        const {fechaInicio, fechaFin, idPeriodo} = req.body;
 
-        let activarPlanificacion = await activarPlan.activarPlanificacion(fechaInicio, fechaFin, tipoPeriodo);
+        let activarPlanificacion = await activarPlan.activarPlanificacion(fechaInicio, fechaFin, idPeriodo);
 
         if(activarPlanificacion.estado){
             res.send(activarPlanificacion.mensaje);
