@@ -47,6 +47,7 @@ const solicitudesRoute = require('./routes/solitudesRoute');
 //const estudiantesList = require('../controllers/GenerarListaAlm');
 const estudiantesNotesRoutes = require('./routes/estudianteNotas');
 const crearSecciones= require('./routes/crearSecciones-route')
+const guardarSeccion =require('./routes/guardarSeccion-route')
 
 
 //const estudiantesNotesRouter = require('./routes/estudianteNotas');
@@ -186,7 +187,9 @@ const crearSecciones= require('./routes/crearSecciones-route')
 
   app.use('/api/estudiantesNotes', estudiantesNotesRoutes);
 
-  app.use('/crearSecciones',crearSecciones)
+  app.use('/crearSecciones',crearSecciones);
+
+  app.use('/guardarSeccion',guardarSeccion);
 
 
 

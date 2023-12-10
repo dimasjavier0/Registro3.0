@@ -33,7 +33,7 @@ const errorHandler = (res, error) => {
   res.status(500).send('Error en el servidor');
 };
 
-// Obtener todas las asignaturas
+// Obtener  las asignaturas
 router.get('/asignaturas', async (req, res) => {
   try {
     const poolRequest = await req.pool.request();
@@ -44,13 +44,34 @@ router.get('/asignaturas', async (req, res) => {
   }
 });
 
-// Obtener un departamento dado el ID de una asignatura
+// Obtener departamentos 
 router.get('/departamentos/:asignaturaId', async (req, res) => {
   try {
     const poolRequest = await req.pool.request();
     const result = await poolRequest
       .input('asignaturaId', sql.Int, req.params.asignaturaId)
       .query('SELECT id_dep_academico, nombre FROM departamentos_academicos WHERE id_dep_academico = (SELECT id_dep_academico FROM asignaturas WHERE id_asignatura = @asignaturaId)');
+    res.json(result.recordset);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+});
+
+// Obtener  docentes
+router.get('/docentes/num_empleados', async (req, res) => {
+  try {
+    const poolRequest = await req.pool.request();
+    const result = await poolRequest.query('SELECT num_empleado FROM docentes');
+    res.json(result.recordset.map(docente => docente.num_empleado));
+  } catch (error) {
+    errorHandler(res, error);
+  }
+});
+
+router.get('/aulas', async (req, res) => {
+  try {
+    const poolRequest = await req.pool.request();
+    const result = await poolRequest.query('SELECT id_aula, numero_aula, id_edificio FROM aulas');
     res.json(result.recordset);
   } catch (error) {
     errorHandler(res, error);
