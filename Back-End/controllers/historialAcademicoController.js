@@ -5,8 +5,16 @@ const { jsPDF } = require("jspdf");
 const obtenerDatosEstudiante = async (numCuenta) => {
     try {
         await sql.connect(config);
-        const resultadoEstudiante = await sql.query`SELECT num_cuenta, primer_nombre + ' ' + segundo_nombre as nombre, primer_apellido + ' ' + segundo_apellido as apellido, c.nombre_carrera, cr.nombre_centro, indice_academico from estudiantes e inner join personas p on e.id_persona = p.numero_identidad inner join carreras c on e.id_carrera = c.id_carrera inner join centros_regionales cr on e.id_centro_regional = cr.id_centro WHERE num_cuenta = ${numCuenta}`;
-        const resultadoAsignaturas = await sql.query`SELECT a.codigo_asignatura as codigo, a.nombre_asig as nombre, a.unidades_valorativas as uv, me.periodo_academico as periodo, me.nota, CASE WHEN me.nota >= 70 THEN 'APR' ELSE 'RPB' END as observacion from matricula_estudiantes me inner join secciones s on me.id_seccion = s.id_seccion inner join asignaturas a on s.id_asignatura = a.id_asignatura WHERE me.id_estudiante = ${numCuenta}`;
+        const resultadoEstudiante = 
+        await sql.query(
+          `SELECT num_cuenta, primer_nombre + ' ' + segundo_nombre as nombre, primer_apellido + ' ' + segundo_apellido as apellido, c.nombre_carrera, cr.nombre_centro, indice_academico 
+          from estudiantes e inner join personas p on e.id_persona = p.numero_identidad inner join carreras c on e.id_carrera = c.id_carrera inner join centros_regionales cr on e.id_centro_regional = cr.id_centro WHERE num_cuenta = ${numCuenta};`
+        );
+
+        const resultadoAsignaturas = 
+        await sql.query(
+          `SELECT a.codigo_asignatura as codigo, a.nombre_asig as nombre, a.unidades_valorativas as uv, me.periodo_academico as periodo, me.nota, CASE WHEN me.nota >= 70 THEN 'APR' ELSE 'RPB' END as observacion from matricula_estudiantes me inner join secciones s on me.id_seccion = s.id_seccion inner join asignaturas a on s.id_asignatura = a.id_asignatura WHERE me.id_estudiante = ${numCuenta}`
+        );
 
       console.log(resultadoEstudiante);
       console.log(resultadoAsignaturas);

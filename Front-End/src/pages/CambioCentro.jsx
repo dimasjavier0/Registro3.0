@@ -19,7 +19,33 @@ function CambioCentro() {
             obtenerCentros();
         }, []); 
     
-
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+    
+            try {
+                // Construye el cuerpo de la petición
+                const data = {
+                    motivo: motivo // Aquí incluyes los datos que necesitas enviar
+                };
+    
+                // Realiza la petición POST
+                const response = await axios.post(`http://localhost:8888/solicitudes/cambioCentro/${
+                    JSON.parse(localStorage.getItem('sesion'))["numeroCuenta"]
+                }/${eleccionCentro}`, data);
+    
+                // Maneja la respuesta
+                console.log(response.data);
+                
+                // Aquí puedes agregar lógica adicional para manejar la respuesta
+                if(response.data){
+                    alert("Solicitud Enviada");
+                }
+    
+            } catch (error) {
+                console.error('Error al enviar la solicitud:', error);
+                // Maneja el error aquí
+            }
+        };
         
 return (
     <>
@@ -30,7 +56,7 @@ return (
         <h1 className="text-4xl font-label font-bold mt-28  mb-4">Solicitud de cambio de centro</h1>
         
         <div>
-            <form >
+            <form onSubmit={handleSubmit}>
 
             <label className='block uppercase mb-2 mt-16 font-bold text-gray-700 text-base font-label'>Seleccione el centro al cual desea hacer el cambio:</label>
             <select
@@ -42,7 +68,7 @@ return (
                 >
                     <option value='' disabled>-- Seleccione --</option>
                     {centros.map((centro) => (
-                        <option key={centro.id_centro} value={centro.nombre_centro}>
+                        <option key={centro.id_centro} value={centro.id_centro}>
                             {centro.nombre_centro}
                         </option>
                     ))}

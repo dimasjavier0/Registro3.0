@@ -3,7 +3,36 @@ import AlertaError from '../components/AlertaError';
 import axios from 'axios';
 
 function PagoReposicion() {
-        const [motivo, setMotivo] = useState('');
+    const [motivo, setMotivo] = useState('');
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            // Construye el cuerpo de la petición
+            const data = {
+                motivo: motivo // Aquí incluyes los datos que necesitas enviar
+            };
+
+            // Realiza la petición POST
+            const response = await axios.post(`http://localhost:8888/solicitudes/reposicion/${
+                JSON.parse(localStorage.getItem('sesion'))["numeroCuenta"]
+            }`, data);
+
+            // Maneja la respuesta
+            console.log(response.data);
+            
+            // Aquí puedes agregar lógica adicional para manejar la respuesta
+            if(response.data){
+                alert("Solicitud Enviada");
+            }
+
+        } catch (error) {
+            console.error('Error al enviar la solicitud:', error);
+            // Maneja el error aquí
+        }
+    };
+
 
 return (
     <>
@@ -14,7 +43,7 @@ return (
         <h1 className="text-4xl font-label font-bold mt-28  mb-4">Solicitud de pago de reposición</h1>
         
         <div>
-            <form >
+            <form onSubmit={handleSubmit}>
                 
                 <label className='block uppercase mb-2 mt-14 font-bold text-gray-700 text-base font-label'>Escriba una justificación:</label>
                 <textarea
@@ -32,6 +61,7 @@ return (
                 </div>
                 <button 
                         type='submit' 
+                        
                         className='bg-yellow-600 text-white py-2 px-4 mt-5 rounded-lg hover:bg-yellow-700 font-medium w-full uppercase mb-9 font-label shadow-lg shadow-yellow-100/70'>Enviar
                 </button>
 

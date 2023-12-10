@@ -142,7 +142,6 @@ function Registrar() {
         }
 
         try {
-            // Construir el objeto FormData para enviar la imagen correctamente
             const formData = new FormData();
             formData.append('identidad', identidad);
             formData.append('primerNombre', primerNombre);
@@ -155,75 +154,75 @@ function Registrar() {
             formData.append('email', email);
             formData.append('imagen', imagen);
             formData.append('centroRegional', centroRegional);
-    
-                let dataAspirante = {
-            p_nombre:primerNombre,
-            s_nombre:segundoNombre,
-            p_apellido:primerApellido,
-            s_apellido:segundoApellido,
-            carrera_P:carreraPrincipal,
-            carrera_S:carreraSecundaria,
-            identidad:identidad,
-            foto:imagen,
-            cel:telefono,
-            correoPersonal:email,
-            carreraPrincipal:"1",
-            carreraSecundaria:"2",
-            centroRegional:"1",
-            estado:"1"
-                };
-    
-            let config = {
-                // por defecto es get
-                method: 'post', // Puedes usar 'get', 'post', 'put', 'delete', etc.
-                // por defecto el index.html
-                url: 'http://localhost:8888/aspirantes',
-                data: dataAspirante, // Los datos que deseas enviar en formato JSON
-                headers: {
-                'Content-Type': 'application/json' // Indicar que los datos son JSON
-                }
-                };
-    
-            // Realizamos la petición POST
-    
-                await axios(config)
-                .then(response => {
-                    //console.log('config:',this.config)
-                    console.log('Respuesta del servidor:', response.data);        
         
+            let dataAspirante = {
+                p_nombre: primerNombre,
+                s_nombre: segundoNombre,
+                p_apellido: primerApellido,
+                s_apellido: segundoApellido,
+                carrera_P: carreraPrincipal,
+                carrera_S: carreraSecundaria,
+                identidad: identidad,
+                foto: imagen,
+                cel: telefono,
+                correoPersonal: email,
+                carreraPrincipal: "1",
+                carreraSecundaria: "2",
+                centroRegional: "1",
+                estado: "1"
+            };
+        
+            let config = {
+                method: 'post',
+                url: 'http://localhost:8888/aspirantes',
+                data: dataAspirante,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+        
+            await axios(config)
+                .then(response => {
+                    console.log('Respuesta del servidor:', response.data);
+        
+                    // Limpiar formulario solo si la petición fue exitosa
+                    setAlerta({
+                        mensaje: 'Registro Exitoso!',
+                        error: false,
+                    });
+        
+                    setIdentidad('');
+                    setPrimerNombre('');
+                    setSegundoNombre('');
+                    setPrimerApellido('');
+                    setSegundoApellido('');
+                    setCarreraPrincipal('');
+                    setCarreraSecundaria('');
+                    setTelefono('');
+                    setEmail('');
+                    document.getElementById('Imagen').value = null;
+                    setCentroRegional('');
+                    window.scrollTo(0, 0);
                 })
                 .catch(error => {
                     console.log('Error al enviar la petición ', error);
+        
+                    setAlerta({
+                        mensaje: 'Error al enviar la petición',
+                        error: true,
+                    });
+        
                     return;
-        
-                });
-        
-                // Agregamos un comentario para indicar que la petición se realizó correctamente
-                console.log('Petición POST realizada con éxito');
-                setAlerta({
-                mensaje: 'Registro Exitoso!',
-                error: false,
                 });
-                //Limpiar Formulario
-                /*setIdentidad('');
-                setPrimerNombre('');
-                setSegundoNombre('');
-                setPrimerApellido('');
-                setSegundoApellido('');
-                setCarreraPrincipal('');
-                setCarreraSecundaria('');
-                setTelefono('')
-                setEmail('');
-                document.getElementById('Imagen').value = null;
-                setCentroRegional('');*/
-                window.scrollTo(0, 0);
         
-            }catch (error) {
+        } catch (error) {
             console.error('Error en la petición:', error);
+        
             setAlerta({
                 mensaje: 'Error al enviar la petición',
                 error: true,
             });
+        
             return;
         }
         

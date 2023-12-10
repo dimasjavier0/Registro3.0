@@ -25,8 +25,14 @@ import CambioCentro from './pages/CambioCentro';
 import LayoutMatricula from './layout/LayoutMatricula';
 import Matricula from './pages/Matricula';
 import NotasDocente from './pages/NotasDocente';
+
 import ActivarMatricula from './pages/ActivarMatricula';
 import Chat  from './chat/chat';
+
+import Coordinador from './pages/Coordinador';
+import JefeDepartamento from './pages/JefeDepartamento';
+
+
 function App() {
   
 
@@ -41,7 +47,11 @@ function App() {
             <Route path='/registrar' element={<Registrar/>} />
             <Route path='/docentes' element={<Docentes/>} /> 
             <Route path='/Administrador' element={<Administrador/>} /> 
-             
+
+            <Route path='/Matricula' element={<ActivarMatricula/>} /> 
+            <Route path='/coordinador' element={<Coordinador/>} /> 
+            <Route path='/jefeDpto' element={<JefeDepartamento/>} /> 
+
         </Route>
         
         <Route > 
