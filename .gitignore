@@ -2,3 +2,4 @@ node_modules
 Back-End/package-lock.json
 Back-End/node_modules/.package-lock.json
 Back-End/uploads/87e9fc477f9c92175d5c124b26915ba6
+Back-End/controllers/historialAcademicoController.js
