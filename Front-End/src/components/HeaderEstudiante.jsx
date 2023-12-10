@@ -1,13 +1,15 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useUserContext } from '../components/UserContext';
-
+import axios from 'axios';
 function HeaderEstudiantes() {
     const navigate = useNavigate();
     const { user,clearUserContext } = useUserContext();
 
     
-    const userId = user ? user.user_id : null;
+    //const userId = user ? user.user_id : null;
+
+    const userId="201902345";
 
     const handleCerrarSesion = () => {
         const confirmar = window.confirm('¿Estás seguro de cerrar sesión?');

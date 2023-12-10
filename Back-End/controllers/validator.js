@@ -3,7 +3,7 @@ class Validator {
 
     // Valida un número de identidad (podría ser un DNI, SSN, etc.)
     identidad(identidad) {
-        const regex = /(\d{4})((19([4-9]){1}(\d))|(2(\d){3}))(\d{5})/; // segun la cantidad de digitos
+        const regex = /(\d{4})((19([4-9]){1}(\d))|(\d(\d){3}))(\d{5})/; // segun la cantidad de digitos
         return regex.test(identidad);
     }
 

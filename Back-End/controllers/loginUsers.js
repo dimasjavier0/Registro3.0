@@ -115,77 +115,101 @@ class UserAndLogin{
   //VALIDAR CREDENCIALES
   async verificarCredenciales(nombreUsuario, passwordUser, rol) {
     try {
+      let nom = nombreUsuario;
       if (typeof nombreUsuario === "number") {
         nombreUsuario = nombreUsuario.toString();
       }
+      console.log("ROL::",rol);
       /**para jefe de departamento */
       if(rol == 5){
 
-        //
-        /**Jefe */
-        //let pool = await mssql.connect(config);
-        await bd.connect();
-        const resultado = await bd.query(`select count(*) existe FROM jefes_departamentos 
-        WHERE id_docente = '${nombreUsuario}';`);
-        let existeJefe = resultado[0]["existe"];
-        console.log('resultado',existeJefe);
+          //
+          /**Jefe */
+          //let pool = await mssql.connect(config);
+          await bd.connect();
+          let resultado = await bd.query(`select count(*) existe FROM jefes_departamentos 
+          WHERE id_docente = '${nom}';`);
+          let existeJefe = resultado[0]["existe"];
+          console.log('resultado',existeJefe);
 
-      if (!existeJefe) {
-        throw new Error('El Jefe DEPARTAMENTO no existe o el rol es incorrecto');
-      }
-       resultado = await bd.query(`select nombre_usuario, password_hash FROM usuarios 
-      WHERE nombre_usuario = '${nombreUsuario}' and rol = ${3}`);
-
-      const usuario = resultado[0];
-      const esPasswordCorrecto = await bcrypt.compare(passwordUser, usuario.password_hash);
-
-      if (!esPasswordCorrecto) {
-        throw new Error('Contraseña incorrecta');
+        if (!existeJefe) {
+          throw new Error('El Jefe DEPARTAMENTO no existe o el rol es incorrecto');
         }
-        let infoLogin= await bd.query(
-          `SELECT e.id_persona identidad, e.num_cuenta numeroCuenta, u.correoElectronico FROM usuarios u 
-          inner join estudiantes e on e.num_cuenta = u.nombre_usuario  
-          inner join personas p on p.numero_identidad = e.id_persona
-          WHERE nombre_usuario= '${usuario["nombre_usuario"]}';`
-        );
-        console.log(infoLogin);
-        let sesion ={"status":true, "numeroCuenta":infoLogin[0]["numeroCuenta"],"identidad":infoLogin[0]["identidad"]}; 
-        console.log('Credenciales Correctas:',sesion);
-        return sesion;
+        resultado = await bd.query(`select nombre_usuario, password_hash FROM usuarios 
+        WHERE nombre_usuario = '${nombreUsuario}' and rol = 3`);
 
+        const usuario = resultado[0];
+        const esPasswordCorrecto = await bcrypt.compare(passwordUser, usuario.password_hash);
+
+        if (!esPasswordCorrecto) {
+          throw new Error('Contraseña incorrecta');
+          }
+          let infoLogin= await bd.query(
+            `select * from docentes d inner join 
+            (select * from usuarios u where ISNULL(TRY_CAST(u.nombre_usuario AS INT), 0) <> 0) as tabla
+            on tabla.nombre_usuario = d.num_empleado
+            inner join personas p on p.numero_identidad = d.id_persona
+            where tabla.nombre_usuario = '${nombreUsuario}';`
+          );
+          console.log(infoLogin);
+          let sesion ={"status":true, "numeroEmpleado":infoLogin[0]["num_empleado"],"identidad":infoLogin[0]["id_persona"]}; 
+          console.log('Credenciales Correctas:',sesion);
+          return sesion;
+
+          //
       }else{/**para docentes o estudiantes */
         //let pool = await mssql.connect(config);
         await bd.connect();
         const resultado = await bd.query(`select nombre_usuario, password_hash FROM usuarios 
         WHERE nombre_usuario = '${nombreUsuario}' and rol = ${rol}`);
 
-        console.log('resultado',resultado[0]["nombre_usuario"]);
+        console.log('resultado:',resultado[0]["nombre_usuario"]);
 
-      if (!resultado[0]["nombre_usuario"]) {
-        throw new Error('El usuario no existe o el rol es incorrecto');
-      }
-
-      const usuario = resultado[0];
-      const esPasswordCorrecto = await bcrypt.compare(passwordUser, usuario.password_hash);
-
-      if (!esPasswordCorrecto) {
-        throw new Error('Contraseña incorrecta');
+        if (!resultado[0]["nombre_usuario"]){
+          throw new Error('El usuario no existe o el rol es incorrecto');
         }
-        let infoLogin= await bd.query(
-          `SELECT e.id_persona identidad, e.num_cuenta numeroCuenta, u.correoElectronico FROM usuarios u 
-          inner join estudiantes e on e.num_cuenta = u.nombre_usuario  
-          inner join personas p on p.numero_identidad = e.id_persona
-          WHERE nombre_usuario= '${usuario["nombre_usuario"]}';`
-        );
+
+        const usuario = resultado[0];
+        console.log("COMPARACION::passwordUser::",passwordUser,"pasword_hash::",usuario["password_hash"]);
+        const esPasswordCorrecto = await bcrypt.compare(passwordUser, usuario["password_hash"]);
+
+        if (!esPasswordCorrecto) {
+          throw new Error('Contraseña incorrecta');
+        }
+        let infoLogin;
+        let sesion;
+        if(rol==2){
+           infoLogin= await bd.query(
+            `SELECT e.id_persona identidad, e.num_cuenta numeroCuenta, u.correoElectronico FROM usuarios u 
+            inner join estudiantes e on e.num_cuenta = u.nombre_usuario  
+            inner join personas p on p.numero_identidad = e.id_persona
+            WHERE nombre_usuario= '${usuario["nombre_usuario"]}';`
+          );
+          sesion ={"status":true, "numeroCuenta":infoLogin[0]["numeroCuenta"],"identidad":infoLogin[0]["identidad"]}; 
+        }else{
+          if(rol == 3){
+            infoLogin= await bd.query(
+              `select * from docentes d inner join 
+              (select * from usuarios u where ISNULL(TRY_CAST(u.nombre_usuario AS INT), 0) <> 0) as tabla
+              on tabla.nombre_usuario = d.num_empleado
+              inner join personas p on p.numero_identidad = d.id_persona
+              where tabla.nombre_usuario = '${nombreUsuario}';`
+            );
+            sesion ={"status":true, "numeroCuenta":infoLogin[0]["num_empleado"],"identidad":infoLogin[0]["id_persona"]}; 
+          }
+        }
+
+        
         console.log(infoLogin);
-        let sesion ={"status":true, "numeroCuenta":infoLogin[0]["numeroCuenta"],"identidad":infoLogin[0]["identidad"]}; 
+        
         console.log('Credenciales Correctas:',sesion);
         return sesion;
-      }
+      } 
 
       
 
-   } catch (err) {
+   } catch (error) {
+    console.log(error);
      //throw new Error(`Error en la autenticación: ${err.message}`);
    } finally {
       bd.close();

@@ -8,8 +8,13 @@ router.post('/', async (req, res) => {
 
   try {
     const userLogin = new UserAndLogin ();
-    await userLogin.verificarCredenciales(nombreUsuario, passwordUser, rol);
-    res.status(200).json({ mensaje: 'Autenticación exitosa' });
+    let sesion = await userLogin.verificarCredenciales(nombreUsuario, passwordUser, rol);
+
+    res.status(200).json({ 
+        "mensaje": 'Autenticación exitosa',
+        "sesion":sesion,
+        "success": true
+    });
   } catch (error) {
     console.error('Error en la autenticación:', error.message);
 

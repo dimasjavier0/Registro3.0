@@ -20,7 +20,6 @@ const usuarios_route = require('./routes/usuarios-route');
 const estudianteRoutes = require('./routes/estudiante-route');
 const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
 const fotosRoutes = require('./routes/fotos-routes');
-//const logEstudiantes = require('./routes/logEstudiantes-route');
 const logEstudiantes = require('./routes/logEstudiantes-route');
 const centrosRoute = require('./routes/centro-route');
 const contactosRoute = require('./routes/contactosRoute');
@@ -29,11 +28,15 @@ const grupoRoutes = require('./routes/grupoRoutes');
 const miembroGrupoRoutes = require('./routes/miembrosGrupoRoute');
 const mensajeGrupoRoutes = require('./routes/mensajeGrupoRoutes');
 const mensajePersonalRoutes = require('./routes/mensajePersonalRoutes');
+
 const historialAcademicoController = require('./controllers/historialAcademicoController');
+
 const activarMatriculaRouter = require('./routes/matriculaRouter');
 const matriculaRouter = require('./routes/fechaMatriculas');
+
 const ingresoNotas = require('./routes/estudianteNotas');
-const activarIngresoNotas = require('./routes/activarRevision');
+const activarIngresoNotas = require('./routes/activarRevision'); //
+
 const activarPlanificacion = require('./routes/activarPlanAcademica');
 const planificacionAcademica = require('./routes/jefeDep-route');
 
@@ -59,21 +62,23 @@ const estudiantesNotesRoutes = require('./routes/estudianteNotas');
     const http = require('http');
     const { Server: SocketServer } = require('socket.io');
 
+    
     const server = http.createServer(app);
 
     const io = new SocketServer(server, {
       cors: {
         origin: 'http://localhost:5173', // Cambia a este origen
-    methods: ["GET", "POST"]
+        methods: ["GET", "POST"]
       }  
-  });
+    });
 
     /*io.on('connection',()=>{
       console.log('a user connected')
     })*/
 
     io.on("connection", (socket) => {
-      console.log(socket.id);
+      console.log('socket.id:',socket.id);
+
       socket.on("message", (body) => {
         socket.broadcast.emit("message", {
           body,
@@ -154,8 +159,6 @@ const estudiantesNotesRoutes = require('./routes/estudianteNotas');
   app.use('/fotos', fotosRoutes);
 
   // Ruta para logearse como estudiante
-  //app.use('/estudianteLog', logEstudiantes);
-
   app.use('/estudianteLog', logEstudiantes);
 
   /**Ruta para las solicitudes de los estudiantes. */

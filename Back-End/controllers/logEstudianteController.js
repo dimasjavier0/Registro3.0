@@ -23,9 +23,13 @@ const loginUser = async (req, res) => {
     }
 
     // Consulta para obtener el usuario y contraseña
+
+    
     const result = await sql.query`
-    SELECT id_usuario, rol FROM usuarios
-    WHERE nombre_usuario = ${nombre_usuario} AND password_hash = ${password}`;
+    SELECT id_usuario, rol, password_hash FROM usuarios
+    WHERE nombre_usuario = ${nombre_usuario}`;//AND password_hash = ${password}`;
+    
+    const esPasswordCorrecto = await bcrypt.compare(password, result.recordset[0]["password_hash"]);
 
     if (result.recordset.length > 0) {
         const { id_usuario, rol } = result.recordset[0];
@@ -41,4 +45,4 @@ const loginUser = async (req, res) => {
 };
 
 
-module.exports = { loginUser };
+module.exports = { loginUser };

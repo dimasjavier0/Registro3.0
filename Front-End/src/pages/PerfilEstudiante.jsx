@@ -17,6 +17,8 @@ function PerfilEstudiante() {
                 if (user) {
                     const response = await axios.get(`http://localhost:8888/api/estudiante/${user.user_id}`);
                     setEstudiante(response.data);
+                    setNumeroCuentaContext(response.data.num_cuenta);
+                    //console.log(response.data)
                 }
             } catch (error) {
                 console.error('Error al obtener el estudiante:', error);
@@ -188,3 +190,6 @@ function PerfilEstudiante() {
 }
 
 export default PerfilEstudiante
+
+
+

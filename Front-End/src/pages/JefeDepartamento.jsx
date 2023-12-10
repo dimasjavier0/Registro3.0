@@ -23,10 +23,11 @@ function JefeDepartamento() {
           const response = await axios.post('http://localhost:8888/login', {
               nombreUsuario,
               passwordUser,
-              rol,
+              "rol":5
           });
   
           if (response.data) {
+                localStorage.setItem('sesion',JSON.stringify(response.data.sesion));
               console.log('Guardando nombreUsuario en localStorage:', nombreUsuario);
               localStorage.setItem('nombreUsuario', nombreUsuario);
               setMensaje('Inicio de sesión exitoso para el rol de docente');

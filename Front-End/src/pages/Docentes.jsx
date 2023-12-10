@@ -153,8 +153,12 @@ function Docentes() {
           });
   
           if (response.data) {
-              console.log('Guardando nombreUsuario en localStorage:', nombreUsuario);
-              localStorage.setItem('nombreUsuario', nombreUsuario);
+              
+            console.log('Guardando nombreUsuario en localStorage:', nombreUsuario);
+            localStorage.setItem('nombreUsuario', nombreUsuario);
+            
+            console.log('sesion::', response.data.sesion);
+            localStorage.setItem('sesion',JSON.stringify(response.data.sesion));
               setMensaje('Inicio de sesión exitoso para el rol de docente');
               navigate('/principalDocente');
           } else {

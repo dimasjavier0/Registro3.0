@@ -104,9 +104,9 @@ router.post('/', async (req,res)=>{
         };
 
         /* mientras se hacen las pruebas, no enviar correos xD.
-        await enviarResultados(respuesta.resultados[0].aprobados);//se envia un json
-        await enviarResultados(respuesta.resultados[1].reprobados);
         */
+       await enviarResultados(respuesta.resultados[0].aprobados);//se envia un json
+       await enviarResultados(respuesta.resultados[1].reprobados);
 
        console.log('RESPUESTA APROBADOS:::',respuesta.resultados[0].aprobados);
 

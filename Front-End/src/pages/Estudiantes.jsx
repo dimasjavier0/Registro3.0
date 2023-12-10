@@ -20,13 +20,15 @@ function Estudiantes() {
         e.preventDefault();
     
         try {
-            const response = await axios.post('http://localhost:8888/estudianteLog/logES', {
-                nombre_usuario: usuario,
-                password: contraseña,
+            const response = await axios.post('http://localhost:8888/login', {
+                nombreUsuario: usuario,
+                passwordUser: contraseña,
+                "rol": 2
             });
             const data = response.data;
-
+            console.log("respusta:",data);
             if (data.success) {
+                localStorage.setItem('sesion',JSON.stringify(data.sesion));
                 console.log('Inicio de sesión exitoso');
                 setUserContext({ user_id: data.user_id });
                 navigate('/principalEstudiante') 
@@ -95,4 +97,4 @@ function Estudiantes() {
     )
 }
 
-export default Estudiantes
+export default Estudiantes

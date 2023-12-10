@@ -37,6 +37,7 @@ class EstudiantesModel{
 
                 /**validando si existe el campo identidad y si es valida */
                 identidad = identidad.trim();
+                console.log("validacion::Identidad:::",validator.identidad(identidad));
                 if (identidad && validator.identidad(identidad)){
                     
                     /**validando que existe la carrera */
@@ -45,9 +46,9 @@ class EstudiantesModel{
                         if(await personasModel.existePersona(identidad)){//si la persona existe, ya que no se puede agregar un estudiante que no este en el sistema previamente.
                             
                             await db.connect();
-                            //await db.query(
-                            //    `[dbo].[agregar_estudiante] @numIdentidad ='${identidad}', @id_carrera = ${carreraEstudiante};`
-                            //);
+                            await db.query(
+                                `[dbo].[agregar_estudiante] @numIdentidad ='${identidad}', @id_carrera = ${carreraEstudiante};`
+                            );
                             
                             /**Solicitando informacion para enviarle un correo de notificacion al estudiante que se agrego. */
                             infoEstudiante = await db.query(

@@ -137,6 +137,7 @@ router.put('/aumentarCupos/:idSeccion', async (req, res) =>{
     }
 });
 
+
 router.post('/crearSeccion/:num_empleado', async (req, res) =>{
     try{
         const {num_empleado} = req.params;
