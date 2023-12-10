@@ -23,7 +23,6 @@ async function getEstudianteByNumeroCuenta(req, res) {
                     per.primer_apellido,
                     per.segundo_apellido,
                     per.correo,
-                    est.num_cuenta,
                     est.correo_institucional,
                     car.nombre_carrera
                 FROM
