@@ -20,6 +20,7 @@ const usuarios_route = require('./routes/usuarios-route');
 const estudianteRoutes = require('./routes/estudiante-route');
 const ValidarCredenciales = require('./routes/ValidarCredenciales-route')
 const fotosRoutes = require('./routes/fotos-routes');
+//const logEstudiantes = require('./routes/logEstudiantes-route');
 const logEstudiantes = require('./routes/logEstudiantes-route');
 const centrosRoute = require('./routes/centro-route');
 const contactosRoute = require('./routes/contactosRoute');
@@ -153,6 +154,8 @@ const estudiantesNotesRoutes = require('./routes/estudianteNotas');
   app.use('/fotos', fotosRoutes);
 
   // Ruta para logearse como estudiante
+  //app.use('/estudianteLog', logEstudiantes);
+
   app.use('/estudianteLog', logEstudiantes);
 
   /**Ruta para las solicitudes de los estudiantes. */

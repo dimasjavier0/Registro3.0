@@ -25,23 +25,21 @@ function Estudiantes() {
                 password: contraseña,
             });
             const data = response.data;
-            console.log('respuesta Recibida:',data);
+
             if (data.success) {
-                localStorage.setItem("sesion",JSON.stringify(data.sesion));
                 console.log('Inicio de sesión exitoso');
                 setUserContext({ user_id: data.user_id });
                 navigate('/principalEstudiante') 
-                
-            } else {
+                } else {
                 console.log('Error en inicio de sesión:', data.message);
                 setAlerta({ mensaje:  data.message,
                             error: true });
                 return;
+                }
+            } catch (error) {
+                console.error('Error de red:', error);
             }
-        } catch (error) {
-            console.error('Error de red:', error);
-        }
-    };
+        };
     const {mensaje}= alerta
 
     return (
@@ -91,11 +89,10 @@ function Estudiantes() {
                 </div>
             </div>  
             <div className=''>
-            <img className='mx-auto my-auto' src='/img/UNAH-ESTUDIANTES.png' alt="UNAH-ESTUDIANTES" />
+            <img src='/img/UNAH-ESTUDIANTES.png' alt="UNAH-ESTUDIANTES" />
             </div>    
         </>
     )
 }
 
 export default Estudiantes
-

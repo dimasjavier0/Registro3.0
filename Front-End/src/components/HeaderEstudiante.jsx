@@ -1,15 +1,13 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useUserContext } from '../components/UserContext';
-import axios from 'axios';
+
 function HeaderEstudiantes() {
     const navigate = useNavigate();
     const { user,clearUserContext } = useUserContext();
 
     
-    //const userId = user ? user.user_id : null;
-
-    const userId="201902345";
+    const userId = user ? user.user_id : null;
 
     const handleCerrarSesion = () => {
         const confirmar = window.confirm('¿Estás seguro de cerrar sesión?');
@@ -18,27 +16,6 @@ function HeaderEstudiantes() {
             navigate('/');
         }
     };
-
-
-
-    const verificarMatricula = async () => {
-        try {
-            const response = await axios.post('http://localhost:8888/matricula/matricular-estudiante', {
-                numCuenta: userId, idProcesoMatricula: 34
-            });
-    
-            if (response.status === 200) {
-                navigate('/principalMatricula');
-            } else {
-                alert('No puedes matricularte en este momento. Tu día de matrícula es: ' + response.data.proximaFecha);
-            }
-        } catch (error) {
-            console.error('Error al verificar la matrícula:', error);
-            alert('No puedes matricularte en este momento. Tu día de matrícula es: ');
-        }
-    };
-
-
 
     return (
         <div className='h-full flex fixed'>
@@ -69,7 +46,7 @@ function HeaderEstudiantes() {
                         </button>
                     </Link> 
 
-                    <Link to='#' onClick={verificarMatricula}>
+                    <Link to='/principalMatricula'>
                         <button className='transition bg-gray-100 block mt-7 ml-8 text-orange-900 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
                             Matricula
                         </button>
@@ -86,6 +63,13 @@ function HeaderEstudiantes() {
                             Certificado Académico
                         </button>
                     </Link>
+                    
+                    <Link to='/principalEstudiante/mensajeria'>
+                        <button className='transition bg-gray-100 block mt-7 ml-8 text-orange-900 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
+                            Chat
+                        </button>
+                    </Link>
+                    
                 </nav>
                 </div>
                 </div>
