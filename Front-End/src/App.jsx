@@ -25,6 +25,7 @@ import CambioCentro from './pages/CambioCentro';
 import LayoutMatricula from './layout/LayoutMatricula';
 import Matricula from './pages/Matricula';
 import NotasDocente from './pages/NotasDocente';
+import FormEvaluarDc from './pages/FormEvaluarDC';
 
 import ActivarMatricula from './pages/ActivarMatricula';
 import Chat  from './chat/chat';
@@ -74,6 +75,11 @@ function App() {
         <Route path='/principalMatricula' element={<LayoutMatricula/>}>
             <Route path='matricula' element={<Matricula/>} /> 
         </Route>
+
+        <Route>
+            <Route path='/evaluarDocente' element={<FormEvaluarDc/>} /> 
+        </Route>
+
 
         <Route path='/principalSolicitudes' element={<LayoutSolicitudes/>}>
             <Route path='cambioCarrera' element={<CambioCarrera/>} />

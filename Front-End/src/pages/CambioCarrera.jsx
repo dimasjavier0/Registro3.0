@@ -3,7 +3,7 @@ import AlertaError from '../components/AlertaError';
 import { useUserContext } from '../components/UserContext';
 import axios from 'axios';
 
-function PerfilEstudiante() {
+function CambioCarrera() {
         const [motivo, setMotivo] = useState('');
         const [eleccionCarrera, setEleccionCarrera] = useState('');
         const [carreras, setCarreras] = useState([]);
@@ -80,7 +80,7 @@ return (
     </>
 )}
 
-export default PerfilEstudiante
+export default CambioCarrera
 
 
 
