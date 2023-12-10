@@ -18,11 +18,11 @@ function HeaderAdministrador() {
                 </h1>
                 <img className=' w-44 h-40 ml-20 mb-8' src="/img/Seguridad.png" alt="Seguridad" />
                 <nav className=''>
-                    <Link >
-                        <button className='transition text-white ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>
-                            Matricula
-                        </button>
-                    </Link>
+                <Link to="/administracion/activarmatricula">
+       <button className='transition text-white ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>
+         Matricula
+           </button>
+                     </Link>
 
                     <Link to='/administracion/SubirCsv'>
                         <button className='transition block mt-10 ml-8 text-white font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>

@@ -24,10 +24,14 @@ import PagoReposicion from './pages/PagoReposicion';
 import CambioCentro from './pages/CambioCentro';
 import LayoutMatricula from './layout/LayoutMatricula';
 import Matricula from './pages/Matricula';
-import ActivarMatricula from './pages/ActivarMatricula';
 import NotasDocente from './pages/NotasDocente';
+
+import ActivarMatricula from './pages/ActivarMatricula';
+import Chat  from './chat/chat';
+
 import Coordinador from './pages/Coordinador';
 import JefeDepartamento from './pages/JefeDepartamento';
+
 
 function App() {
   
@@ -43,9 +47,11 @@ function App() {
             <Route path='/registrar' element={<Registrar/>} />
             <Route path='/docentes' element={<Docentes/>} /> 
             <Route path='/Administrador' element={<Administrador/>} /> 
+
             <Route path='/Matricula' element={<ActivarMatricula/>} /> 
             <Route path='/coordinador' element={<Coordinador/>} /> 
             <Route path='/jefeDpto' element={<JefeDepartamento/>} /> 
+
         </Route>
         
         <Route > 
@@ -57,10 +63,12 @@ function App() {
               <Route path='nuevoDocente' element={<RegistrarDocentes/>} />
               <Route path='SubirCsv' element={<SubirCsv/>} />
               <Route path='estAdmitidos' element={<EstAdmitidosCsv/>} />
+              <Route path='activarmatricula' element={<ActivarMatricula/>} />
         </Route>
 
         <Route path='/principalEstudiante' element={<LayoutEstudiante/>}>
             <Route path='perfilEstudiante/:id_usuario' element={<PerfilEstudiante/>} /> 
+            <Route path='mensajeria' element={<Chat/>} /> 
         </Route>
 
         <Route path='/principalMatricula' element={<LayoutMatricula/>}>

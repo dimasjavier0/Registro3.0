@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser'); 
-var cors = require('cors');
-//var Routes = require('./routes');
+const cors = require('cors');
+// var Routes = require('./routes');
+
+
 var aspirantes_router = require("./routes/aspirantes-route");
 var notas_router = require("./routes/notas-route-copy");
 var carreras_router = require('./routes/carreras-route');
@@ -49,9 +51,42 @@ const estudiantesNotesRoutes = require('./routes/estudianteNotas');
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
 
+     // Crear un servidor HTTP con Express 
     //instancia del modulo express/
     const app = express();
     app.set('port', PORT);
+    const http = require('http');
+    const { Server: SocketServer } = require('socket.io');
+
+    const server = http.createServer(app);
+
+    const io = new SocketServer(server, {
+      cors: {
+        origin: 'http://localhost:5173', // Cambia a este origen
+    methods: ["GET", "POST"]
+      }  
+  });
+
+    /*io.on('connection',()=>{
+      console.log('a user connected')
+    })*/
+
+    io.on("connection", (socket) => {
+      console.log(socket.id);
+      socket.on("message", (body) => {
+        socket.broadcast.emit("message", {
+          body,
+          from: socket.id.slice(8),
+        });
+      });
+    });
+    
+
+
+
+    //server.listen(PORT);
+    console.log("server inicio en puerto purruga", PORT);
+
 
     /* permite peticiones de otros origenes.*/
     app.use(cors()); 
@@ -271,7 +306,7 @@ app.post('/aspirantes', async (req,res)=>{ //funcion asincrona
 
 
 /**Levantando Servidor Backend */
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Servidor Express iniciado en el puerto ${PORT}`);
     
 });
