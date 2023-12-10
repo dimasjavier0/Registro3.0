@@ -31,7 +31,7 @@ class ControllerNotes{
 
                 if(verificarProceso.length == 0){
                     let resultado = await db.query(`EXEC dbo.ActivarRevision @fecha_inicio = '${fechaInicio}', 
-                    @fecha_fin = '${fechaFin}', @idPeriodo = ${idPeriodo}`);
+                    @fecha_fin = '${fechaFin}', @idPeriodo = ${idPeriodo};`);
     
                     if(resultado[0].ErrorNumber != null){
                         return {estado: false,

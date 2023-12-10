@@ -36,7 +36,7 @@ async function registrarDocente(docenteData) {
 
         //Crear el usuario en la base de datos
         const userLogin = new UserAndLogin();
-        await userLogin.crearUsuario(docenteData.numeroEmpleado, docenteData.correo, 'docente');
+        await userLogin.crearUsuario(docenteData.numeroEmpleado, docenteData.correo, '3');
         
         console.log('Docente registrado con éxito');
     } catch (err) {
