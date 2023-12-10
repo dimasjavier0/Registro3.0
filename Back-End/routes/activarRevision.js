@@ -3,9 +3,11 @@ const {activarProcesoEvaluacion} = require('../controllers/notaEstudiante')
 
 const router = express.Router();
 
-router.get('/', async (req, res) =>{
+router.post('/', async (req, res) =>{
     try {
-        let resultado = await activarProcesoEvaluacion();
+        const infoProceso = req.body;
+
+        let resultado = await activarProcesoEvaluacion(infoProceso.fechaInicio, infoProceso.fechaFin, infoProceso.idPeriodo);
 
         if (resultado.estado) {
             res.json(resultado);

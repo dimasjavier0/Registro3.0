@@ -82,6 +82,41 @@ router.get('/aulas/:num_empleado', async (req, res) =>{
    }
 });
 
+//Ruta para ver las secciones del periodo actual
+router.get('/secciones/:num_empleado', async (req, res) =>{
+    try {
+        const {num_empleado} = req.params;
+
+        let resultado = await jefeDep.seccionesPAC(num_empleado);
+
+        if(resultado.estado){
+            res.json(resultado.mensaje);
+        }else{
+            res.status(400).send(resultado.mensaje);
+        }
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+//Ruta para que el jefe pueda ver la lista de espera de cada seccion
+router.get('/listaEspera/:num_empleado/:id_seccion', async (req, res) =>{
+    try{
+        const {num_empleado} = req.params;
+        const {id_seccion} = req.params;
+
+        let resultado = await jefeDep.verListaEspera(num_empleado, id_seccion);
+
+        if(resultado.estado){
+            res.json(resultado.mensaje);
+        }else{
+            res.status(400).send(resultado.mensaje);
+        }
+    }catch(error){
+        res.status(500).send(error);
+    }
+})
+
 //Ruta para aumentar los cupos de una seccion
 router.put('/aumentarCupos/:idSeccion', async (req, res) =>{
     try {

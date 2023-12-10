@@ -33,7 +33,16 @@ const ingresoNotas = require('./routes/estudianteNotas');
 const activarIngresoNotas = require('./routes/activarRevision');
 const activarPlanificacion = require('./routes/activarPlanAcademica');
 const planificacionAcademica = require('./routes/jefeDep-route');
+
 const solicitudesRoute = require('./routes/solitudesRoute');
+
+
+
+//const estudiantesList = require('../controllers/GenerarListaAlm');
+const estudiantesNotesRoutes = require('./routes/estudianteNotas');
+
+
+//const estudiantesNotesRouter = require('./routes/estudianteNotas');
 
 
 
@@ -131,10 +140,14 @@ const solicitudesRoute = require('./routes/solitudesRoute');
   app.use('/activarPlanificacion', activarPlanificacion);
 
   //Ruta para todo el proceso de crear secciones
-  app.use('/planificacionAcademica', planificacionAcademica)
+  app.use('/planificacionAcademica', planificacionAcademica);
+
+  app.use('/api/estudiantesNotes', estudiantesNotesRoutes);
+
 
 
 /*
+
 
 
   /** */

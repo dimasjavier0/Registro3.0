@@ -1,45 +1,52 @@
-import React, { useState } from 'react';
-
-const clases = ['Ingenieria del software', 'Inteligencia Artificial'];
-
-//Simulacion de datos para visualizacion 
-const datosEstudiantes = {
-'Ingenieria del software': [
-{ id: 1, nombre: 'Carlos pavon', nota: '', estado: '' },
-{ id: 2, nombre: 'Luiz suarez', nota: '', estado: '' },
-],
-'Inteligencia Artificial': [
-{ id: 1, nombre: 'Choco Lozano', nota: '', estado: '' },
-{ id: 2, nombre: 'Dani alvez', nota: '', estado: '' },
-],
-};
+/*import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function NotasDocente() {
-const [claseSeleccionada, setClaseSeleccionada] = useState(null);
-const [estudiantes, setEstudiantes] = useState([]);
+    const [clases, setClases] = useState([]);
+    const [estudiantes, setEstudiantes] = useState([]);
+    const [claseSeleccionada, setClaseSeleccionada] = useState(null);
 
-const manejarSeleccionClase = (nombreClase) => {
-setClaseSeleccionada(nombreClase);
-setEstudiantes(datosEstudiantes[nombreClase]);
-};
+    useEffect(() => {
+        const obtenerClasesAsignadas = async () => {
+            try {
+                const idDocente = 202020;
+                const response = await axios.get(`http://localhost:8888/api/ruta/${idDocente}`);
+                setClases(response.data.clases); // Asumiendo que la respuesta tiene un campo 'clases'
+            } catch (error) {
+                console.error('Error al obtener clases:', error);
+            }
+        };
 
-const manejarEstablecerNota = (idEstudiante, nota) => {
-setEstudiantes((estudiantesPrevios) =>
-    estudiantesPrevios.map((estudiante) =>
-    estudiante.id === idEstudiante ? { ...estudiante, nota } : estudiante
-    )
-);
-};
+        obtenerClasesAsignadas();
+    }, []);
 
-const manejarEstablecerEstado = (idEstudiante, estado) => {
-setEstudiantes((estudiantesPrevios) =>
-    estudiantesPrevios.map((estudiante) =>
-    estudiante.id === idEstudiante ? { ...estudiante, estado } : estudiante
-    )
-);
-};
+    const manejarSeleccionClase = async (idSeccion) => {
+        try {
+            const response = await axios.get(`http://localhost:8888/api/secciones/${idSeccion}`);
+            setEstudiantes(response.data); // Asumiendo que la respuesta es la lista de estudiantes
+            setClaseSeleccionada(idSeccion);
+        } catch (error) {
+            console.error('Error al obtener estudiantes:', error);
+        }
+    };
 
-return (
+    const enviarNotas = async () => {
+        try {
+            const datosParaEnviar = estudiantes.map(estudiante => ({
+                numero_cuenta: estudiante.id, // Asegúrate de que esto coincida con la estructura de datos esperada por tu backend
+                nota: estudiante.nota,
+                observacion: estudiante.estado
+            }));
+    
+            await axios.post(`http://localhost:8888/api/${claseSeleccionada}`, datosParaEnviar);
+            alert('Notas enviadas con éxito');
+        } catch (error) {
+            console.error('Error al enviar notas:', error);
+            alert('Error al enviar notas');
+        }
+    };
+
+    return (
     <>
     <h1 className='text-4xl shadow-md bg-gray-200 mr-44 p-2 text-indigo-700 font-label font-black mb-10 mt-24  font-lato'>Ingreso de notas docente</h1>
     <div className='grid border-2 grid-cols-4 gap-5 mt-16 mr-40 shadow-xl p-6 py-8 h-52 rounded-md overflow-y-scroll '>
@@ -115,6 +122,98 @@ return (
 </div>
 </>
 );
+}
+
+export default NotasDocente;
+
+*/
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+function NotasDocente() {
+    const [secciones, setSecciones] = useState([]);
+    const [estudiantes, setEstudiantes] = useState([]);
+    const [seccionSeleccionada, setSeccionSeleccionada] = useState(null);
+    const idDocente = 202020; // Aquí obtienes el ID del docente
+
+    useEffect(() => {
+        obtenerSecciones(idDocente);
+    }, [idDocente]);
+
+    const obtenerSecciones = async (idDocente) => {
+        try {
+            const response = await axios.get(`http://localhost:8888/api/estudiantesNotes/${idDocente}`);
+            if (response.data.estado) {
+                setSecciones(response.data.periodos);
+            } else {
+                alert('El proceso de ingreso de notas no está activo');
+            }
+        } catch (error) {
+            console.error('Error al obtener secciones:', error);
+        }
+    };
+
+    const manejarSeleccionSeccion = async (idSeccion) => {
+        setSeccionSeleccionada(idSeccion);
+        obtenerEstudiantes(idSeccion);
+    };
+
+    const obtenerEstudiantes = async (idSeccion) => {
+        try {
+            const response = await axios.get(`http://localhost:8888/api/estudiantesNotes/secciones/${idSeccion}`);
+            setEstudiantes(response.data);
+        } catch (error) {
+            console.error('Error al obtener estudiantes:', error);
+        }
+    };
+
+    const enviarNotas = async (estudiante, nota, observacion) => {
+        try {
+            await axios.post(`http://localhost:8888/api/estudiantesNotes/${seccionSeleccionada}`, {
+                numero_cuenta: estudiante['Numero de cuenta'],
+                nota: nota,
+                observacion: observacion
+            });
+            alert('Nota enviada con éxito');
+        } catch (error) {
+            console.error('Error al enviar nota:', error);
+            alert('Error al enviar nota');
+        }
+    };
+
+    return (
+        <div className="container mx-auto p-4">
+            <h1 className="text-4xl font-bold text-center mb-6">Ingreso de Notas</h1>
+
+            <div className="mb-4">
+                <label htmlFor="seccion" className="block text-lg font-medium text-gray-700">Sección:</label>
+                <select
+                    id="seccion"
+                    className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    value={seccionSeleccionada || ''}
+                    onChange={(e) => manejarSeleccionSeccion(e.target.value)}
+                >
+                    <option value="">Seleccione una sección</option>
+                    {secciones.map((seccion, index) => (
+                        <option key={index} value={seccion.id_seccion}>{seccion.hora_inicio} - {seccion.nombre_asig}</option>
+                    ))}
+                </select>
+            </div>
+
+            {seccionSeleccionada && estudiantes.map((estudiante, index) => (
+                <div key={index} className="bg-white p-4 rounded-lg shadow">
+                    <p className="font-medium">{estudiante['Nombre']}</p>
+                    <input
+                        type="number"
+                        className="mt-2 w-full py-2 px-3 border border-gray-300 rounded-md"
+                        placeholder="Nota"
+                        onChange={(e) => enviarNotas(estudiante, e.target.value, 'Aprobado')} // Ejemplo de envío de nota
+                    />
+                </div>
+            ))}
+        </div>
+    );
 }
 
 export default NotasDocente;

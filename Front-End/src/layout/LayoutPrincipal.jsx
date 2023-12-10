@@ -15,7 +15,7 @@ function Principal() {
     useEffect(() => {
             const almacenar = localStorage.getItem('seleccionOpcion');
             
-            if (almacenar && location.pathname === '/estudiantes'|| location.pathname === '/docentes' ||location.pathname === '/Administrador') {
+            if (almacenar && location.pathname === '/estudiantes'|| location.pathname === '/docentes' ||location.pathname === '/Administrador' ||location.pathname === '/coordinador' ||location.pathname === '/jefeDpto') {
             setSeleccionOpcion(almacenar);
             } else {
             setSeleccionOpcion(null);
@@ -23,7 +23,7 @@ function Principal() {
             }
         }, [location]);
     return (
-        <div className={`${seleccionOpcion === 'Estudiante' ? ' delay-100 duration-500 bg-yellow-300' : seleccionOpcion === 'Docente' ? 'delay-100 duration-500 bg-blue-500' :seleccionOpcion === 'Administrador' ? 'delay-100 duration-500 bg-blue-800 ':null} min-h-screen`}>
+        <div className={`${seleccionOpcion === 'Estudiante' ? ' delay-100 duration-500 bg-yellow-300' : seleccionOpcion === 'Docente' ? 'delay-100 duration-500 bg-blue-500' :seleccionOpcion === 'Coordinador' ? 'delay-100 duration-500 bg-blue-800 ':seleccionOpcion === 'JefeDepartamento' ? 'delay-100 duration-500 bg-blue-800 ':seleccionOpcion === 'Administrador' ? 'delay-100 duration-500 bg-blue-800 ':null} min-h-screen`}>
 
             <Header 
             seleccionOpcion={seleccionOpcion} 
