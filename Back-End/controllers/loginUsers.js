@@ -148,7 +148,7 @@ class UserAndLogin{
       return sesion;
 
    } catch (err) {
-     throw new Error(`Error en la autenticación: ${err.message}`);
+     //throw new Error(`Error en la autenticación: ${err.message}`);
    } finally {
       bd.close();
    }

@@ -16,8 +16,14 @@ router.post('/activar-matricula', async (req, res) => {
     try {
         //const { id_PAC, descripcion } = req.body;
         await sql.connect(dbConfig);
-        await sql.query`EXEC ActivarMatriculaFF`;
-        res.status(200).send('Proceso de matrícula activado con éxito');
+        let calendario = await sql.query`EXEC ActivarMatriculaA`;
+        res.status(200).send(
+        {   
+            "result":calendario.recordset,
+            "success":true,
+            "msj":'Proceso de matrícula activado con éxito'
+        }
+        );
     } catch (err) {
         console.error(err);
         res.status(500).send('Error al activar el proceso de matrícula');

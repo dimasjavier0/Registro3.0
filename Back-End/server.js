@@ -33,6 +33,9 @@ const ingresoNotas = require('./routes/estudianteNotas');
 const activarIngresoNotas = require('./routes/activarRevision');
 const activarPlanificacion = require('./routes/activarPlanAcademica');
 const planificacionAcademica = require('./routes/jefeDep-route');
+const solicitudesRoute = require('./routes/solitudesRoute');
+
+
 
 /**configuraciones */
     const PORT = process.env.PORT || 8888; //puerto para levantar
@@ -107,6 +110,9 @@ const planificacionAcademica = require('./routes/jefeDep-route');
 
   // Ruta para logearse como estudiante
   app.use('/estudianteLog', logEstudiantes);
+
+  /**Ruta para las solicitudes de los estudiantes. */
+  app.use('/solicitudes',solicitudesRoute);
 
   // Ruta para los centros regionales
   app.use('/centros', centrosRoute);
