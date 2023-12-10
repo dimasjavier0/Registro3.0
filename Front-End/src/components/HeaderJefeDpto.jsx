@@ -34,21 +34,21 @@ function HeaderJefeDpto() {
                 </h1>
                 <img className=' w-44 h-44 ml-20 mb-10 mt-2' src="/img/vista-docente.png" alt="Seguridad" /> 
                 <nav className=''>
-                    <Link to='#'>
+                    <Link to='/principalJefeDpto/crearSecciones'>
                         <button className='transition bg-white text-gray-600 ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
-                        boton
+                        Crear sección
                         </button>
                     </Link>
 
                     <Link to='#'>
                         <button className='transition bg-white text-gray-600 block mt-7 ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
-                        boton
+                        Aumentar cupos
                         </button>
                     </Link>
 
                     <Link to='#'>
                         <button className='transition bg-white text-gray-600 block mt-7 ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
-                        boton
+                        cancelar sección
                         </button>
                     </Link>
                 </nav>

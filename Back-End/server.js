@@ -46,6 +46,7 @@ const solicitudesRoute = require('./routes/solitudesRoute');
 
 //const estudiantesList = require('../controllers/GenerarListaAlm');
 const estudiantesNotesRoutes = require('./routes/estudianteNotas');
+const crearSecciones= require('./routes/crearSecciones-route')
 
 
 //const estudiantesNotesRouter = require('./routes/estudianteNotas');
@@ -184,6 +185,8 @@ const estudiantesNotesRoutes = require('./routes/estudianteNotas');
   app.use('/planificacionAcademica', planificacionAcademica);
 
   app.use('/api/estudiantesNotes', estudiantesNotesRoutes);
+
+  app.use('/crearSecciones',crearSecciones)
 
 
 

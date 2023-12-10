@@ -28,6 +28,7 @@ import LayoutMatricula from './layout/LayoutMatricula';
 import Matricula from './pages/Matricula';
 import NotasDocente from './pages/NotasDocente';
 import FormEvaluarDc from './pages/FormEvaluarDC';
+import CrearSecciones from './pages/CrearSecciones';
 
 import ActivarMatricula from './pages/ActivarMatricula';
 import Chat  from './chat/chat';
@@ -95,14 +96,13 @@ function App() {
             <Route path='subirNotas' element={<NotasDocente/>} />
         </Route>
 
-        <Route path='/principalCoordinador' element={<LayoutCoordinador/>}>
-            
-        </Route>
-
         <Route path='/principalJefeDpto' element={<LayoutJefeDpto/>}>
-            
+        <Route path='crearSecciones' element={<CrearSecciones/>} />
         </Route>
 
+        <Route >
+        <Route path='subirNotas' element={<NotasDocente/>} />
+        </Route>
         
 
       </Routes>
