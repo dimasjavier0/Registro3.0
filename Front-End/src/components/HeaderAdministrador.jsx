@@ -1,28 +1,43 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
 function HeaderAdministrador() {
+    const navigate = useNavigate();
+
+
+    const handleCerrarSesion = () => {
+        const confirmar = window.confirm('¿Estás seguro de cerrar sesión?');
+        if (confirmar) {
+            navigate('/');
+        }
+    };
 
     return (
         <div className='flex min-h-screen'>
             <aside className=' bg-indigo-700 '>
-                    <div className=' mt-5'>
-                    <Link
+                    <div className=' mt-5 ml-36'>
+                    <button
+                    className='transition block mt-10 ml-8 text-white font-bold text-lg ease-in-out shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'
+                    onClick={handleCerrarSesion}>Cerrar Sesión</button>  
+                    {/* <Link
                     to='/' 
                     className=" ml-72 ">
                     <i className="text-white fa-regular fa-share-from-square fa-rotate-180 fa-2xl"></i>
-                    </Link>
+                    </Link> */}
                     </div>
                 <div className=' mr-16'>
                 <h1 className='text-4xl ml-8 
-                font-black text-center text-white mt-10'>Administrador
+                font-black text-center text-white mt-10'>Área personal
+                <p>administrador</p>
                 </h1>
                 <img className=' w-44 h-40 ml-20 mb-8' src="/img/Seguridad.png" alt="Seguridad" />
                 <nav className=''>
-                <Link to="/administracion/activarmatricula">
-       <button className='transition text-white ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>
-         Matricula
-           </button>
-                     </Link>
+
+                    <Link to="/administracion/activarmatricula">
+                    <button className='transition text-white ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>
+                        Matricula
+                    </button>
+                    </Link>
 
                     <Link to='/administracion/SubirCsv'>
                         <button className='transition block mt-10 ml-8 text-white font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-white border-2 pb-1'>

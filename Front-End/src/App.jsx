@@ -16,6 +16,8 @@ import PerfilEstudiante from './pages/PerfilEstudiante';
 import '@fortawesome/fontawesome-free/css/all.css';
 import LayoutEstudiante from './layout/LayoutEstudiante';
 import LayoutDocente from './layout/LayoutDocente';
+import LayoutCoordinador from './layout/LayoutCoordinador';
+import LayoutJefeDpto from './layout/LayoutJefeDpto';
 import SubirVideoFormulario from './pages/AsignarVideo';
 import LayoutSolicitudes from './layout/LayoutSolicitudes';
 import { UserContextProvider } from './components/UserContext';
@@ -92,6 +94,16 @@ function App() {
             <Route path='videosporasignatura' element={<SubirVideoFormulario/>} />
             <Route path='subirNotas' element={<NotasDocente/>} />
         </Route>
+
+        <Route path='/principalCoordinador' element={<LayoutCoordinador/>}>
+            
+        </Route>
+
+        <Route path='/principalJefeDpto' element={<LayoutJefeDpto/>}>
+            
+        </Route>
+
+        
 
       </Routes>
     </BrowserRouter>

@@ -21,7 +21,7 @@ function Coordinador() {
             return;
         }
         if (usuario === '202311' && contraseña === 'admin1') {
-            //navigate('#') 
+            navigate('/principalCoordinador') 
         } else {
             setAlerta({mensaje: 'Credenciales invalidas', 
             error: true})

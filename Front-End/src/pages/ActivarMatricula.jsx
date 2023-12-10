@@ -17,9 +17,10 @@ const ActivarMatricula = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-4xl font-bold text-center mb-6">Activar Matrícula</h1>
-            <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-8 rounded shadow">
+        <div className=" p-4 mr-64 mt-32">
+            <h2 className=' bg-gray-100 ml-20 mr-20 shadow-xl  text-center py-2 text-opacity-80 mb-16 text-slate-700  font-label text-4xl font-bold'>Activar <span className='text-indigo-700'>matrícula</span></h2>
+            {/* <h1 className="text-4xl font-bold text-center mb-6">Activar Matrícula</h1> */}
+            <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-8 rounded border shadow-md">
                 <div className="mb-4">
                     <label htmlFor="idPAC" className="block text-lg font-medium text-gray-700">ID PAC:</label>
                     <input

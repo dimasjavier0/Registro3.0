@@ -2,10 +2,9 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
+function HeaderJefeDpto() {
 
-function HeaderDocente() {
     const navigate = useNavigate();
-
 
     const handleCerrarSesion = () => {
         const confirmar = window.confirm('¿Estás seguro de cerrar sesión?');
@@ -16,11 +15,11 @@ function HeaderDocente() {
 
     return (
         <div className='h-full flex fixed'>
-            <aside className=' bg-blue-500'>
+            <aside className=' bg-indigo-700'>
                     <div className=' mt-5 ml-36'>
                     <button
                     className='transition bg-white text-gray-600 block mt-7 ml-8 font-bold text-lg ease-in-out  shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'
-                    onClick={handleCerrarSesion}>Cerrar Sesión</button>    
+                    onClick={handleCerrarSesion}>Cerrar Sesión</button> 
                     {/* <Link
                     to='/' 
                     className=" ml-72 ">
@@ -31,25 +30,25 @@ function HeaderDocente() {
                 <div>
                 <h1 className='text-4xl ml-8 
                 font-black text-center text-white mt-10'>Área personal <br />
-                <p>docente</p>
+                <p>jefe de <br />departamento</p>
                 </h1>
                 <img className=' w-44 h-44 ml-20 mb-10 mt-2' src="/img/vista-docente.png" alt="Seguridad" /> 
                 <nav className=''>
-                    <Link to='/principalDocente/videosporasignatura'>
+                    <Link to='#'>
                         <button className='transition bg-white text-gray-600 ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
-                        Agregar Video
+                        boton
                         </button>
                     </Link>
 
-                    <Link to='/principalDocente/clasesAsignadas'>
+                    <Link to='#'>
                         <button className='transition bg-white text-gray-600 block mt-7 ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
-                        Listado Estudiantes
+                        boton
                         </button>
                     </Link>
 
-                    <Link to='/principalDocente/subirNotas'>
+                    <Link to='#'>
                         <button className='transition bg-white text-gray-600 block mt-7 ml-8 font-bold text-lg ease-in-out  hover:scale-110 shadow-md hover:shadow-white rounded-lg py-0 px-5 border-gray-500 border-2 pb-1'>
-                        Ingresar Notas
+                        boton
                         </button>
                     </Link>
                 </nav>
@@ -61,4 +60,4 @@ function HeaderDocente() {
     )
 }
 
-export default HeaderDocente
+export default HeaderJefeDpto

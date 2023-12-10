@@ -1,6 +1,3 @@
-//JefeDepartamento
-
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -11,36 +8,36 @@ function JefeDepartamento() {
     const [passwordUser, setPasswordUser] = useState('');
     const [rol, setRol] = useState('');
     const [mensaje, setMensaje] = useState('');
-   
+
 
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
-      e.preventDefault();
-  
-      try {
+    e.preventDefault();
+
+    try {
         setRol(5);
-          const response = await axios.post('http://localhost:8888/login', {
-              nombreUsuario,
-              passwordUser,
-              "rol":5
-          });
-  
-          if (response.data) {
+        const response = await axios.post('http://localhost:8888/login', {
+            nombreUsuario,
+            passwordUser,
+            "rol":5
+        });
+
+        if (response.data) {
                 localStorage.setItem('sesion',JSON.stringify(response.data.sesion));
-              console.log('Guardando nombreUsuario en localStorage:', nombreUsuario);
-              localStorage.setItem('nombreUsuario', nombreUsuario);
-              setMensaje('Inicio de sesión exitoso para el rol de docente');
-              navigate('/principalDocente');
-          } else {
-              throw new Error('Inicio de sesión fallido');
-          }
-  
-      } catch (error) {
-          console.error('Error en la autenticación:', error.message);
-          setMensaje('Error en la autenticación');
-      }
-  };
+            console.log('Guardando nombreUsuario en localStorage:', nombreUsuario);
+            localStorage.setItem('nombreUsuario', nombreUsuario);
+            setMensaje('Inicio de sesión exitoso para el rol de docente');
+            navigate('/principalJefeDpto');
+        } else {
+            throw new Error('Inicio de sesión fallido');
+        }
+
+    } catch (error) {
+        console.error('Error en la autenticación:', error.message);
+        setMensaje('Error en la autenticación');
+    }
+};
 
     return (
         <>
