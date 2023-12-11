@@ -35,6 +35,7 @@ import Chat  from './chat/chat';
 
 import Coordinador from './pages/Coordinador';
 import JefeDepartamento from './pages/JefeDepartamento';
+import CancelarSeccion from './pages/CancelarSeccion';
 
 
 function App() {
@@ -98,6 +99,7 @@ function App() {
 
         <Route path='/principalJefeDpto' element={<LayoutJefeDpto/>}>
         <Route path='crearSecciones' element={<CrearSecciones/>} />
+        <Route path='cancelarSecciones' element={<CancelarSeccion/>} />
         </Route>
 
         <Route >
