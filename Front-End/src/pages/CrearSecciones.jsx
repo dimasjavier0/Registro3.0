@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import AlertaError from '../components/AlertaError';
 
 const CrearSecciones = () => {
+    const [alerta, setAlerta] = useState({});
     const [asignaturas, setAsignaturas] = useState([]);
     const [numEmpleados, setNumEmpleados] = useState([]);
     const [aulas, setAulas] = useState([]); 
@@ -55,11 +57,58 @@ const CrearSecciones = () => {
         setSelectedAula(aulaId);
     };
 
+    const handleKeyDown = (event) => {
+        const key = event.key; 
+        if (/[0-9]/.test(key)) {
+            event.preventDefault();
+        }
+    };
+
+    const handleSoloNumerosHI = (e) => {
+        if (/^\d*$/.test(e.target.value)) {
+        setHoraInicio(e.target.value);
+        }
+    };
+
+    const handleSoloNumerosFN = (e) => {
+        if (/^\d*$/.test(e.target.value)) {
+        setHoraFin(e.target.value);
+        }
+    };
+
+    const handleSoloNumerosCP = (e) => {
+        if (/^\d*$/.test(e.target.value)) {
+        setCupos(e.target.value);
+        }
+    };
+
+    const LimpiarFormulario = () => {
+        setSelectedAsignatura('');
+        setSelectedNumEmpleado('');
+        setSelectedAula('');
+        setDepartamentoId('');
+        setDepartamentoNombre('');
+        setHoraInicio('');
+        setHoraFin('');
+        setDias('');
+        setCupos('');
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
     
         try {
+
+        if (!selectedAsignatura || !selectedNumEmpleado || !selectedAula || !horaInicio || !horaFin || !dias || !cupos) {
+            setAlerta({mensaje: 'Por favor, complete todos los campos', 
+            error: true})
+            setTimeout(() => {
+                setAlerta({});
+            }, 2000);
+            return;
+        }
+
             await axios.post('http://localhost:8888/guardarSeccion', {
                 asignaturaId: selectedAsignatura,
                 numEmpleado: selectedNumEmpleado,
@@ -72,20 +121,31 @@ const CrearSecciones = () => {
             });
     
             console.log('Sección creada con éxito');
+            setAlerta({mensaje: '¡Sección creada con exito!', 
+            error: false})
+            setTimeout(() => {
+                setAlerta({});
+            }, 2000);
+            LimpiarFormulario();
         } catch (error) {
             console.error('Error al crear la sección:', error);
             
         }
     };;
-
+        const {mensaje}= alerta
 return (
-        <div className="max-w-md mt-10 ml-32 p-4 rounded border-2 shadow-lg">
-        <h2 className="text-2xl mb-7 font-bold font-lato text-center ">Crear Seccion</h2>
+        <div className="max-w-md mt-10 px-5 ml-32 p-4 rounded-md border-2 shadow-lg">
+        <h2 className="text-4xl mb-7 font-label font-semibold text-center ">Crear sección</h2>
+        
+        {mensaje && <AlertaError 
+                    alerta={alerta}
+                />}
+
         <form onSubmit={handleSubmit}>
             <select
             onChange={(e) => handleAsignaturaChange(e.target.value)}
             value={selectedAsignatura}
-            className="border p-2 rounded w-full mb-4"
+            className="border-2 p-2 w-full mb-4 rounded-md"
             >
             <option value="" disabled>Selecciona una asignatura</option>
             {asignaturas.map((asig) => (
@@ -98,9 +158,9 @@ return (
             <select
             onChange={(e) => handleNumEmpleadoChange(e.target.value)}
             value={selectedNumEmpleado}
-            className="border p-2 rounded w-full mb-4"
+            className="border-2 p-2 rounded-md w-full mb-4"
             >
-            <option value="" disabled>Selecciona un num_empleado</option>
+            <option value="" disabled>Selecciona un docente</option>
             {numEmpleados.map((numEmpleado) => (
                 <option key={numEmpleado} value={numEmpleado}>
                 {numEmpleado}
@@ -111,7 +171,7 @@ return (
             <select
             onChange={(e) => handleAulaChange(e.target.value)}
             value={selectedAula}
-            className="border p-2 rounded w-full mb-4"
+            className="border-2 p-2 rounded-md w-full mb-4"
             >
             <option value="" disabled>Selecciona un aula</option>
             {aulas.map((aula) => (
@@ -126,9 +186,7 @@ return (
             type='text'   
             placeholder='hora Inicial'
             value={horaInicio}
-            onChange={(e) => {
-                setHoraInicio(e.target.value);
-            }}
+            onChange={handleSoloNumerosHI}
             />
 
             <input
@@ -136,16 +194,15 @@ return (
             type='text'   
             placeholder='hora Final'
             value={horaFin}
-            onChange={(e) => {
-                setHoraFin(e.target.value);
-            }}
+            onChange={handleSoloNumerosFN}
             />
 
             <input
             className='w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100 font-label' 
             type='text'   
-            placeholder='Dias'
+            placeholder='Días de la semana'
             value={dias}
+            onKeyDown={handleKeyDown}
             onChange={(e) => {
                 setDias(e.target.value);
             }}
@@ -156,12 +213,13 @@ return (
             type='text'   
             placeholder='Cupos'
             value={cupos}
-            onChange={(e) => {
-                setCupos(e.target.value);
-            }}
+            onChange={handleSoloNumerosCP}
             />
+            <button type="submit" className='bg-indigo-600 w-full  mr-10 text-white py-2 px-8 rounded-lg hover:bg-indigo-700 font-medium  uppercase mb-2 font-label shadow-lg shadow-indigo-400/100'>
+                Crear sección
+            </button>
 
-            {selectedAsignatura && (
+            {/* {selectedAsignatura && (
             <div>
                 <h3 className="text-lg font-bold mb-2">Datos Seccion</h3>
                 <p>
@@ -195,7 +253,7 @@ return (
                 Crear sección
                 </button>
             </div>
-            )}
+            )} */}
         </form>
         </div>
 );
